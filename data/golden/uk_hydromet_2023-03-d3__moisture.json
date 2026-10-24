@@ -1,0 +1,19 @@
+{
+  "year": 2023,
+  "month": 3,
+  "decade": 3,
+  "soil_moisture": {
+    "status": "adequate",
+    "layer": "both",
+    "min_mm": 11,
+    "max_mm": 170,
+    "deficit_oblasts": [
+      "odesa"
+    ]
+  },
+  "crops": [],
+  "hazards": [
+    "waterlogging"
+  ],
+  "yield_outlook": []
+}

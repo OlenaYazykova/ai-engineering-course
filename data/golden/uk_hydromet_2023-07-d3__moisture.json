@@ -1,0 +1,27 @@
+{
+  "year": 2023,
+  "month": 7,
+  "decade": 3,
+  "soil_moisture": {
+    "status": "adequate",
+    "layer": "0-100cm",
+    "min_mm": 26,
+    "max_mm": 200,
+    "deficit_oblasts": [
+      "volyn",
+      "vinnytsia",
+      "kirovohrad",
+      "dnipropetrovsk",
+      "mykolaiv",
+      "odesa",
+      "poltava",
+      "kherson",
+      "sumy"
+    ]
+  },
+  "crops": [],
+  "hazards": [
+    "waterlogging"
+  ],
+  "yield_outlook": []
+}

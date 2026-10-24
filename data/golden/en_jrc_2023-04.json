@@ -1,0 +1,33 @@
+{
+  "year": 2023,
+  "month": 4,
+  "decade": null,
+  "soil_moisture": {
+    "status": "adequate",
+    "layer": "not_stated",
+    "min_mm": null,
+    "max_mm": null,
+    "deficit_oblasts": []
+  },
+  "crops": [],
+  "hazards": [
+    "hostilities"
+  ],
+  "yield_outlook": [
+    {
+      "crop": "winter_wheat",
+      "vs_5yr_average": "below",
+      "production_mt": 25.48
+    },
+    {
+      "crop": "winter_barley",
+      "vs_5yr_average": "below",
+      "production_mt": 3.77
+    },
+    {
+      "crop": "winter_rapeseed",
+      "vs_5yr_average": "not_stated",
+      "production_mt": 3.04
+    }
+  ]
+}

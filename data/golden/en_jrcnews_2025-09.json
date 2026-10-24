@@ -1,0 +1,49 @@
+{
+  "year": 2025,
+  "month": 9,
+  "decade": null,
+  "soil_moisture": {
+    "status": "mixed",
+    "layer": "not_stated",
+    "min_mm": null,
+    "max_mm": null,
+    "deficit_oblasts": []
+  },
+  "crops": [],
+  "hazards": [
+    "drought",
+    "heavy_rain"
+  ],
+  "yield_outlook": [
+    {
+      "crop": "winter_wheat",
+      "vs_5yr_average": "above",
+      "production_mt": null
+    },
+    {
+      "crop": "winter_rapeseed",
+      "vs_5yr_average": "above",
+      "production_mt": null
+    },
+    {
+      "crop": "winter_barley",
+      "vs_5yr_average": "below",
+      "production_mt": null
+    },
+    {
+      "crop": "maize",
+      "vs_5yr_average": "above",
+      "production_mt": null
+    },
+    {
+      "crop": "soybean",
+      "vs_5yr_average": "above",
+      "production_mt": null
+    },
+    {
+      "crop": "sunflower",
+      "vs_5yr_average": "below",
+      "production_mt": null
+    }
+  ]
+}

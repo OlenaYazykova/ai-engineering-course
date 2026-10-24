@@ -1,0 +1,26 @@
+# secrets
+.env
+
+# source documents: large, re-downloaded with `make fetch`
+data/raw/
+
+# response cache (re-created by the runs)
+.cache/
+
+# notebooks with working notes
+*.ipynb
+
+# unfinished runs and one-off checks
+results/*.partial
+results/smoke/
+
+# python / notebooks
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# archives
+*.zip

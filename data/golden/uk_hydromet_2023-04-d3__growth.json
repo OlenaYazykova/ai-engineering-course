@@ -1,0 +1,49 @@
+{
+  "year": 2023,
+  "month": 4,
+  "decade": 3,
+  "soil_moisture": {
+    "status": "not_stated",
+    "layer": "not_stated",
+    "min_mm": null,
+    "max_mm": null,
+    "deficit_oblasts": []
+  },
+  "crops": [
+    {
+      "crop": "winter_wheat",
+      "bbch_stage": 3,
+      "condition": "good"
+    },
+    {
+      "crop": "winter_barley",
+      "bbch_stage": 3,
+      "condition": "good"
+    },
+    {
+      "crop": "winter_rapeseed",
+      "bbch_stage": 5,
+      "condition": "good"
+    },
+    {
+      "crop": "spring_barley",
+      "bbch_stage": 1,
+      "condition": "good"
+    },
+    {
+      "crop": "maize",
+      "bbch_stage": 0,
+      "condition": "not_stated"
+    },
+    {
+      "crop": "sunflower",
+      "bbch_stage": 0,
+      "condition": "not_stated"
+    }
+  ],
+  "hazards": [
+    "waterlogging",
+    "frost"
+  ],
+  "yield_outlook": []
+}

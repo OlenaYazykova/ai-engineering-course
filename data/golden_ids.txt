@@ -1,0 +1,12 @@
+# Texts of the golden set (labelled by hand into data/golden/<id>.json).
+# Mix of every kind of text: Hydromet moisture / growth / joint / autumn / winter, JRC news and bulletins.
+uk_hydromet_2023-03-d3__moisture
+uk_hydromet_2023-07-d3__moisture
+uk_hydromet_2023-04-d3__growth
+uk_hydromet_2022-09-d1__growth_moisture
+uk_hydromet_2022-10-d2__conditions
+uk_hydromet_2023-02-d2
+en_jrcnews_2022-06
+en_jrcnews_2025-09
+en_jrc_2023-04
+en_jrc_2024-06

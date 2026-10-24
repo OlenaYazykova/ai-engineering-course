@@ -1,0 +1,15 @@
+{
+  "year": 2023,
+  "month": 2,
+  "decade": 2,
+  "soil_moisture": {
+    "status": "not_stated",
+    "layer": "not_stated",
+    "min_mm": null,
+    "max_mm": null,
+    "deficit_oblasts": []
+  },
+  "crops": [],
+  "hazards": [],
+  "yield_outlook": []
+}

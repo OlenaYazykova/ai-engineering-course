@@ -1,0 +1,76 @@
+# Models, sampling and the experiment matrix. Keys (API) live in .env, never here.
+
+# ---------- models ----------
+# provider = "openai_compatible": OpenRouter (or any OpenAI-compatible API), key from api_key_env
+# provider = "ollama": local Ollama server (native API, so the context size num_ctx can be set)
+# price_in / price_out: USD per 1M tokens (input / output), used for cost per 1000 documents
+
+[models.gpt4o_mini]
+provider = "openai_compatible"
+base_url = "https://openrouter.ai/api/v1"
+api_key_env = "OPENROUTER_API_KEY"
+model = "openai/gpt-4o-mini"
+price_in = 0.15
+price_out = 0.60
+timeout_s = 60
+max_retries = 2
+
+[models.qwen3b]
+provider = "ollama"
+base_url = "http://localhost:11434"
+model = "qwen2.5:3b"
+num_ctx = 8192          # Ollama default is smaller and silently cuts long texts
+price_in = 0.0
+price_out = 0.0
+timeout_s = 300
+max_retries = 1
+
+# Third model: a cheap cloud model through the same OpenRouter interface.
+# If it rejects strict schemas (HTTP 400), set response_format = "json_object".
+[models.gemini_flash_lite]
+provider = "openai_compatible"
+base_url = "https://openrouter.ai/api/v1"
+api_key_env = "OPENROUTER_API_KEY"
+model = "google/gemini-2.5-flash-lite"
+price_in = 0.10
+price_out = 0.40
+timeout_s = 60
+max_retries = 2
+
+# Optional: a stronger local model if the laptop has 16 GB RAM or more.
+# Add ["qwen7b", "v1", "t0"] to experiments below to use it.
+[models.qwen7b]
+provider = "ollama"
+base_url = "http://localhost:11434"
+model = "qwen2.5:7b"
+num_ctx = 8192
+price_in = 0.0
+price_out = 0.0
+timeout_s = 600
+max_retries = 1
+
+# ---------- sampling ----------
+[sampling.t0]
+temperature = 0.0
+top_p = 1.0
+
+[sampling.t07]
+temperature = 0.7
+top_p = 0.9
+
+# ---------- runs ----------
+[run]
+max_tokens = 1500
+cache = true            # replay identical T=0 requests from .cache/responses/ (no second payment)
+# model x prompt version x sampling; `make run` runs every row that has no result file yet
+# Local runs on a laptop CPU are slow (measured: about 3-5 min per text, 2-3 hours per run).
+experiments = [
+  ["gpt4o_mini", "v1", "t0"],
+  ["gpt4o_mini", "v1", "t07"],
+  ["qwen3b", "v1", "t0"],
+  ["gpt4o_mini", "v2", "t0"],
+  ["qwen3b", "v2", "t0"],
+  ["qwen3b", "v2", "t07"],
+  ["gemini_flash_lite", "v2", "t0"],
+]
+# Prompt v3 was rejected by the regression check (results/regression/), so it is not in the matrix.
