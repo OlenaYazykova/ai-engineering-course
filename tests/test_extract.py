@@ -10,7 +10,7 @@ from agro_extract.providers import CachedProvider, Completion, Provider, Provide
 from agro_extract.schema import AgroReport, json_schema
 
 TEXT = ("Агрометеорологічний бюлетень по території України за першу декаду липня 2021 р. "
-        "Запаси продуктивної вологи в орному шарі становили 11-20 мм, в Одеській області менше 10 мм. "
+        "Запаси продуктивної вологи в орному шарі були недостатніми: 11-20 мм, в Одеській області менше 10 мм. "
         "Озима пшениця у фазі воскової стиглості, стан задовільний. Wheat 26.88 Mt.")
 
 GOOD = {
@@ -207,3 +207,124 @@ def test_json_object_fallback():
     assert p._response_format({}) == {"type": "json_object"}
     p.cfg = {}
     assert p._response_format({"x": 1})["json_schema"]["strict"] is True
+
+
+# ---------- deterministic checks (agro_extract/checks.py) ----------
+
+from agro_extract.checks import clean_lists, number_with_unit  # noqa: E402
+
+HYDRO = ("Агрометеорологічний бюлетень по території України за третю декаду липня 2023 р.\n"
+         "Станом на 20 липня запаси продуктивної вологи під кукурудзою 101-120 мм, на окремих площах "
+         "Волинської, Кіровогр адської та Одеської областей недостатні (менше 8 0 мм). "
+         "Відмічалося перезволоження ґрунту.")
+
+
+def test_number_must_stand_next_to_its_unit():
+    assert number_with_unit(HYDRO, 101, r"мм", 30)
+    assert number_with_unit(HYDRO, 80, r"мм", 30)          # "8 0 мм": number split by PDF
+    assert not number_with_unit(HYDRO, 20, r"мм", 30)      # "20 липня" is a date, not mm
+    assert number_with_unit("26.88 Mt of wheat", 26.88, r"^\s*mt\b", 12)
+
+
+def _rec(**kw):
+    d = json.loads(json.dumps(GOOD))
+    d.update(kw)
+    return d
+
+
+def test_mm_value_from_a_date_is_rejected():
+    d = _rec(year=2023, month=7, decade=3, yield_outlook=[], hazards=[], crops=[])
+    d["soil_moisture"].update(min_mm=20, max_mm=120, deficit_oblasts=[])
+    with pytest.raises(ValidationError, match="min_mm=20 is not written in the text as a value in mm"):
+        parse(d, HYDRO)
+
+
+def test_year_month_decade_are_reset_without_support():
+    base = {"year": 2022, "month": 8, "decade": 1, "soil_moisture": {"deficit_oblasts": [], "layer": "0-100cm",
+            "status": "deficit", "min_mm": 80, "max_mm": 120}, "crops": [], "yield_outlook": [], "hazards": []}
+    clean, removed = clean_lists(base, HYDRO)       # HYDRO: третю декаду липня 2023
+    assert (clean["year"], clean["month"], clean["decade"]) == (None, None, None)
+    assert {"year:2022", "month:8", "decade:1"} <= set(removed)
+
+
+def test_unsupported_list_items_are_removed():
+    rec = {
+        "year": 2023, "month": 7, "decade": 3,
+        "soil_moisture": {"status": "deficit", "layer": "0-100cm", "min_mm": 80, "max_mm": 120,
+                          "deficit_oblasts": ["volyn", "kirovohrad", "odesa", "kherson", "lviv"]},
+        "crops": [{"crop": "maize", "bbch_stage": None, "condition": "not_stated"},
+                  {"crop": "soybean", "bbch_stage": None, "condition": "good"}],
+        "hazards": ["waterlogging", "drought", "hail"],
+        "yield_outlook": [{"crop": "winter_wheat", "vs_5yr_average": "near", "production_mt": None}],
+    }
+    clean, removed = clean_lists(rec, HYDRO)
+    assert clean["soil_moisture"]["deficit_oblasts"] == ["volyn", "kirovohrad", "odesa"]   # split name found
+    assert clean["crops"] == []      # maize has neither a stage nor a condition, soybean is not in the text
+    assert clean["hazards"] == ["waterlogging"]
+    assert clean["yield_outlook"] == []
+    assert set(removed) == {"deficit_oblasts:kherson", "deficit_oblasts:lviv", "crops:soybean",
+                            "crops:maize (no stage, no condition)",
+                            "hazards:drought", "hazards:hail", "yield_outlook:winter_wheat"}
+
+
+def test_hazard_keywords_do_not_match_inside_other_words():
+    text = "Kirovohrad oblast, Кіровоградської області, warmer weather, wheat"
+    clean, removed = clean_lists({"soil_moisture": {"deficit_oblasts": []}, "crops": [],
+                                  "yield_outlook": [], "hazards": ["hail", "hostilities", "heat"]}, text)
+    assert clean["hazards"] == [] and len(removed) == 3
+
+
+def test_run_logs_removed_items():
+    d = json.loads(json.dumps(GOOD))
+    d["soil_moisture"]["deficit_oblasts"] = ["odesa", "lviv"]   # lviv is not in TEXT
+    r = run.extract_one(FakeProvider([json.dumps(d)]), MSGS, TEXT, SAMPLING, 100)
+    # TEXT names neither Lviv nor any drought word: both items are removed, the answer stays valid
+    assert r["status"] == "ok" and r["removed"] == ["deficit_oblasts:lviv", "hazards:drought"]
+    assert r["parsed"]["soil_moisture"]["deficit_oblasts"] == ["odesa"]
+
+
+def test_layer_and_status_are_checked_against_the_text():
+    sm = {"deficit_oblasts": [], "layer": "0-20cm", "status": "excess", "min_mm": None, "max_mm": None}
+    rec = {"soil_moisture": sm, "crops": [], "yield_outlook": [], "hazards": []}
+    clean, removed = clean_lists(rec, "Запаси в метровому шарі недостатні.")
+    assert clean["soil_moisture"]["layer"] == "0-100cm" and clean["soil_moisture"]["status"] == "not_stated"
+    rec["soil_moisture"] = {**sm, "status": "mixed"}
+    clean, _ = clean_lists(rec, "Оптимальні запаси в орному шарі.")
+    assert clean["soil_moisture"]["status"] == "not_stated"
+    # mm values without a layer stay strict
+    d = _rec(year=2023, month=7, decade=3, yield_outlook=[], hazards=[], crops=[])
+    d["soil_moisture"].update(min_mm=80, max_mm=120, deficit_oblasts=[], layer="not_stated")
+    with pytest.raises(ValidationError, match="layer cannot be not_stated"):
+        parse(d, HYDRO)
+
+
+def test_condition_stage_and_average_are_reset_without_support():
+    rec = {
+        "soil_moisture": {"deficit_oblasts": ["odesa", "odesa"]},
+        "crops": [{"crop": "maize", "bbch_stage": 6, "condition": "poor"},
+                  {"crop": "sunflower", "bbch_stage": 0, "condition": "good"}],
+        "yield_outlook": [{"crop": "maize", "vs_5yr_average": "above", "production_mt": None}],
+        "hazards": ["frost", "frost"],
+    }
+    text = "Одеська область. Кукурудза і соняшник: сходи, стан добрий. Заморозки."
+    clean, removed = clean_lists(rec, text)
+    # maize: stage and condition reset -> an empty entry -> removed; the same for its yield entry
+    assert clean["crops"] == [{"crop": "sunflower", "bbch_stage": 0, "condition": "good"}]
+    assert clean["yield_outlook"] == []
+    assert "crops:maize (no stage, no condition)" in removed
+    assert "yield_outlook:maize (no comparison, no production)" in removed
+    assert clean["soil_moisture"]["deficit_oblasts"] == ["odesa"] and clean["hazards"] == ["frost"]
+    assert "crops[maize].bbch_stage:6" in removed and "crops[maize].condition:poor" in removed
+    assert "hazards:frost (duplicate)" in removed
+
+
+def test_condition_must_stand_near_its_crop():
+    far = " ".join(["Опади випадали нерівномірно."] * 12)          # > 250 characters
+    text = f"Озима пшениця у фазі кущіння, стан добрий. {far} Кукурудза: сходи."
+    rec = {"soil_moisture": {"deficit_oblasts": []}, "yield_outlook": [], "hazards": [],
+           "crops": [{"crop": "winter_wheat", "bbch_stage": 2, "condition": "good"},
+                     {"crop": "maize", "bbch_stage": 0, "condition": "good"}]}
+    clean, removed = clean_lists(rec, text)
+    assert clean["crops"][0] == {"crop": "winter_wheat", "bbch_stage": 2, "condition": "good"}
+    assert clean["crops"][1] == {"crop": "maize", "bbch_stage": 0, "condition": "not_stated"}
+    assert removed == ["crops[maize].condition:good"]

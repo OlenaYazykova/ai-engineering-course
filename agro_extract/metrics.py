@@ -4,6 +4,7 @@ A record is flattened into scored fields. Lists are compared as sets (order does
   year, month, decade, moisture_status, moisture_layer, min_mm, max_mm,
   deficit_oblasts, crops, crop_condition, crop_bbch, hazards, yield_vs_avg, yield_mt
 A field is correct when it equals the gold value exactly (a set field: the same set).
+Removed: values removed or reset by checks.clean_lists because the text does not support them.
 Hallucination: the gold field is empty (null / [] / not_stated) but the model filled it
 (an invented crop counts in crops, crop_condition and crop_bbch: up to three fields).
 
@@ -157,6 +158,7 @@ def run_metrics(rows: list[dict], gold: dict[str, dict]) -> tuple[dict, list[str
         "acc_all": 100 * acc("all"), "acc_hydromet": 100 * acc("hydromet"), "acc_jrc": 100 * acc("jrc"),
         "set_f1": 100 * f1 if scored else float("nan"),
         "hallucinations": halluc,
+        "removed": sum(len(r.get("removed") or []) for r in rows),
         "p50_s": percentile(latency, 50), "p95_s": percentile(latency, 95),
         "usd_per_1000": 1000 * sum(cost) / n if n else float("nan"),
         "usd_total": sum(cost),
@@ -196,13 +198,15 @@ def main() -> None:
     cols = [("model", "Model"), ("prompt", "Prompt"), ("T", "T"), ("top_p", "top_p"),
             ("valid_pct", "Valid %"), ("fixed", "Fixed"), ("failed", "Failed"),
             ("acc_all", "Field acc %"), ("acc_hydromet", "Acc Hydromet %"), ("acc_jrc", "Acc JRC %"),
-            ("set_f1", "Set F1 %"), ("hallucinations", "Halluc."),
+            ("set_f1", "Set F1 %"), ("hallucinations", "Halluc."), ("removed", "Removed"),
             ("p50_s", "p50 s"), ("p95_s", "p95 s"), ("usd_per_1000", "$ / 1000 docs")]
     golden_n = max((m["golden"] for m in all_m), default=0)
     lines = ["# Metrics", "",
              f"Texts per run: {all_m[0]['texts'] if all_m else 0}. Golden set: {golden_n} texts × "
              f"{len(FIELDS)} fields. Accuracy, F1 and hallucinations are measured on the golden set; "
-             "valid %, latency and cost on all texts.", "",
+             "valid %, latency and cost on all texts. Removed: values the text does not support, "
+             "removed or reset by checks.clean_lists on all texts (oblasts, crops, hazards, yield entries; "
+             "condition, BBCH stage, vs 5-year average, layer, moisture status, year, month, decade; duplicates).", "",
              "| " + " | ".join(c[1] for c in cols) + " |",
              "|" + "---|" * len(cols)]
     for m in all_m:
@@ -225,9 +229,10 @@ def main() -> None:
 
 
 def check_golden() -> None:
-    """Validate every golden file against the schema and its text."""
+    """Validate every golden file against the schema, the strict checks and the list checks."""
     from pydantic import ValidationError
 
+    from .checks import clean_lists
     from .schema import AgroReport
 
     files = sorted(GOLDEN.glob("*.json"))
@@ -240,10 +245,15 @@ def check_golden() -> None:
             print(f"  {p.name}: no text data/texts/{p.stem}.txt")
             bad += 1
             continue
+        text = text_path.read_text(encoding="utf-8")
         try:
-            AgroReport.model_validate_json(p.read_text(encoding="utf-8"),
-                                           context={"text": text_path.read_text(encoding="utf-8")})
-            print(f"  {p.name}: ok ({source_of(p.stem)[0]})")
+            rec = AgroReport.model_validate_json(p.read_text(encoding="utf-8"), context={"text": text})
+            _, removed = clean_lists(rec.model_dump(), text)
+            if removed:   # the gold set must pass the same list checks as the models
+                bad += 1
+                print(f"  {p.name}: items not supported by the text: {', '.join(removed)}")
+            else:
+                print(f"  {p.name}: ok ({source_of(p.stem)[0]})")
         except ValidationError as e:
             bad += 1
             print(f"  {p.name}: INVALID\n" + "\n".join(f"      {x['loc']}: {x['msg']}" for x in e.errors()))

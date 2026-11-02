@@ -37,7 +37,8 @@
 | └ `production_mt` | float / null | national production forecast, million tonnes |
 
   Additional checks that a JSON schema cannot express: ranges of month, decade and BBCH;
-  `min_mm` ≤ `max_mm`; every crop appears once; values in mm and Mt must be written in the text.
+  `min_mm` ≤ `max_mm`; every crop appears once. Deterministic checks of every value against the
+  source text: section 3.
 - **Models:** `openai/gpt-4o-mini` via OpenRouter (strict structured output) and `qwen2.5:3b` locally
   via Ollama (JSON schema in `format`), both behind the common `Provider` interface; as a third,
   cheaper cloud model, `google/gemini-2.5-flash-lite` through the same OpenRouter interface.
@@ -46,34 +47,42 @@
 
 ## 2. Comparison: model × prompt version × sampling
 
-| Model | Prompt | T | top_p | Valid % | Fixed | Failed | Field acc % | Hydromet % | JRC % | Set F1 % | Halluc. | p50, s | p95, s | $ / 1000 docs |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| gpt-4o-mini | v1 | 0.0 | 1.0 | 92.7 | 11 | 3 | 62.9 | 60.7 | 66.1 | 42.3 | 28 | 5.9 | 11.6 | 0.91 |
-| gpt-4o-mini | v1 | 0.7 | 0.9 | 90.2 | 11 | 4 | 65.0 | 64.3 | 66.1 | 45.2 | 27 | 6.1 | 11.6 | 0.93 |
-| gpt-4o-mini | v2 | 0.0 | 1.0 | 95.1 | 3 | 2 | 74.3 | 75.0 | 73.2 | 53.5 | 14 | 2.9 | 6.5 | 0.84 |
-| qwen2.5:3b | v1 | 0.0 | 1.0 | 36.6 | 9 | 26 | 20.0 | 26.2 | 10.7 | 13.9 | 18 | 259.0 | 404.2 | 0 |
-| qwen2.5:3b | v2 | 0.0 | 1.0 | 92.7 | 22 | 3 | 48.6 | 57.1 | 35.7 | 24.1 | 29 | 179.3 | 410.0 | 0 |
-| qwen2.5:3b | v2 | 0.7 | 0.9 | 85.4 | 19 | 6 | 45.7 | 46.4 | 44.6 | 19.7 | 35 | 153.4 | 348.4 | 0 |
-| **gemini-2.5-flash-lite** | **v2** | **0.0** | **1.0** | **100.0** | **6** | **0** | **74.3** | **73.8** | **75.0** | **63.7** | **18** | **1.4** | **2.7** | **0.58** |
+All runs with the deterministic fact checks of section 3 (both stages).
+
+| Model | Prompt | T | top_p | Valid % | Fixed | Failed | Field acc % | Hydromet % | JRC % | Set F1 % | Halluc. | Removed | p50, s | p95, s | $ / 1000 docs |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| gpt-4o-mini | v1 | 0.0 | 1.0 | 82.9 | 10 | 7 | 67.9 | 58.3 | 82.1 | 61.2 | 10 | 353 | 6.7 | 11.9 | 0.96 |
+| gpt-4o-mini | v1 | 0.7 | 0.9 | 85.4 | 12 | 6 | 67.9 | 58.3 | 82.1 | 57.6 | 10 | 316 | 6.5 | 13.9 | 0.98 |
+| **gpt-4o-mini** | **v2** | **0.0** | **1.0** | **95.1** | **6** | **2** | **80.7** | **75.0** | **89.3** | **66.7** | **3** | **195** | **3.6** | **7.7** | **0.90** |
+| qwen2.5:3b | v1 | 0.0 | 1.0 | 26.8 | 7 | 30 | 31.4 | 39.3 | 19.6 | 33.3 | 3 | 396 | 259.0 | 404.2 | 0 |
+| qwen2.5:3b | v2 | 0.0 | 1.0 | 92.7 | 23 | 3 | 65.7 | 71.4 | 57.1 | 48.4 | 9 | 661 | 149.7 | 345.4 | 0 |
+| qwen2.5:3b | v2 | 0.7 | 0.9 | 70.7 | 15 | 12 | 57.1 | 46.4 | 73.2 | 38.5 | 10 | 412 | 153.4 | 348.4 | 0 |
+| gemini-2.5-flash-lite | v2 | 0.0 | 1.0 | 97.6 | 12 | 1 | 73.6 | 65.5 | 85.7 | 77.8 | 8 | 244 | 1.5 | 3.4 | 0.68 |
+
+The cloud runs and qwen2.5:3b v2 T=0 were run again with the stage 1 checks (each answer had one
+correction attempt); the stage 2 rules were then applied to these answers with `python main.py
+revalidate`. qwen2.5:3b v1 T=0 and v2 T=0.7 (~2–3 h each) were not run again: their saved answers were
+re-checked with `revalidate` without calling the model, where an answer that fails a strict check gets
+no new correction attempt, so their valid % and accuracy are a lower bound.
 
 **Accuracy per field, %** (golden set, 10 texts):
 
 | Field | gpt-4o-mini v1 T=0 | gpt-4o-mini v1 T=0.7 | gpt-4o-mini v2 T=0 | qwen2.5:3b v1 T=0 | qwen2.5:3b v2 T=0 | qwen2.5:3b v2 T=0.7 | gemini-2.5-flash-lite v2 T=0 |
 |---|---|---|---|---|---|---|---|
-| year | 100 | 100 | 90 | 50 | 80 | 80 | 100 |
-| month | 90 | 90 | 100 | 30 | 70 | 80 | 100 |
-| decade | 90 | 90 | 100 | 50 | 90 | 90 | 100 |
-| moisture_status | 50 | 50 | 50 | 0 | 30 | 30 | 50 |
-| moisture_layer | 70 | 70 | 90 | 30 | 40 | 20 | 90 |
-| min_mm | 90 | 100 | 100 | 20 | 70 | 70 | 90 |
-| max_mm | 90 | 90 | 80 | 30 | 70 | 70 | 100 |
-| deficit_oblasts | 40 | 40 | 60 | 10 | 40 | 20 | 60 |
-| crops | 0 | 0 | 10 | 0 | 10 | 0 | 10 |
-| crop_condition | 0 | 10 | 70 | 0 | 10 | 20 | 60 |
-| crop_bbch | 70 | 70 | 80 | 10 | 10 | 10 | 60 |
-| hazards | 40 | 40 | 40 | 0 | 30 | 20 | 40 |
-| yield_vs_avg | 50 | 60 | 70 | 0 | 40 | 40 | 80 |
-| yield_mt | 100 | 100 | 100 | 50 | 90 | 90 | 100 |
+| year | 90 | 90 | 100 | 50 | 90 | 80 | 90 |
+| month | 80 | 80 | 100 | 30 | 70 | 70 | 90 |
+| decade | 90 | 90 | 100 | 50 | 90 | 80 | 90 |
+| moisture_status | 50 | 50 | 50 | 0 | 40 | 50 | 40 |
+| moisture_layer | 80 | 80 | 90 | 40 | 80 | 70 | 90 |
+| min_mm | 80 | 80 | 90 | 20 | 70 | 70 | 90 |
+| max_mm | 80 | 80 | 80 | 30 | 70 | 70 | 90 |
+| deficit_oblasts | 80 | 80 | 80 | 30 | 80 | 70 | 70 |
+| crops | 40 | 40 | 70 | 40 | 40 | 20 | 40 |
+| crop_condition | 50 | 50 | 90 | 40 | 70 | 40 | 80 |
+| crop_bbch | 60 | 60 | 70 | 40 | 40 | 30 | 50 |
+| hazards | 40 | 40 | 40 | 0 | 50 | 30 | 50 |
+| yield_vs_avg | 40 | 40 | 70 | 20 | 40 | 40 | 70 |
+| yield_mt | 90 | 90 | 100 | 50 | 90 | 80 | 90 |
 
 `crop_condition`, `crop_bbch`, `yield_vs_avg` and `yield_mt` are "crop → value" pairs from `crops` and
 `yield_outlook`, compared as sets. Errors per text and field: `results/errors/`.
@@ -86,27 +95,109 @@ How the metrics are computed:
 - **Set F1**: partial credit for list fields (oblasts, crops, hazards, outlooks);
 - **Hallucinations**: the gold field is empty (null / [] / not_stated) but the model filled it
   (an invented crop counts in `crops`, `crop_condition` and `crop_bbch`);
+- **Removed**: values removed or reset by the soft checks of section 3, on all 41 texts. An extra
+  oblast or hazard in a list whose gold value is not empty is not a "hallucination" by the definition
+  above (it lowers field accuracy and set F1 instead); Removed shows how many such items the checks drop;
 - **Latency**: time per text including the correction attempt; **cost**: tokens × OpenRouter price
   ($0.15 / $0.60 per 1M tokens), local model = 0 (hardware and electricity not included).
 
 Key findings:
-- **Prompt v2 beats v1 for both models:** gpt-4o-mini 62.9 → 74.3 %, hallucinations 28 → 14,
-  corrections 11 → 3 (hence also faster: p50 5.9 → 2.9 s); qwen2.5:3b 20.0 → 48.6 %, valid answers
-  36.6 → 92.7 %. The largest gains are in fields that v2 defines: `crop_condition` 0 → 70 %,
-  `deficit_oblasts` 40 → 60 %, `moisture_layer` 70 → 90 % (gpt-4o-mini).
-- **Temperature:** for gpt-4o-mini T=0.7 gave +2 pp accuracy but more failures (4 vs 3), within the
-  noise on 10 texts. For qwen2.5:3b T=0.7 is worse: valid 85.4 vs 92.7 %, accuracy 45.7 vs 48.6 %,
-  hallucinations 35 vs 29. Conclusion for both models: T=0.
-- **The cloud models are much more accurate and 60–130 times faster** than the local one
-  (1.4–2.9 s vs ~3 min per text).
-- **Third model:** gemini-2.5-flash-lite with v2 has the same field accuracy as gpt-4o-mini (74.3 %),
-  no invalid answers (0 failed vs 2), higher set F1 (63.7 vs 53.5 %), is twice as fast (p50 1.4 vs
-  2.9 s) and 30 % cheaper ($0.58 vs $0.84 per 1000 docs), but has more hallucinations (18 vs 14):
-  it expands "southern and eastern oblasts" into a list of oblasts and adds crops from generic phrases.
-- The weakest fields in all runs are `crops` (0–10 %), `moisture_status` (30–50 %) and `hazards`
-  (30–40 %): exactly the fields where the text has to be interpreted rather than a number copied.
+- **Prompt v2 beats v1 for both models:** gpt-4o-mini 67.9 → 80.7 %, hallucinations 10 → 3, valid
+  82.9 → 95.1 %, corrections 10 → 6 (hence also faster: p50 6.7 → 3.6 s); qwen2.5:3b 31.4 → 65.7 %,
+  valid 26.8 → 92.7 %. The largest gains are in fields that v2 defines: `crop_condition` 50 → 90 %,
+  `crops` 40 → 70 %, `yield_vs_avg` 40 → 70 % (gpt-4o-mini).
+- **Temperature:** for gpt-4o-mini T=0.7 gave the same accuracy (67.9 %) and a lower set F1; for
+  qwen2.5:3b T=0.7 is worse: valid 70.7 vs 92.7 %, accuracy 57.1 vs 65.7 %. Conclusion for both: T=0.
+- **The cloud models are much more accurate and 40–100 times faster** than the local one
+  (1.5–3.6 s vs ~2.5 min per text).
+- **Third model:** gemini-2.5-flash-lite with v2 has the most valid answers (97.6 %), the best set F1
+  (77.8 %), is the fastest (p50 1.5 s) and cheapest ($0.68 per 1000 docs), but is less accurate than
+  gpt-4o-mini v2 (73.6 vs 80.7 %) and has more hallucinations (8 vs 3). Part of the gap is one golden
+  text marked `failed` (section 3).
+- The weakest fields in all runs are `moisture_status` (40–50 %) and `hazards` (40–50 %): the text has
+  to be interpreted, and the keyword checks cannot tell which interpretation is right.
 
-## 3. Error analysis
+## 3. Deterministic fact checks
+
+Added after the review of the first version. There, a number counted as found if it occurred
+anywhere in the text, and oblasts, crops and hazards were not checked against the text at all, so
+the most frequent hallucinations of section 4 (oblasts, crops and hazards that the bulletin does not
+mention) passed as valid answers. Every answer is now checked against its source text in code
+(`agro_extract/checks.py`), in two ways:
+
+**A. Strict, for numbers** (the answer is invalid → one correction attempt with the list of errors →
+`failed`):
+- `min_mm` / `max_mm` must be written in the text followed by "мм / mm" within 30 characters
+  ("11-20 мм", "від 173 до 282 мм"); a number from a date ("20 липня") or a percentage does not count.
+  Numbers split by PDF extraction ("8 0 мм") are joined first;
+- `production_mt` must be followed by "Mt / млн т";
+- if mm values are given, the soil layer cannot be `not_stated`.
+
+**B. Soft, for lists and single facts** (the value is removed or reset to `null` / `not_stated`, logged
+in the result row as `removed`; the answer stays valid, so one wrong detail does not discard the
+correct fields):
+- every oblast in `deficit_oblasts`, every crop in `crops` / `yield_outlook` and every hazard must be
+  supported by a keyword in the text (Ukrainian and English stems for all 25 oblasts, 8 crops,
+  7 hazards; names split by PDF extraction, such as "Кіровогр адської", are found too); duplicates are
+  removed;
+- year, month name and decade ("третю декаду") must be written in the text;
+- soil layer: "орний шар / 0-20 см / arable" for `0-20cm`, "метровий шар / 0-100 см / metre" for
+  `0-100cm`; moisture status: words of that class ("недостатні / посуха / dry", "оптимальні / достатні",
+  "перезволоження / excess"), `mixed` needs words of two classes;
+- crop condition, BBCH stage (words of the growth phase: "кущіння", "цвітіння", "heading", ...) and
+  the comparison with the 5-year average need their keywords in the text.
+
+The checks were added in two stages:
+
+- **Stage 1** — checks A and B above, with keywords looked up anywhere in the text. The cloud models
+  and qwen2.5:3b v2 T=0 were run again with them.
+- **Stage 2** — after analysing the hallucinations left after stage 1: almost all of them were crops
+  that are mentioned in the text, but whose condition came from a general phrase or from moisture
+  ("задовільне" about the soil). Two more soft rules:
+  - a crop condition and a BBCH stage must stand **within 250 characters of the crop name**, not
+    anywhere in the text;
+  - a crop with neither a stage nor a condition, and a yield entry with neither a comparison nor a
+    production figure, carry no information and are removed (the v2 prompt rule, now checked in code).
+
+  Stage 2 rules are soft, so they were applied to the saved answers of stage 1
+  (`python main.py revalidate`): the model answers are the same, only the checks changed.
+  The 250-character window is the smallest that keeps every golden value (100–150 characters would
+  reset 2 correct conditions), so it was chosen on the golden set itself.
+
+The golden set passes all checks (`make check-golden`: 10/10, no golden value is removed or reset),
+so the checks do not remove correct answers on the labelled texts. 28 unit tests cover them
+(`make test`).
+
+**Before the checks → stage 1 → stage 2** (golden set; runs of section 2):
+
+| Run | Field acc % | Hallucinations | Valid % |
+|---|---|---|---|
+| gpt-4o-mini v1 T=0 | 62.9 → 63.6 → 67.9 | 28 → 16 → 10 | 92.7 → 82.9 → 82.9 |
+| gpt-4o-mini v1 T=0.7 | 65.0 → 63.6 → 67.9 | 27 → 16 → 10 | 90.2 → 85.4 → 85.4 |
+| **gpt-4o-mini v2 T=0** | **74.3 → 74.3 → 80.7** | **14 → 11 → 3** | **95.1 → 95.1 → 95.1** |
+| qwen2.5:3b v2 T=0 | 48.6 → 62.1 → 65.7 | 29 → 14 → 9 | 92.7 → 92.7 → 92.7 |
+| gemini-2.5-flash-lite v2 T=0 | 74.3 → 68.6 → 73.6 | 18 → 15 → 8 | 100 → 97.6 → 97.6 |
+
+- Hallucinations fell in every run, by 56–79 % in total (gpt-4o-mini v2: 14 → 3); field accuracy
+  grew in every run except gemini (see below): gpt-4o-mini v2 74.3 → 80.7 %, qwen2.5:3b v2
+  48.6 → 65.7 %. Stage 2 gave the largest gain on crops: `crops` 10 → 70 %, `crop_condition`
+  60 → 90 % (gpt-4o-mini v2).
+- Valid % fell where the strict check found invented numbers that used to pass: such an answer is
+  now `failed` and all its 14 fields count as wrong. Example: gemini-2.5-flash-lite,
+  `uk_hydromet_2023-03-d3__moisture`: the text gives "11-20 мм", gold `min_mm: 11`; the model wrote
+  `min_mm: 0`, got the error "min_mm=0 is not written in the text as a value in mm", repeated 0 after
+  the correction attempt, and the answer was rejected. Before the checks this answer was "valid" with
+  one wrong field; this is why gemini's accuracy fell from 74.3 to 68.6 % at stage 1 (73.6 % after
+  stage 2).
+- Limitation: a keyword check proves that a word is in the text (stage 2: near the crop), not that
+  it refers to this value. "Removed" also counts values on the 31 texts without a golden answer,
+  where a reset cannot be checked; it grew at stage 2 (gpt-4o-mini v2 76 → 195), mostly crops without
+  a stage or condition.
+
+## 4. Error analysis
+
+The examples below are from the runs before the fact checks; "After the checks" says what section 3
+does with each error now.
 
 **1. Crops invented from moisture text or from generic phrases** (all runs, 4–8 of 10 texts).
 `uk_hydromet_2023-07-d3__moisture`: the text only describes moisture reserves "під кукурудзою"
@@ -116,6 +207,9 @@ it to the **crop condition**. v2 removed most of these conditions (`crop_conditi
 are still added (`crops` 0 → 10 %), as with "winter crops" phrases in JRC texts. Why: the model reads
 `crops` as "which crops are mentioned" rather than "which crops are described". Fix: a prompt rule
 "moisture under a crop is not the crop condition", or a separate `moisture_by_crop` field in the schema.
+*After the checks:* mostly solved at stage 2. The condition word must stand near the crop name, and
+crops without a stage or condition are removed (gpt-4o-mini v2: `crops` 10 → 70 %, `crop_condition`
+60 → 90 %).
 
 **2. All 25 oblasts in `deficit_oblasts`.** `en_jrc_2024-06` (gpt-4o-mini v1): "a significant rain
 deficit impacted winter crops ... across the country" → the model lists every oblast from cherkasy to
@@ -124,12 +218,16 @@ zhytomyr, although none is named; gold `[]`. qwen2.5:3b repeats this in 3–4 te
 whole country" is expanded into the full enum. The v2 rule "do not convert macro-regions into oblasts"
 removed this for gpt-4o-mini (0 cases) but not for the small local model; gemini-2.5-flash-lite does a
 milder version of it ("southern and eastern oblasts" in `en_jrcnews_2025-09` → 8 oblasts).
+*After the checks:* solved. Every oblast that is not named in the text is removed; this is the largest
+group of removed values (`deficit_oblasts` accuracy of qwen2.5:3b v2 40 → 80 %).
 
 **3. Partial reading: only the first soil layer.** `uk_hydromet_2023-03-d3__moisture`: the text first
 gives the arable layer (22–50 mm), then the metre layer (121–170 mm). All models return
 `layer: 0-20cm` and `max_mm: 50` instead of `both` and 170. Why: the model looks for "the largest value"
 in the first paragraph where "mm" appears next to a layer. Fix: split `soil_moisture` into two objects
 (arable and metre layer), which is also more precise for comparison with ERA5-Land.
+*After the checks:* not caught: 50 mm and the arable layer are written in the text, so the answer is
+consistent with it, only incomplete. A check cannot find a value the model did not return.
 
 **4. An invented year that is not in the text.** `en_jrcnews_2022-06`: the news text has no year
 (gold `null`). gpt-4o-mini v2 writes 2023, qwen2.5:3b writes 2021, although v2 explicitly says "never
@@ -137,6 +235,8 @@ guess it". With v1 gpt-4o-mini returned `null` here: the longer v2 prompt with d
 → 2025") pushes the model to fill the field. So `year` is the only field where gpt-4o-mini got worse with
 v2 (100 → 90 %). Fix: remove concrete years from the examples, or take the year from metadata
 (`data/sources.csv`) instead of the text.
+*After the checks:* solved. A year that is not written in the text is reset to `null`
+(gpt-4o-mini v2 `year` 90 → 100 %).
 
 **5. The local model "switches on the whole enum" and invents numbers.** qwen2.5:3b v2: in
 `en_jrcnews_2022-06` it returns all 7 hazards (gold: only `hostilities`) and the same BBCH stage 6 for
@@ -146,18 +246,36 @@ is marked `failed`. With v1 there were 26 such failures out of 41; all 5 failure
 invented moisture values in mm (25–30, 150–250, etc.) that are not in the text: without rules for
 `min_mm/max_mm` the model fills them with "typical" numbers. Why: a 3B model handles the long context
 (schema + rules + text, ~4–5k tokens) poorly and fills fields "by template".
+*After the checks:* invented mm values are still rejected (now also mm taken from dates or percentages),
+and hazards without a keyword in the text are removed (`hazards` of qwen2.5:3b v2 30 → 50 %).
+
+**Remaining hallucinations after the checks.** gpt-4o-mini v2 has 3 left (gemini-2.5-flash-lite v2: 8),
+all of two kinds:
+- *Crops from a general description.* `uk_hydromet_2023-02-d2` describes overwintering of winter crops;
+  gold `crops: []`. gpt-4o-mini adds winter wheat, barley and rapeseed with BBCH stage 1 (gemini: 2,
+  plus `frost`, although the text reports no frost damage). The crop names and the phase words are in
+  the text and near each other, so the checks keep them.
+- *Moisture status from a text about crop growth.* `uk_hydromet_2023-04-d3__growth` mentions moisture
+  only in passing (gold `not_stated` by the v2 rule); the model returns `mixed` (gemini: `excess`).
+
+Both are errors of interpretation: the words are in the text, but the model reads them wrongly. A
+keyword check cannot tell these cases apart, and rules written for these two phrases would be fitted
+to the 10 golden texts, so they were not added. The other remaining errors are wrong or missing values
+rather than invented ones: `moisture_status` (`mixed` instead of `adequate`), a missing `hostilities`
+or `waterlogging`, and the first soil layer only (error 3).
 
 Separately, two cases are ambiguous for the golden set as well: `en_jrcnews_2022-06` ("Close to the
 5-year average, but below the historical trend": gold `near`, all models `below`) and `max_mm` in
 `uk_hydromet_2023-07-d3` (typo "200 мл" in the text). These cases should be covered by prompt rules or
 excluded from the golden set.
 
-## 4. Prompt v3 and the regression check
+## 5. Prompt v3 and the regression check
 
 After the error analysis a prompt v3 was written to fix errors 1–4 (rules for the year, both soil
 layers, moisture "under a crop", oblasts, hazards, comparison with the 5-year average; details in
 `prompts/CHANGELOG.md`). Before adding it to the experiment matrix it was checked against v2 on the
-golden set (`make regress MODEL=gpt4o_mini PROMPT=v3 BASELINE=v2`):
+golden set (`make regress MODEL=gpt4o_mini PROMPT=v3 BASELINE=v2`; run before the fact checks of
+section 3):
 
 | gpt-4o-mini, T=0 | v2 | v3 |
 |---|---|---|
@@ -174,7 +292,7 @@ The check failed (−2.9 pp overall, −30 pp on `crop_condition`), so **v3 was 
 The v3 rules were derived from errors on the same 10 golden texts; further tuning on them would
 overfit, so a separate test set is needed before the next prompt version.
 
-## 5. Additional (stretch) features
+## 6. Additional (stretch) features
 
 - **Third model:** gemini-2.5-flash-lite (cheap cloud model) through the same `Provider` interface,
   see section 2.
@@ -182,37 +300,42 @@ overfit, so a separate test set is needed before the next prompt version.
   the golden texts, compares overall and per-field accuracy, valid answers and hallucinations with the
   baseline prompt, writes `results/regression/<model>__<new>_vs_<baseline>.md` and exits with code 1
   if the new prompt is worse than the tolerance (2 pp overall, 10 pp per field), so it can be used as
-  a gate in a script or CI. It rejected v3 (section 4).
+  a gate in a script or CI. It rejected v3 (section 5).
 - **Response caching:** identical requests at T=0 (same model, prompt, text, schema and parameters)
   are replayed from `.cache/responses/` instead of being sent and paid for again; the original latency
   is stored with the answer, so cached runs keep honest latency numbers. Answers at T>0 are not cached
   so that their variance stays visible.
 
-## 6. Choice for production
+## 7. Choice for production
 
-**gemini-2.5-flash-lite + prompt v2 + T=0.** It has the same field accuracy as gpt-4o-mini (74.3 %),
-no invalid answers out of 41 (gpt-4o-mini: 2), the best set F1 (63.7 %), the lowest latency (p50
-1.4 s) and the lowest cost ($0.58 per 1000 documents, cents for a few dozen decadal bulletins per
-year). Its weak point is more hallucinations (18 vs 14), mainly oblasts expanded from macro-regions
-and crops added from generic phrases; the oblast part can be reduced by a post-check that every
-oblast name occurs in the text. qwen2.5:3b is free, but takes ~3 min per text and is much less
-accurate (48.6 %), so it is not suitable for production.
+**gpt-4o-mini + prompt v2 + T=0.** With the fact checks it has the highest field accuracy (80.7 %),
+the fewest hallucinations (3 on 140 golden fields), 95.1 % valid answers, p50 3.6 s and $0.90 per
+1000 documents (cents for a few dozen decadal bulletins per year).
 
-The stage 1 target from the project plan (field accuracy ≥ 80 %, valid answers ≥ 95 %) is partly met:
-100 % valid, 74.3 % accuracy. The gap comes from `crops`, `moisture_status` and `hazards`; prompt
-rules alone did not close it (v3, section 4), so the next step is a schema change (errors 1 and 3).
+Before the checks the choice was gemini-2.5-flash-lite (same accuracy, 100 % valid, cheaper and
+faster). The checks changed it: one of gemini's "valid" answers contained an invented number
+(section 3), and it keeps more hallucinations (8 vs 3) and lower accuracy (73.6 %). It remains the
+alternative if latency and cost matter more than accuracy: p50 1.5 s, $0.68 per 1000 documents,
+97.6 % valid. qwen2.5:3b is free, but takes ~2.5 min per text and is less accurate (65.7 %), so it
+is not suitable for production.
 
-The decision would change if: (1) a wrong value is more costly than a missing one: then gpt-4o-mini
-+ v2, which has the fewest hallucinations (14); (2) the data may not be sent to an external provider
-(for example, internal agronomist reports): then a local model, but a larger one (qwen2.5:7b or
-above) on a GPU, measured again; (3) ≥ 90 % accuracy is needed for `crops`, `moisture_status` and
-`hazards`: first change the schema, then compare a stronger cloud model; (4) the volume grows to
-millions of documents: recalculate the cost and compare with an own GPU server.
+The stage 1 target from the project plan (field accuracy ≥ 80 %, valid answers ≥ 95 %) is met:
+80.7 % accuracy, 95.1 % valid. The weakest fields are still `moisture_status` and `hazards` (40–50 %);
+prompt rules alone did not improve them (v3, section 5).
 
-## 7. Limitations
+The decision would change if: (1) latency or cost is the priority: gemini-2.5-flash-lite + v2;
+(2) the data may not be sent to an external provider (for example, internal agronomist reports): a
+local model, but a larger one (qwen2.5:7b or above) on a GPU, measured again; (3) ≥ 90 % accuracy is
+needed for `moisture_status` and `hazards`: more precise labelling rules checked on a separate test
+set, then a stronger cloud model; (4) the volume grows to millions of documents: recalculate the cost and
+compare with an own GPU server.
+
+## 8. Limitations
 
 - The golden set is small (10 texts, 4 in English) and every configuration was run once: differences
   of 2–3 pp may be noise.
+- The keyword lists of the soft checks were written for these two sources (Hydromet, JRC); a new
+  source with other wording may need new keywords, otherwise correct values would be removed.
 - The T=0 / T=0.7 comparison for qwen2.5:3b was done with prompt v2 as the better version;
   gemini-2.5-flash-lite was run with v2 at T=0 only.
 - The English JRC texts are mostly from June and September; one Hydromet bulletin (September 2023) is

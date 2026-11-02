@@ -31,7 +31,8 @@ models or a key: `make metrics`.
 | `make smoke MODEL=qwen3b ID=uk_hydromet_2023-07-d1__moisture` | one text with one model |
 | `python main.py run --model gpt4o_mini --prompt v2 --sampling t0` | one experiment |
 | `make regress MODEL=gpt4o_mini PROMPT=v3 BASELINE=v2` | new prompt vs baseline on the golden set (exit code 1 if worse) |
-| `make check-golden` | validate the golden set against the schema |
+| `make revalidate` | re-check the saved answers with the current checks, then metrics (no model calls) |
+| `make check-golden` | validate the golden set with the same checks as the model answers |
 | `make test` | unit tests, no network |
 | `make fetch` / `make texts` | download the documents / cut them into texts |
 
@@ -40,14 +41,35 @@ models or a key: `make metrics`.
 ```
 data/texts/<id>.txt ── prompts/<version>.txt (+ JSON schema) ──> model ──> JSON
                                                                    │
-        agro_extract/schema.py ── Pydantic + fact checks ──────────┤
+   schema.py + checks.py: types, enums, mm / Mt next to units ─────────┤  strict
         invalid answer → one correction attempt → ok / fixed / failed
+                                                                   │
+   checks.clean_lists: values not supported by the text ──────────┤  soft: removed / reset + logged
                                                                    ▼
         results/<model>__<prompt>__<sampling>.jsonl ──> metrics.py against data/golden/
 ```
 
 - `agro_extract/schema.py`: the `AgroReport` schema (single source of truth for fields, types and enums)
-  and checks a JSON schema cannot express: ranges, min ≤ max, values in mm and Mt must appear in the text.
+  and checks a JSON schema cannot express: ranges, min ≤ max, every crop once.
+- `agro_extract/checks.py`: deterministic checks against the source text.
+  **Strict** (the answer is invalid → one correction attempt → `failed`): `min_mm` / `max_mm` must be
+  written in the text followed by "мм / mm" (not any number anywhere, e.g. a date or a %),
+  `production_mt` followed by "Mt / млн т"; mm values always need a soil layer.
+  **Soft** (the value is removed or reset and logged in `removed`; the answer stays valid, so one wrong
+  detail does not throw away the correct fields):
+  - every oblast in `deficit_oblasts`, every crop in `crops` / `yield_outlook` and every hazard must be
+    supported by a keyword in the text (Ukrainian and English stems; words split by PDF extraction are
+    found too), duplicates are removed;
+  - year, month name and decade ("першу / другу / третю декаду") must be written in the text → else null;
+  - soil layer: "орний шар / 0-20 см / arable" for `0-20cm`, "метровий шар / 0-100 см / metre" for
+    `0-100cm` → else the layer the text does mention, or `not_stated`;
+  - moisture status: words of that class ("недостатні / посуха / dry", "оптимальні / достатні / adequate",
+    "перезволоження / excess"), `mixed` needs two classes → else `not_stated`;
+  - crop condition and BBCH stage (keywords of the phase: "кущіння", "цвітіння", "воскова стиглість",
+    "heading", ...) must stand within 250 characters of the crop name → else `not_stated` / null;
+    `vs_5yr_average` needs "5-year average", "середн..." → else `not_stated`;
+  - a crop with neither a stage nor a condition and a yield entry with neither a comparison nor a
+    production figure are removed (they carry no information).
 - `agro_extract/providers.py`: the common interface `Provider.complete()` and two implementations:
   OpenRouter with strict structured output and Ollama (native API with the JSON schema in `format` and
   `num_ctx`). Both have a timeout and retries with backoff on network errors, 429 and 5xx.
@@ -55,9 +77,12 @@ data/texts/<id>.txt ── prompts/<version>.txt (+ JSON schema) ──> model �
   (no second payment; the original latency is kept).
 - `agro_extract/run.py`: the run loop, validation, one correction attempt, and a log line for every
   result: model, prompt version and hash, temperature, top_p, status, time, tokens, cost, raw and parsed
-  answer. An interrupted run continues where it stopped.
+  answer, removed or reset values. An interrupted run continues where it stopped.
+- `agro_extract/revalidate.py`: re-applies the current checks to the answers saved in `results/`
+  (no model calls; the previous result is kept in `status_before` / `parsed_before`).
 - `agro_extract/metrics.py`: field accuracy on the golden set (overall, Hydromet, JRC), set F1,
-  hallucinations, valid %, latency p50/p95, cost per 1000 documents; errors per field in `results/errors/`.
+  hallucinations, removed or reset values, valid %, latency p50/p95, cost per 1000 documents; errors per
+  field in `results/errors/`.
 - `agro_extract/regress.py`: regression check of a new prompt against a baseline on the golden set,
   report in `results/regression/`.
 - `config.toml`: models (prices, timeout, retries), sampling configurations, experiment matrix.
@@ -72,19 +97,15 @@ data/texts/<id>.txt ── prompts/<version>.txt (+ JSON schema) ──> model �
 - `data/golden/`: 10 manually labelled answers (golden set), list in `data/golden_ids.txt`.
 - `data/sources.csv`: URL and download date of every document.
 - `data/raw/` (not in git): original PDF/HTML, reproduced with `make fetch && make texts`.
-- `scripts/fetch_sources.py` (`make fetch`): downloads the Hydromet bulletins and the JRC bulletins and
-  news (PDF/HTML), extracts their full text into `data/raw/` and writes `data/sources.csv`.
-- `scripts/build_texts.py` (`make texts`): cuts the relevant sections from the full texts (soil moisture,
-  crop growth; for JRC the first pages or the article without the site footer) into `data/texts/`.
-  Only runs of spaces are cleaned; broken words, typos and table fragments are kept on purpose.
 
 The texts contain no personal data: they are public bulletins of Ukrainian and European institutions.
 
 ## Golden set
 
 Every file `data/golden/<text_id>.json` is the correct `AgroReport` for `data/texts/<text_id>.txt`.
-`make check-golden` validates each file against the schema and checks that every mm / Mt value is
-written in its text. Labelling rules for ambiguous cases are described in `prompts/CHANGELOG.md` (v2).
+`make check-golden` validates each file with the same strict and soft checks as the model answers
+and fails if any golden value would be removed or reset (all 10 files pass: the checks never remove a
+correct value). Labelling rules for ambiguous cases are described in `prompts/CHANGELOG.md` (v2).
 
 ## Troubleshooting
 

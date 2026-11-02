@@ -7,11 +7,11 @@ A source fills only its part; everything the text does not state is null / [] / 
 An empty value is a correct answer and is checked: a filled value where the gold set is empty
 counts as a hallucination.
 
-Constraints that the JSON schema cannot express (ranges, min <= max, numbers that must appear
-in the text) live in validators, so the schema stays compatible with strict structured output.
+Constraints that the JSON schema cannot express (ranges, min <= max, numbers and dates that must
+be written in the text) live in validators, so the schema stays compatible with strict structured
+output. List items not supported by the text are removed after validation (checks.clean_lists).
 """
 
-import re
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, model_validator
@@ -92,23 +92,13 @@ class AgroReport(Strict):
         if len({c.crop for c in self.crops}) != len(self.crops):
             problems.append("crops: every crop must appear once")
 
-        # With the source text in the context, numbers must be written in the text.
+        # With the source text in the context: deterministic checks of numbers and dates
+        # (agro_extract/checks.py): mm and Mt values next to their unit, year / month / decade
+        # written in the text.
         text = (info.context or {}).get("text") if info else None
         if text:
-            # PDF extraction breaks numbers ("2 2 мм" = 22 мм), so digits split by a space count too
-            joined = re.sub(r"(?<=\d) (?=\d)", "", text)
-            numbers = set(re.findall(r"\d+(?:[.,]\d+)?", text)) | set(re.findall(r"\d+(?:[.,]\d+)?", joined))
-            numbers |= {n.replace(",", ".") for n in numbers}
-            for name in ("min_mm", "max_mm"):
-                value = getattr(sm, name)
-                if value is not None and str(value) not in numbers:
-                    problems.append(f"soil_moisture.{name}={value} is not written in the text")
-            for y in self.yield_outlook:
-                if y.production_mt is not None:
-                    v = y.production_mt
-                    candidates = {str(v), f"{v:g}", f"{v:.1f}", f"{v:.2f}"}
-                    if not candidates & numbers:
-                        problems.append(f"yield_outlook[{y.crop}].production_mt={v} is not written in the text")
+            from .checks import fact_problems
+            problems += fact_problems(self, text)
         if problems:
             raise ValueError("; ".join(problems))
         return self

@@ -1,6 +1,6 @@
 PY ?= python
 
-.PHONY: install run run-all metrics smoke regress test fetch texts check-golden
+.PHONY: install run run-all metrics smoke regress revalidate test fetch texts check-golden
 
 install:            ## install dependencies
 	$(PY) -m pip install -r requirements.txt
@@ -19,6 +19,10 @@ smoke:              ## one text through one model: make smoke MODEL=qwen3b ID=uk
 
 regress:            ## new prompt vs baseline on the golden set: make regress MODEL=gpt4o_mini PROMPT=v3 BASELINE=v2
 	$(PY) main.py regress --model $(MODEL) --prompt $(PROMPT) --baseline $(BASELINE)
+
+revalidate:         ## re-check saved answers with the current checks, then metrics (no model calls)
+	$(PY) main.py revalidate
+	$(PY) main.py metrics
 
 test:               ## unit tests, no network
 	$(PY) -m pytest -q

@@ -3,7 +3,8 @@
 results/<model>__<prompt>__<sampling>.jsonl, one JSON line per text:
   text_id, source, language, model_key, model, prompt_version, prompt_hash, temperature, top_p,
   status (ok / fixed / failed), attempts, seconds, input_tokens, output_tokens, cost_usd,
-  raw (first answer), raw_fixed (answer after the correction attempt), parsed, error, ts
+  raw (first answer), raw_fixed (answer after the correction attempt), parsed (after removing
+  unsupported values), removed (those values), error, ts
 A run writes to <name>.jsonl.partial first, so an interrupted run continues where it stopped.
 """
 
@@ -17,6 +18,7 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from .providers import CachedProvider, Completion, Provider, ProviderError, make_provider
+from .checks import clean_lists
 from .schema import AgroReport, json_schema
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -79,7 +81,13 @@ def build_messages(system: str, text: str) -> list[dict]:
 
 
 def validate(content: str, text: str) -> AgroReport:
+    """Schema + strict checks of numbers and dates (raises ValidationError)."""
     return AgroReport.model_validate_json(content, context={"text": text})
+
+
+def validate_and_clean(content: str, text: str) -> tuple[dict, list[str]]:
+    """Validate strictly, then remove or reset values the text does not support."""
+    return clean_lists(validate(content, text).model_dump(), text)
 
 
 def short_error(e: ValidationError) -> str:
@@ -96,7 +104,7 @@ def extract_one(provider: Provider, messages: list[dict], text: str, sampling: d
     schema = json_schema()
     res = {"status": "failed", "attempts": 0, "seconds": 0.0, "input_tokens": 0,
            "output_tokens": 0, "cost_usd": 0.0, "raw": None, "raw_fixed": None,
-           "parsed": None, "error": None, "cached": False}
+           "parsed": None, "removed": [], "error": None, "cached": False}
 
     def call(msgs) -> Completion:
         start = time.perf_counter()
@@ -122,7 +130,7 @@ def extract_one(provider: Provider, messages: list[dict], text: str, sampling: d
             res["error"] = f"answer cut at max_tokens={max_tokens}"
             return res
         try:
-            res["parsed"] = validate(first.content, text).model_dump()
+            res["parsed"], res["removed"] = validate_and_clean(first.content, text)
             res["status"] = "ok"
             return res
         except ValidationError as e:
@@ -135,7 +143,7 @@ def extract_one(provider: Provider, messages: list[dict], text: str, sampling: d
         second = call(repair)
         res["raw_fixed"] = second.content
         try:
-            res["parsed"] = validate(second.content, text).model_dump()
+            res["parsed"], res["removed"] = validate_and_clean(second.content, text)
             res["status"] = "fixed"
         except ValidationError as e:
             res["error"] = "invalid after correction:\n" + short_error(e)

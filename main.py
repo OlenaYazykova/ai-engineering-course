@@ -5,6 +5,7 @@
     python main.py smoke --model qwen3b --id uk_hydromet_2023-07-d1__moisture
     python main.py metrics               # tables from results/ against data/golden/
     python main.py regress --model gpt4o_mini --prompt v3 --baseline v2   # new prompt vs old on golden set
+    python main.py revalidate            # re-check saved answers with the current checks (no model calls)
     python main.py check-golden
 """
 
@@ -15,6 +16,7 @@ import sys
 from dotenv import load_dotenv
 
 from agro_extract import metrics
+from agro_extract import revalidate
 from agro_extract.regress import regress
 from agro_extract.providers import ProviderError
 from agro_extract.run import load_config, run_all, run_experiment
@@ -48,6 +50,7 @@ def main() -> None:
     g.add_argument("--sampling", default="t0")
     g.add_argument("--tolerance", type=float, default=2.0, help="allowed drop, pp (overall)")
     sub.add_parser("check-golden", help="validate data/golden/*.json")
+    sub.add_parser("revalidate", help="re-check saved answers with the current checks (no model calls)")
 
     args = p.parse_args()
     cmd = args.cmd or "all"
@@ -74,6 +77,8 @@ def main() -> None:
         sys.exit(0 if ok else 1)
     elif cmd == "check-golden":
         metrics.check_golden()
+    elif cmd == "revalidate":
+        revalidate.main()
 
 
 if __name__ == "__main__":
