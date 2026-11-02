@@ -1,0 +1,34 @@
+{
+  "year": 2022,
+  "month": 6,
+  "decade": null,
+  "soil_moisture": {
+    "status": "deficit",
+    "layer": "not_stated",
+    "min_mm": null,
+    "max_mm": null,
+    "deficit_oblasts": []
+  },
+  "crops": [],
+  "hazards": [
+    "drought",
+    "hostilities"
+  ],
+  "yield_outlook": [
+    {
+      "crop": "winter_wheat",
+      "vs_5yr_average": "not_stated",
+      "production_mt": 26.88
+    },
+    {
+      "crop": "winter_barley",
+      "vs_5yr_average": "not_stated",
+      "production_mt": 6.66
+    },
+    {
+      "crop": "winter_rapeseed",
+      "vs_5yr_average": "not_stated",
+      "production_mt": 3.75
+    }
+  ]
+}

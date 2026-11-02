@@ -1,0 +1,43 @@
+{
+  "year": 2022,
+  "month": 8,
+  "decade": 3,
+  "soil_moisture": {
+    "status": "mixed",
+    "layer": "0-20cm",
+    "min_mm": 10,
+    "max_mm": 31,
+    "deficit_oblasts": []
+  },
+  "crops": [
+    {
+      "crop": "winter_rapeseed",
+      "bbch_stage": 1,
+      "condition": "good"
+    },
+    {
+      "crop": "maize",
+      "bbch_stage": 9,
+      "condition": "not_stated"
+    },
+    {
+      "crop": "soybean",
+      "bbch_stage": 8,
+      "condition": "not_stated"
+    },
+    {
+      "crop": "sugar_beet",
+      "bbch_stage": 4,
+      "condition": "good"
+    },
+    {
+      "crop": "sunflower",
+      "bbch_stage": 9,
+      "condition": "not_stated"
+    }
+  ],
+  "hazards": [
+    "drought"
+  ],
+  "yield_outlook": []
+}

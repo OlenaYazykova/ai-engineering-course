@@ -1,0 +1,30 @@
+{
+  "year": 2021,
+  "month": 8,
+  "decade": 1,
+  "soil_moisture": {
+    "status": "mixed",
+    "layer": "0-100cm",
+    "min_mm": 14,
+    "max_mm": 193,
+    "deficit_oblasts": [
+      "poltava",
+      "kharkiv",
+      "luhansk",
+      "kirovohrad",
+      "chernihiv",
+      "kyiv",
+      "zaporizhzhia",
+      "sumy",
+      "kherson",
+      "donetsk",
+      "vinnytsia",
+      "cherkasy"
+    ]
+  },
+  "crops": [],
+  "hazards": [
+    "drought"
+  ],
+  "yield_outlook": []
+}

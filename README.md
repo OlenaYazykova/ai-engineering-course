@@ -30,9 +30,10 @@ models or a key: `make metrics`.
 | `make metrics` | metrics tables and error lists only |
 | `make smoke MODEL=qwen3b ID=uk_hydromet_2023-07-d1__moisture` | one text with one model |
 | `python main.py run --model gpt4o_mini --prompt v2 --sampling t0` | one experiment |
-| `make regress MODEL=gpt4o_mini PROMPT=v3 BASELINE=v2` | new prompt vs baseline on the golden set (exit code 1 if worse) |
+| `make regress MODEL=gpt4o_mini PROMPT=v3 BASELINE=v2` | new prompt vs baseline on the dev golden set (exit code 1 if worse) |
 | `make revalidate` | re-check the saved answers with the current checks, then metrics (no model calls) |
-| `make check-golden` | validate the golden set with the same checks as the model answers |
+| `make before-checks` | accuracy of the answers before the fact checks (git tag `hw1-initial`) on dev and test, no model calls |
+| `make check-golden` | validate the dev and test golden sets with the same checks as the model answers |
 | `make test` | unit tests, no network |
 | `make fetch` / `make texts` | download the documents / cut them into texts |
 
@@ -46,7 +47,7 @@ data/texts/<id>.txt ── prompts/<version>.txt (+ JSON schema) ──> model �
                                                                    │
    checks.clean_lists: values not supported by the text ──────────┤  soft: removed / reset + logged
                                                                    ▼
-        results/<model>__<prompt>__<sampling>.jsonl ──> metrics.py against data/golden/
+        results/<model>__<prompt>__<sampling>.jsonl ──> metrics.py against data/golden/ + data/golden_test/
 ```
 
 - `agro_extract/schema.py`: the `AgroReport` schema (single source of truth for fields, types and enums)
@@ -80,11 +81,14 @@ data/texts/<id>.txt ── prompts/<version>.txt (+ JSON schema) ──> model �
   answer, removed or reset values. An interrupted run continues where it stopped.
 - `agro_extract/revalidate.py`: re-applies the current checks to the answers saved in `results/`
   (no model calls; the previous result is kept in `status_before` / `parsed_before`).
-- `agro_extract/metrics.py`: field accuracy on the golden set (overall, Hydromet, JRC), set F1,
+- `agro_extract/metrics.py`: field accuracy on the dev and test golden sets (overall, Hydromet, JRC,
+  95 % bootstrap interval), set F1,
   hallucinations, removed or reset values, valid %, latency p50/p95, cost per 1000 documents; errors per
   field in `results/errors/`.
 - `agro_extract/regress.py`: regression check of a new prompt against a baseline on the golden set,
   report in `results/regression/`.
+- `scripts/before_checks.py`: scores the answers of the first version (before the fact checks, git tag
+  `hw1-initial`) on the dev and test golden sets, for the before / after comparison in REPORT.md.
 - `config.toml`: models (prices, timeout, retries), sampling configurations, experiment matrix.
 - `prompts/`: prompt versions and `CHANGELOG.md`.
 
@@ -94,7 +98,7 @@ data/texts/<id>.txt ── prompts/<version>.txt (+ JSON schema) ──> model �
   (crop growth) and others from Hydromet bulletins (2021–2023), first pages of JRC MARS Global outlook:
   Ukraine bulletins (2022–2026) and the JRC news articles on them. PDF text is kept as is: broken words
   and table fragments are the "dirtiness" the task is about.
-- `data/golden/`: 10 manually labelled answers (golden set), list in `data/golden_ids.txt`.
+- `data/golden/` and `data/golden_test/`: dev and held-out test golden sets (see below).
 - `data/sources.csv`: URL and download date of every document.
 - `data/raw/` (not in git): original PDF/HTML, reproduced with `make fetch && make texts`.
 
@@ -102,10 +106,20 @@ The texts contain no personal data: they are public bulletins of Ukrainian and E
 
 ## Golden set
 
-Every file `data/golden/<text_id>.json` is the correct `AgroReport` for `data/texts/<text_id>.txt`.
-`make check-golden` validates each file with the same strict and soft checks as the model answers
-and fails if any golden value would be removed or reset (all 10 files pass: the checks never remove a
-correct value). Labelling rules for ambiguous cases are described in `prompts/CHANGELOG.md` (v2).
+Two sets of manually checked answers, `data/<set>/<text_id>.json` = the correct `AgroReport` for
+`data/texts/<text_id>.txt`:
+
+- `data/golden/` (**dev**, 10 texts, list in `data/golden_ids.txt`): used for the error analysis,
+  prompt v2 / v3 and the deterministic checks. Labelling rules for ambiguous cases are in
+  `prompts/CHANGELOG.md` (v2). `make regress` uses only this set.
+- `data/golden_test/` (**held-out test**, 10 other texts of the same kinds): labelled after the
+  prompt and the checks were finalised and committed, and never used to change them. It shows how the
+  results transfer to texts that nothing was tuned on.
+
+`make metrics` reports accuracy on both sets with a 95 % bootstrap confidence interval.
+`make check-golden` validates both sets with the same strict and soft checks as the model answers:
+every dev file must pass all of them; on the test set a correct value that the soft checks would
+remove is reported (a false removal of the unchanged checks), not fixed.
 
 ## Troubleshooting
 

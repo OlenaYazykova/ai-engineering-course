@@ -2,6 +2,8 @@
 
 Every golden-set field where the model differs from the gold value (expected = gold). Use these for the error analysis in REPORT.md.
 
+## Dev set (data/golden/)
+
 ### en_jrc_2023-04 (10/14)
 
 | field | expected | got |
@@ -66,3 +68,73 @@ invalid after revalidation:
 | moisture_status | adequate | mixed |
 | deficit_oblasts | [dnipropetrovsk, kherson, kirovohrad, mykolaiv, odesa, poltava, sumy, vinnytsia, volyn] | [dnipropetrovsk, kharkiv, kherson, kirovohrad, mykolaiv, odesa, poltava, sumy, ternopil, vinnytsia, volyn] |
 | hazards | [waterlogging] | [] |
+
+## Test set (data/golden_test/)
+
+### en_jrc_2022-06 (12/14)
+
+| field | expected | got |
+|---|---|---|
+| deficit_oblasts | [] | [khmelnytskyi, odesa, vinnytsia] |
+| yield_vs_avg | [] | [('winter_barley', 'below'), ('winter_rapeseed', 'below'), ('winter_wheat', 'below')] |
+
+### en_jrc_2026-09 (11/14)
+
+| field | expected | got |
+|---|---|---|
+| deficit_oblasts | [] | [chernihiv, kharkiv, poltava, vinnytsia, zaporizhzhia, zhytomyr] |
+| crops | [] | [soybean] |
+| crop_condition | [] | [('soybean', 'satisfactory')] |
+
+### en_jrcnews_2023-04 (13/14)
+
+| field | expected | got |
+|---|---|---|
+| yield_vs_avg | [('winter_wheat', 'below')] | [('winter_barley', 'near'), ('winter_rapeseed', 'near'), ('winter_wheat', 'below')] |
+
+### en_jrcnews_2026-06 (11/14)
+
+| field | expected | got |
+|---|---|---|
+| crops | [] | [winter_barley, winter_rapeseed, winter_wheat] |
+| crop_condition | [] | [('winter_barley', 'good'), ('winter_rapeseed', 'good'), ('winter_wheat', 'good')] |
+| yield_vs_avg | [('winter_barley', 'above'), ('winter_rapeseed', 'near'), ('winter_wheat', 'above')] | [('maize', 'near'), ('soybean', 'near'), ('sunflower', 'near'), ('winter_barley', 'above'), ('winter_rapeseed', 'near'), ('winter_wheat', 'above')] |
+
+### uk_hydromet_2021-08-d1__moisture (11/14)
+
+| field | expected | got |
+|---|---|---|
+| deficit_oblasts | [cherkasy, chernihiv, donetsk, kharkiv, kherson, kirovohrad, kyiv, luhansk, poltava, sumy, vinnytsia, zaporizhzhia] | [donetsk, kharkiv, kherson, kyiv, luhansk, poltava, zaporizhzhia] |
+| crops | [] | [maize] |
+| crop_bbch | [] | [('maize', 8)] |
+
+### uk_hydromet_2022-08-d3__growth_moisture (10/14)
+
+| field | expected | got |
+|---|---|---|
+| deficit_oblasts | [] | [poltava] |
+| crops | [maize, soybean, sugar_beet, sunflower, winter_rapeseed] | [maize, sugar_beet, sunflower, winter_rapeseed] |
+| crop_bbch | [('maize', 9), ('soybean', 8), ('sugar_beet', 4), ('sunflower', 9), ('winter_rapeseed', 1)] | [('maize', 8), ('sunflower', 8), ('winter_rapeseed', 1)] |
+| hazards | [drought] | [] |
+
+### uk_hydromet_2023-01-d1 (11/14)
+
+| field | expected | got |
+|---|---|---|
+| crops | [] | [winter_barley, winter_rapeseed, winter_wheat] |
+| crop_bbch | [] | [('winter_barley', 2), ('winter_rapeseed', 2), ('winter_wheat', 2)] |
+| hazards | [] | [frost] |
+
+### uk_hydromet_2023-10-d1__growth (11/14)
+
+| field | expected | got |
+|---|---|---|
+| max_mm | 49 | 20 |
+| crops | [maize, soybean, sugar_beet, sunflower, winter_rapeseed, winter_wheat] | [winter_rapeseed, winter_wheat] |
+| crop_bbch | [('maize', 9), ('soybean', 9), ('sugar_beet', 4), ('sunflower', 9), ('winter_rapeseed', 1), ('winter_wheat', 1)] | [('winter_rapeseed', 1), ('winter_wheat', 2)] |
+
+### uk_hydromet_2023-10-d2__conditions (13/14)
+
+| field | expected | got |
+|---|---|---|
+| moisture_status | adequate | not_stated |

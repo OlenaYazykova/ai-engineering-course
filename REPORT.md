@@ -9,11 +9,16 @@
   The texts are "dirty": words and numbers broken by PDF extraction ("2 2 мм", "14 7-160"), fragments of
   tables and figure captions, typos in the originals ("200 мл" instead of mm), two languages, and every
   text fills only part of the fields.
-- **Golden set:** 10 texts (6 uk, 4 en; list in `data/golden_ids.txt`), 14 fields per text = 140 fields.
-  The golden set was labelled manually: each of the 140 fields was filled in and checked against the
-  text. For ambiguous cases (typos, generic wording such as "winter crops", several soil layers in one
-  text) labelling rules were defined; these rules were added to prompt v2 so that the model and the
-  golden set interpret the text the same way (see `prompts/CHANGELOG.md`).
+- **Golden sets:** 14 fields per text.
+  - **Dev** (`data/golden/`, 10 texts: 6 uk, 4 en; list in `data/golden_ids.txt`): labelled manually,
+    each of the 140 fields filled in and checked against the text. For ambiguous cases (typos, generic
+    wording such as "winter crops", several soil layers in one text) labelling rules were defined and
+    added to prompt v2 so that the model and the golden set interpret the text the same way (see
+    `prompts/CHANGELOG.md`). The error analysis, prompt v3 and the fact checks were all derived from
+    this set.
+  - **Held-out test** (`data/golden_test/`): 10 more texts of the same kinds (6 uk, 4 en), labelled
+    with the same rules as the dev set. The prompt and the checks were not changed after the test
+    results.
 - **Schema `AgroReport`** (`agro_extract/schema.py`), one record per text:
 
 | Field | Type | Values |
@@ -47,7 +52,8 @@
 
 ## 2. Comparison: model × prompt version × sampling
 
-All runs with the deterministic fact checks of section 3 (both stages).
+All runs with the deterministic fact checks of section 3 (both stages). Field accuracy, set F1 and
+hallucinations in the first table: dev golden set; the held-out test set is compared below.
 
 | Model | Prompt | T | top_p | Valid % | Fixed | Failed | Field acc % | Hydromet % | JRC % | Set F1 % | Halluc. | Removed | p50, s | p95, s | $ / 1000 docs |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -65,7 +71,7 @@ revalidate`. qwen2.5:3b v1 T=0 and v2 T=0.7 (~2–3 h each) were not run again: 
 re-checked with `revalidate` without calling the model, where an answer that fails a strict check gets
 no new correction attempt, so their valid % and accuracy are a lower bound.
 
-**Accuracy per field, %** (golden set, 10 texts):
+**Accuracy per field, %** (dev golden set, 10 texts):
 
 | Field | gpt-4o-mini v1 T=0 | gpt-4o-mini v1 T=0.7 | gpt-4o-mini v2 T=0 | qwen2.5:3b v1 T=0 | qwen2.5:3b v2 T=0 | qwen2.5:3b v2 T=0.7 | gemini-2.5-flash-lite v2 T=0 |
 |---|---|---|---|---|---|---|---|
@@ -85,7 +91,20 @@ no new correction attempt, so their valid % and accuracy are a lower bound.
 | yield_mt | 90 | 90 | 100 | 50 | 90 | 80 | 90 |
 
 `crop_condition`, `crop_bbch`, `yield_vs_avg` and `yield_mt` are "crop → value" pairs from `crops` and
-`yield_outlook`, compared as sets. Errors per text and field: `results/errors/`.
+`yield_outlook`, compared as sets. Errors per text and field, dev and test: `results/errors/`.
+
+**Dev vs held-out test set** (95 % CI: bootstrap over texts; per-field test accuracy in
+`results/metrics.md`):
+
+| Model | Prompt | T | Dev acc % | Dev 95 % CI | Test acc % | Test 95 % CI | Test Hydromet % | Test JRC % | Dev F1 % | Test F1 % | Dev halluc. | Test halluc. |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| gpt-4o-mini | v1 | 0.0 | 67.9 | 51–80 | 60.0 | 39–79 | 63.1 | 55.4 | 61.2 | 47.8 | 10 | 11 |
+| gpt-4o-mini | v1 | 0.7 | 67.9 | 51–80 | 68.6 | 50–83 | 63.1 | 76.8 | 57.6 | 49.0 | 10 | 12 |
+| **gpt-4o-mini** | **v2** | **0.0** | **80.7** | **74–87** | **77.9** | **71–84** | **73.8** | **83.9** | **66.7** | **62.7** | **3** | **11** |
+| qwen2.5:3b | v1 | 0.0 | 31.4 | 12–53 | 3.6 | 0–11 | 6.0 | 0.0 | 33.3 | 13.0 | 3 | 2 |
+| qwen2.5:3b | v2 | 0.0 | 65.7 | 49–79 | 59.3 | 36–79 | 72.6 | 39.3 | 48.4 | 48.9 | 9 | 7 |
+| qwen2.5:3b | v2 | 0.7 | 57.1 | 36–74 | 50.0 | 26–71 | 72.6 | 16.1 | 38.5 | 48.9 | 10 | 6 |
+| gemini-2.5-flash-lite | v2 | 0.0 | 73.6 | 55–87 | 83.6 | 79–89 | 83.3 | 83.9 | 77.8 | 63.3 | 8 | 13 |
 
 How the metrics are computed:
 - **Valid %**: share of the 41 texts whose answer passed the schema and the fact checks (on the first
@@ -116,6 +135,13 @@ Key findings:
   text marked `failed` (section 3).
 - The weakest fields in all runs are `moisture_status` (40–50 %) and `hazards` (40–50 %): the text has
   to be interpreted, and the keyword checks cannot tell which interpretation is right.
+- **Held-out test set: accuracy transfers, hallucinations only partly.** gpt-4o-mini v2: 80.7 % on
+  dev, 77.9 % on test (−2.8 pp, the intervals overlap); qwen2.5:3b v2: 65.7 → 59.3 %. But
+  hallucinations of gpt-4o-mini v2 are 3 on dev and 11 on test: the dev number is optimistic, because
+  the stage 2 rules were chosen on the dev errors (section 3). gemini-2.5-flash-lite is better on
+  test than on dev (83.6 vs 73.6 %): on dev it lost one whole text to a `failed` answer, the narrow
+  test interval (79–89 %) is the more reliable estimate. Prompt v2 beats v1 on test as well
+  (gpt-4o-mini 60.0 → 77.9 %), so the v2 labelling rules are not specific to the dev texts.
 
 ## 3. Deterministic fact checks
 
@@ -164,11 +190,11 @@ The checks were added in two stages:
   The 250-character window is the smallest that keeps every golden value (100–150 characters would
   reset 2 correct conditions), so it was chosen on the golden set itself.
 
-The golden set passes all checks (`make check-golden`: 10/10, no golden value is removed or reset),
-so the checks do not remove correct answers on the labelled texts. 28 unit tests cover them
-(`make test`).
+The dev golden set passes all checks (`make check-golden`: 10/10, no golden value is removed or
+reset); on the held-out test set the checks make a few false removals (see below). 28 unit tests
+cover them (`make test`).
 
-**Before the checks → stage 1 → stage 2** (golden set; runs of section 2):
+**Before the checks → stage 1 → stage 2** (dev golden set; runs of section 2):
 
 | Run | Field acc % | Hallucinations | Valid % |
 |---|---|---|---|
@@ -178,7 +204,7 @@ so the checks do not remove correct answers on the labelled texts. 28 unit tests
 | qwen2.5:3b v2 T=0 | 48.6 → 62.1 → 65.7 | 29 → 14 → 9 | 92.7 → 92.7 → 92.7 |
 | gemini-2.5-flash-lite v2 T=0 | 74.3 → 68.6 → 73.6 | 18 → 15 → 8 | 100 → 97.6 → 97.6 |
 
-- Hallucinations fell in every run, by 56–79 % in total (gpt-4o-mini v2: 14 → 3); field accuracy
+- On dev, hallucinations fell in every run, by 56–79 % in total (gpt-4o-mini v2: 14 → 3); field accuracy
   grew in every run except gemini (see below): gpt-4o-mini v2 74.3 → 80.7 %, qwen2.5:3b v2
   48.6 → 65.7 %. Stage 2 gave the largest gain on crops: `crops` 10 → 70 %, `crop_condition`
   60 → 90 % (gpt-4o-mini v2).
@@ -189,6 +215,29 @@ so the checks do not remove correct answers on the labelled texts. 28 unit tests
   the correction attempt, and the answer was rejected. Before the checks this answer was "valid" with
   one wrong field; this is why gemini's accuracy fell from 74.3 to 68.6 % at stage 1 (73.6 % after
   stage 2).
+
+**Check on the held-out test set.** The checks were applied to the test texts without any changes.
+"Before" = the answers of the same runs before any fact checks, from the first version (git tag
+`hw1-initial`; for gpt-4o-mini at T=0 the first answers are identical, they are replayed from the
+cache); reproduced with `make before-checks`, "after" with `make metrics`:
+
+| Run | Test acc % before → after | Test hallucinations before → after |
+|---|---|---|
+| gpt-4o-mini v1 T=0 | 56.4 → 60.0 | 29 → 11 |
+| gpt-4o-mini v1 T=0.7 | 57.1 → 68.6 | 28 → 12 |
+| **gpt-4o-mini v2 T=0** | **65.7 → 77.9** | **21 → 11** |
+| qwen2.5:3b v2 T=0 | 49.3 → 59.3 | 31 → 7 |
+| gemini-2.5-flash-lite v2 T=0 | 76.4 → 83.6 | 21 → 13 |
+
+- On texts that nothing was tuned on, the checks still raise accuracy (gpt-4o-mini v2 +12.2 pp) and
+  cut hallucinations by about half (21 → 11; 38–77 % for the other runs). The effect is real, but
+  smaller than on dev (14 → 3), where the stage 2 window was chosen.
+- False removals: on the test set the unchanged checks would remove 4 correct golden values
+  (`make check-golden`): "засушливі умови" is not in the drought keywords, "вологозапаси значно
+  поповнилися" is not in the adequate-moisture keywords, and the harvest of sugar beet (BBCH stage 4)
+  is not near a stage-4 keyword. On dev there were none, because the keyword lists were written on
+  the dev texts. These values were not added to the keyword lists: that would be tuning on the test
+  set.
 - Limitation: a keyword check proves that a word is in the text (stage 2: near the crop), not that
   it refers to this value. "Removed" also counts values on the 31 texts without a golden answer,
   where a reset cannot be checked; it grew at stage 2 (gpt-4o-mini v2 76 → 195), mostly crops without
@@ -264,6 +313,25 @@ to the 10 golden texts, so they were not added. The other remaining errors are w
 rather than invented ones: `moisture_status` (`mixed` instead of `adequate`), a missing `hostilities`
 or `waterlogging`, and the first soil layer only (error 3).
 
+**Hallucinations on the held-out test set.** gpt-4o-mini v2 has 11 (gemini-2.5-flash-lite: 13).
+They are of the same kinds as on dev, which confirms that they are general weaknesses, not
+peculiarities of the dev texts:
+- *Crops and conditions from general descriptions or moisture classes* (7 of 11). `uk_hydromet_2023-01-d1`
+  describes overwintering, like the dev text `2023-02-d2`: the model adds winter wheat, barley and
+  rapeseed with BBCH 2 and `frost`, although the text says the cold "will have no negative
+  consequences". `uk_hydromet_2021-08-d1__moisture`: soil moisture under sunflower "задовільними" and
+  under soybean "незадовільним" becomes the crop condition (error 1): the moisture word stands right
+  next to the crop name, so the stage 2 proximity rule does not catch it.
+- *Oblasts named in the text, but not with a deficit* (3 of 11). `uk_hydromet_2022-08-d3`: the oblasts
+  of the sentence about "достатні та оптимальні" moisture are put into `deficit_oblasts`;
+  `uk_hydromet_2023-04-d3`: Odesa with "достатніми (до 100 мм)". The oblast check only proves that
+  the oblast is named, not in which context.
+- *Yield comparison from a regional or trend statement* (1 of 11): `en_jrc_2022-06`, "below-average
+  yield outlook for winter crops in central and western oblasts" → `below` for the whole country.
+
+A check that would catch the second kind (the oblast must stand near a deficit word) is the obvious
+next step, but it should be designed on dev and measured on a new test set, not on this one.
+
 Separately, two cases are ambiguous for the golden set as well: `en_jrcnews_2022-06` ("Close to the
 5-year average, but below the historical trend": gold `near`, all models `below`) and `max_mm` in
 `uk_hydromet_2023-07-d3` (typo "200 мл" in the text). These cases should be covered by prompt rules or
@@ -290,17 +358,20 @@ crops with a condition in texts that only describe overwintering or weather
 (`uk_hydromet_2023-02-d2`, `uk_hydromet_2022-10-d2`) and lose `heavy_rain` for "excess July rain".
 The check failed (−2.9 pp overall, −30 pp on `crop_condition`), so **v3 was rejected** and v2 stays.
 The v3 rules were derived from errors on the same 10 golden texts; further tuning on them would
-overfit, so a separate test set is needed before the next prompt version.
+overfit, which is why the held-out test set was added (section 2).
 
 ## 6. Additional (stretch) features
 
 - **Third model:** gemini-2.5-flash-lite (cheap cloud model) through the same `Provider` interface,
   see section 2.
-- **Automatic regression run of prompts on the golden set:** `make regress` runs a new prompt only on
-  the golden texts, compares overall and per-field accuracy, valid answers and hallucinations with the
+- **Automatic regression run of prompts on the dev golden set:** `make regress` runs a new prompt only
+  on the dev golden texts, compares overall and per-field accuracy, valid answers and hallucinations with the
   baseline prompt, writes `results/regression/<model>__<new>_vs_<baseline>.md` and exits with code 1
   if the new prompt is worse than the tolerance (2 pp overall, 10 pp per field), so it can be used as
   a gate in a script or CI. It rejected v3 (section 5).
+- **Held-out test set and confidence intervals** (added after the review): a second golden set that
+  nothing was tuned on, metrics reported separately for dev and test with a 95 % bootstrap interval
+  over texts (`make metrics`); `make regress` uses only dev, so the test set stays out of tuning.
 - **Response caching:** identical requests at T=0 (same model, prompt, text, schema and parameters)
   are replayed from `.cache/responses/` instead of being sent and paid for again; the original latency
   is stored with the answer, so cached runs keep honest latency numbers. Answers at T>0 are not cached
@@ -308,19 +379,22 @@ overfit, so a separate test set is needed before the next prompt version.
 
 ## 7. Choice for production
 
-**gpt-4o-mini + prompt v2 + T=0.** With the fact checks it has the highest field accuracy (80.7 %),
-the fewest hallucinations (3 on 140 golden fields), 95.1 % valid answers, p50 3.6 s and $0.90 per
-1000 documents (cents for a few dozen decadal bulletins per year).
+**gpt-4o-mini + prompt v2 + T=0.** Over both golden sets (20 texts) it has the highest accuracy
+together with gemini-2.5-flash-lite (dev 80.7 %, test 77.9 %; gemini 73.6 % and 83.6 %, both about
+79 % on average), the fewest hallucinations (3 + 11 = 14 vs 8 + 13 = 21 for gemini), 95.1 % valid
+answers, p50 3.6 s and $0.90 per 1000 documents (cents for a few dozen decadal bulletins per year).
+Hallucinations decide between the two, because a wrong value that looks valid is the most harmful
+error for an analyst.
 
 Before the checks the choice was gemini-2.5-flash-lite (same accuracy, 100 % valid, cheaper and
-faster). The checks changed it: one of gemini's "valid" answers contained an invented number
-(section 3), and it keeps more hallucinations (8 vs 3) and lower accuracy (73.6 %). It remains the
-alternative if latency and cost matter more than accuracy: p50 1.5 s, $0.68 per 1000 documents,
-97.6 % valid. qwen2.5:3b is free, but takes ~2.5 min per text and is less accurate (65.7 %), so it
-is not suitable for production.
+faster). It remains the alternative if latency and cost matter more than hallucinations: p50 1.5 s,
+$0.68 per 1000 documents, 97.6 % valid, and the best test accuracy. qwen2.5:3b is free, but takes
+~2.5 min per text and is less accurate (65.7 % dev, 59.3 % test), so it is not suitable for
+production.
 
-The stage 1 target from the project plan (field accuracy ≥ 80 %, valid answers ≥ 95 %) is met:
-80.7 % accuracy, 95.1 % valid. The weakest fields are still `moisture_status` and `hazards` (40–50 %);
+The stage 1 target from the project plan (field accuracy ≥ 80 %, valid answers ≥ 95 %) is met on dev
+(80.7 %, 95.1 %), but not on the held-out test set (77.9 %, 95 % CI 71–84 %): the honest estimate for
+new bulletins is just below the target. The weakest fields are still `moisture_status` and `hazards`;
 prompt rules alone did not improve them (v3, section 5).
 
 The decision would change if: (1) latency or cost is the priority: gemini-2.5-flash-lite + v2;
@@ -332,8 +406,13 @@ compare with an own GPU server.
 
 ## 8. Limitations
 
-- The golden set is small (10 texts, 4 in English) and every configuration was run once: differences
-  of 2–3 pp may be noise.
+- Both golden sets are small (10 texts each, 4 in English) and every configuration was run once: the
+  95 % intervals are 10–30 pp wide, so differences of a few pp between runs are noise.
+- The schema stores closed numbers,
+  so "менше 10 мм" is labelled 10 and "31 мм і більше" 31 (the same rule as in dev and prompt v2); the
+  open bounds are lost.
+- The test set has now been looked at, so it can no longer serve as an unbiased test for the next
+  changes: the next prompt or check version needs a new held-out set.
 - The keyword lists of the soft checks were written for these two sources (Hydromet, JRC); a new
   source with other wording may need new keywords, otherwise correct values would be removed.
 - The T=0 / T=0.7 comparison for qwen2.5:3b was done with prompt v2 as the better version;

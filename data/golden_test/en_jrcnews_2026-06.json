@@ -1,0 +1,35 @@
+{
+  "year": 2026,
+  "month": 6,
+  "decade": null,
+  "soil_moisture": {
+    "status": "adequate",
+    "layer": "not_stated",
+    "min_mm": null,
+    "max_mm": null,
+    "deficit_oblasts": []
+  },
+  "crops": [],
+  "hazards": [
+    "drought",
+    "frost",
+    "hostilities"
+  ],
+  "yield_outlook": [
+    {
+      "crop": "winter_wheat",
+      "vs_5yr_average": "above",
+      "production_mt": null
+    },
+    {
+      "crop": "winter_barley",
+      "vs_5yr_average": "above",
+      "production_mt": null
+    },
+    {
+      "crop": "winter_rapeseed",
+      "vs_5yr_average": "near",
+      "production_mt": null
+    }
+  ]
+}

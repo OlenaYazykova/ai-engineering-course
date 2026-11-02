@@ -1,0 +1,54 @@
+{
+  "year": 2023,
+  "month": 10,
+  "decade": 1,
+  "soil_moisture": {
+    "status": "deficit",
+    "layer": "0-20cm",
+    "min_mm": 10,
+    "max_mm": 49,
+    "deficit_oblasts": [
+      "odesa",
+      "mykolaiv",
+      "kharkiv",
+      "cherkasy",
+      "vinnytsia"
+    ]
+  },
+  "crops": [
+    {
+      "crop": "winter_wheat",
+      "bbch_stage": 1,
+      "condition": "good"
+    },
+    {
+      "crop": "winter_rapeseed",
+      "bbch_stage": 1,
+      "condition": "good"
+    },
+    {
+      "crop": "sunflower",
+      "bbch_stage": 9,
+      "condition": "not_stated"
+    },
+    {
+      "crop": "maize",
+      "bbch_stage": 9,
+      "condition": "not_stated"
+    },
+    {
+      "crop": "sugar_beet",
+      "bbch_stage": 4,
+      "condition": "not_stated"
+    },
+    {
+      "crop": "soybean",
+      "bbch_stage": 9,
+      "condition": "not_stated"
+    }
+  ],
+  "hazards": [
+    "drought"
+  ],
+  "yield_outlook": []
+}

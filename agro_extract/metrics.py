@@ -1,4 +1,9 @@
-"""Metrics for every run in results/ against the golden set in data/golden/.
+"""Metrics for every run in results/ against two golden sets:
+
+  data/golden/       dev set (10 texts): used for the error analysis, prompt v2/v3 and the checks;
+  data/golden_test/  held-out test set (10 other texts): labelled after the prompt and the checks
+                     were frozen and never used to change them; it shows how the results transfer
+                     to texts that nothing was tuned on.
 
 A record is flattened into scored fields. Lists are compared as sets (order does not matter):
   year, month, decade, moisture_status, moisture_layer, min_mm, max_mm,
@@ -11,17 +16,23 @@ Hallucination: the gold field is empty (null / [] / not_stated) but the model fi
 Per run: valid answers (ok + fixed), field accuracy on the golden set (all / Hydromet / JRC),
 set F1 (partial credit for list fields), hallucinations, latency p50/p95, cost per 1000 documents.
 
-Outputs: results/metrics.md, results/metrics.csv, results/errors/<run>.md (every wrong field).
+Field accuracy also gets a 95 % bootstrap confidence interval (texts resampled with replacement),
+because both sets are small.
+
+Outputs: results/metrics.md, results/metrics.csv, results/errors/<run>.md (every wrong field, dev and
+test).
 """
 
 import csv
 import json
 import math
+import random
 from pathlib import Path
 
 from .run import RESULTS, ROOT, source_of
 
 GOLDEN = ROOT / "data" / "golden"
+GOLDEN_TEST = ROOT / "data" / "golden_test"
 
 SCALAR = ["year", "month", "decade", "moisture_status", "moisture_layer", "min_mm", "max_mm"]
 SETS = ["deficit_oblasts", "crops", "crop_condition", "crop_bbch", "hazards", "yield_vs_avg", "yield_mt"]
@@ -85,9 +96,9 @@ def percentile(values: list[float], q: float) -> float:
     return v[k]
 
 
-def load_golden() -> dict[str, dict]:
+def load_golden(path: Path = GOLDEN) -> dict[str, dict]:
     gold = {}
-    for p in sorted(GOLDEN.glob("*.json")):
+    for p in sorted(path.glob("*.json")):
         gold[p.stem] = flatten(json.loads(p.read_text(encoding="utf-8")))
     return gold
 
@@ -113,12 +124,14 @@ def run_metrics(rows: list[dict], gold: dict[str, dict]) -> tuple[dict, list[str
     halluc = tp = fp = fn = 0
     errors = []
     scored = 0
+    per_text = []   # correct fields per golden text, for the bootstrap interval
     for r in rows:
         g = gold.get(r["text_id"])
         if g is None:
             continue
         scored += 1
         s = score(flatten(r["parsed"]), g)
+        per_text.append(s["correct"])
         group = "hydromet" if r["source"] == "hydromet" else "jrc"
         for key in ("all", group):
             totals[key][0] += s["correct"]
@@ -156,6 +169,7 @@ def run_metrics(rows: list[dict], gold: dict[str, dict]) -> tuple[dict, list[str
         "failed": sum(r["status"] == "failed" for r in rows),
         "golden": scored,
         "acc_all": 100 * acc("all"), "acc_hydromet": 100 * acc("hydromet"), "acc_jrc": 100 * acc("jrc"),
+        "acc_ci": bootstrap_ci(per_text, len(FIELDS)),
         "set_f1": 100 * f1 if scored else float("nan"),
         "hallucinations": halluc,
         "removed": sum(len(r.get("removed") or []) for r in rows),
@@ -167,6 +181,20 @@ def run_metrics(rows: list[dict], gold: dict[str, dict]) -> tuple[dict, list[str
     return m, errors, field_acc
 
 
+def bootstrap_ci(per_text: list[int], fields: int, n: int = 2000, seed: int = 0) -> tuple[float, float]:
+    """95 % interval of field accuracy, resampling texts with replacement (fixed seed: reproducible)."""
+    if not per_text:
+        return (float("nan"), float("nan"))
+    rnd = random.Random(seed)
+    k = len(per_text)
+    stats = sorted(100 * sum(rnd.choices(per_text, k=k)) / (k * fields) for _ in range(n))
+    return (stats[int(0.025 * n)], stats[int(0.975 * n) - 1])
+
+
+def ci(v: tuple[float, float]) -> str:
+    return "–" if math.isnan(v[0]) else f"{v[0]:.0f}–{v[1]:.0f}"
+
+
 def num(v, digits=1) -> str:
     if isinstance(v, float):
         return "–" if math.isnan(v) else f"{v:.{digits}f}"
@@ -174,26 +202,31 @@ def num(v, digits=1) -> str:
 
 
 def main() -> None:
-    gold = load_golden()
+    gold, gold_test = load_golden(GOLDEN), load_golden(GOLDEN_TEST)
     runs = sorted(p for p in RESULTS.glob("*.jsonl"))
     if not runs:
         raise SystemExit("No results yet: run `make run` first")
     if not gold:
         print("WARNING: data/golden/ is empty, accuracy cannot be measured yet\n")
 
-    all_m, all_fields = [], {}
+    all_m, all_t, all_fields, test_fields = [], [], {}, {}
     (RESULTS / "errors").mkdir(exist_ok=True)
     for path in runs:
         rows = load_run(path)
         if not rows:
             continue
         m, errors, field_acc = run_metrics(rows, gold)
+        t, t_errors, t_field_acc = run_metrics(rows, gold_test)
         all_m.append(m)
+        all_t.append(t)
         all_fields[m["run"]] = field_acc
+        test_fields[m["run"]] = t_field_acc
         header = (f"# Errors: {m['run']}\n\nEvery golden-set field where the model differs from the gold "
                   f"value (expected = gold). Use these for the error analysis in REPORT.md.\n\n")
-        (RESULTS / "errors" / f"{path.stem}.md").write_text(
-            header + ("\n".join(errors) if errors else "No errors.\n"), encoding="utf-8")
+        body = "## Dev set (data/golden/)\n\n" + ("\n".join(errors) if errors else "No errors.\n")
+        if gold_test:
+            body += "\n## Test set (data/golden_test/)\n\n" + ("\n".join(t_errors) if t_errors else "No errors.\n")
+        (RESULTS / "errors" / f"{path.stem}.md").write_text(header + body, encoding="utf-8")
 
     cols = [("model", "Model"), ("prompt", "Prompt"), ("T", "T"), ("top_p", "top_p"),
             ("valid_pct", "Valid %"), ("fixed", "Fixed"), ("failed", "Failed"),
@@ -201,10 +234,11 @@ def main() -> None:
             ("set_f1", "Set F1 %"), ("hallucinations", "Halluc."), ("removed", "Removed"),
             ("p50_s", "p50 s"), ("p95_s", "p95 s"), ("usd_per_1000", "$ / 1000 docs")]
     golden_n = max((m["golden"] for m in all_m), default=0)
+    test_n = max((t["golden"] for t in all_t), default=0)
     lines = ["# Metrics", "",
-             f"Texts per run: {all_m[0]['texts'] if all_m else 0}. Golden set: {golden_n} texts × "
-             f"{len(FIELDS)} fields. Accuracy, F1 and hallucinations are measured on the golden set; "
-             "valid %, latency and cost on all texts. Removed: values the text does not support, "
+             f"Texts per run: {all_m[0]['texts'] if all_m else 0}. Dev golden set: {golden_n} texts × "
+             f"{len(FIELDS)} fields. Accuracy, F1 and hallucinations in the first table are measured on the "
+             "dev golden set; valid %, latency and cost on all texts. Removed: values the text does not support, "
              "removed or reset by checks.clean_lists on all texts (oblasts, crops, hazards, yield entries; "
              "condition, BBCH stage, vs 5-year average, layer, moisture status, year, month, decade; duplicates).", "",
              "| " + " | ".join(c[1] for c in cols) + " |",
@@ -212,51 +246,93 @@ def main() -> None:
     for m in all_m:
         lines.append("| " + " | ".join(num(m[k], 4 if k == "usd_per_1000" else 1) for k, _ in cols) + " |")
 
-    lines += ["", "## Accuracy per field, %", "",
-              "| Field | " + " | ".join(all_fields) + " |", "|---|" + "---|" * len(all_fields)]
-    for f in FIELDS:
-        lines.append(f"| {f} | " + " | ".join(num(all_fields[r][f], 0) for r in all_fields) + " |")
+    if gold_test:
+        lines += ["", "## Dev vs held-out test set", "",
+                  f"Dev: {golden_n} texts the prompt and the checks were tuned on. Test: {test_n} other texts, "
+                  "labelled after the prompt and the checks were frozen. 95 % CI: bootstrap over texts.", "",
+                  "| Model | Prompt | T | Dev acc % | Dev 95 % CI | Test acc % | Test 95 % CI | Test Hydromet % "
+                  "| Test JRC % | Dev F1 % | Test F1 % | Dev halluc. | Test halluc. |",
+                  "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+        for m, t in zip(all_m, all_t):
+            lines.append(f"| {m['model']} | {m['prompt']} | {m['T']} | {num(m['acc_all'])} | {ci(m['acc_ci'])} "
+                         f"| {num(t['acc_all'])} | {ci(t['acc_ci'])} | {num(t['acc_hydromet'])} | {num(t['acc_jrc'])} "
+                         f"| {num(m['set_f1'])} | {num(t['set_f1'])} | {m['hallucinations']} | {t['hallucinations']} |")
+
+    for title, table in [("Accuracy per field, dev set, %", all_fields)] + (
+            [("Accuracy per field, test set, %", test_fields)] if gold_test else []):
+        lines += ["", f"## {title}", "",
+                  "| Field | " + " | ".join(table) + " |", "|---|" + "---|" * len(table)]
+        for f in FIELDS:
+            lines.append(f"| {f} | " + " | ".join(num(table[r][f], 0) for r in table) + " |")
     lines.append("")
     (RESULTS / "metrics.md").write_text("\n".join(lines), encoding="utf-8")
 
+    rows_csv = []
+    for m, t in zip(all_m, all_t):
+        row = {k: v for k, v in m.items() if k != "acc_ci"}
+        row["acc_ci_low"], row["acc_ci_high"] = m["acc_ci"]
+        for k in ("golden", "acc_all", "acc_hydromet", "acc_jrc", "set_f1", "hallucinations"):
+            row[f"test_{k}"] = t[k]
+        row["test_acc_ci_low"], row["test_acc_ci_high"] = t["acc_ci"]
+        rows_csv.append(row)
     with (RESULTS / "metrics.csv").open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=list(all_m[0]))
+        w = csv.DictWriter(f, fieldnames=list(rows_csv[0]))
         w.writeheader()
-        w.writerows(all_m)
+        w.writerows(rows_csv)
 
     print("\n".join(lines[:5 + len(all_m) + 1]))
+    if gold_test:
+        i = lines.index("## Dev vs held-out test set")
+        print("\n" + "\n".join(lines[i:i + 6 + len(all_t)]))
     print(f"\nSaved results/metrics.md, results/metrics.csv, results/errors/*.md")
 
 
 def check_golden() -> None:
-    """Validate every golden file against the schema, the strict checks and the list checks."""
+    """Validate the golden files against the schema, the strict checks and the soft checks.
+
+    Dev set: every file must pass everything (the checks were written with it).
+    Test set: every file must pass the schema and the strict checks; a value the soft checks would
+    remove is reported, not fixed: it is a correct value the checks would wrongly drop on new texts
+    (the checks are frozen, so this is part of the measurement)."""
     from pydantic import ValidationError
 
     from .checks import clean_lists
     from .schema import AgroReport
 
-    files = sorted(GOLDEN.glob("*.json"))
-    if not files:
-        raise SystemExit("data/golden/ is empty")
-    bad = 0
-    for p in files:
-        text_path = ROOT / "data" / "texts" / f"{p.stem}.txt"
-        if not text_path.exists():
-            print(f"  {p.name}: no text data/texts/{p.stem}.txt")
-            bad += 1
+    total_bad = 0
+    for name, folder, soft_is_error in [("dev", GOLDEN, True), ("test", GOLDEN_TEST, False)]:
+        files = sorted(folder.glob("*.json"))
+        if not files:
+            if name == "dev":
+                raise SystemExit("data/golden/ is empty")
             continue
-        text = text_path.read_text(encoding="utf-8")
-        try:
-            rec = AgroReport.model_validate_json(p.read_text(encoding="utf-8"), context={"text": text})
-            _, removed = clean_lists(rec.model_dump(), text)
-            if removed:   # the gold set must pass the same list checks as the models
+        print(f"{name} set ({folder.relative_to(ROOT)}):")
+        bad = false_removals = 0
+        for p in files:
+            text_path = ROOT / "data" / "texts" / f"{p.stem}.txt"
+            if not text_path.exists():
+                print(f"  {p.name}: no text data/texts/{p.stem}.txt")
                 bad += 1
-                print(f"  {p.name}: items not supported by the text: {', '.join(removed)}")
-            else:
-                print(f"  {p.name}: ok ({source_of(p.stem)[0]})")
-        except ValidationError as e:
-            bad += 1
-            print(f"  {p.name}: INVALID\n" + "\n".join(f"      {x['loc']}: {x['msg']}" for x in e.errors()))
-    print(f"\n{len(files) - bad}/{len(files)} golden files are valid")
-    if bad:
+                continue
+            text = text_path.read_text(encoding="utf-8")
+            try:
+                rec = AgroReport.model_validate_json(p.read_text(encoding="utf-8"), context={"text": text})
+                _, removed = clean_lists(rec.model_dump(), text)
+                if removed and soft_is_error:
+                    bad += 1
+                    print(f"  {p.name}: items not supported by the text: {', '.join(removed)}")
+                elif removed:
+                    false_removals += len(removed)
+                    print(f"  {p.name}: ok, but the soft checks would remove correct values: {', '.join(removed)}")
+                else:
+                    print(f"  {p.name}: ok ({source_of(p.stem)[0]})")
+            except ValidationError as e:
+                bad += 1
+                print(f"  {p.name}: INVALID\n" + "\n".join(f"      {x['loc']}: {x['msg']}" for x in e.errors()))
+        print(f"\n{len(files) - bad}/{len(files)} {name} golden files are valid")
+        if not soft_is_error:
+            print(f"correct values the soft checks would remove on the test set: {false_removals}")
+        print()
+        total_bad += bad
+    if total_bad:
         raise SystemExit(1)
