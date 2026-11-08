@@ -1,7 +1,7 @@
 # Prompt changelog
 
-Every prompt is a file `prompts/<version>.txt`. `{schema}` is replaced with the JSON schema of
-`AgroReport` (`agro_extract/schema.py`). The document goes into the user message inside
+Every prompt is a file `prompts/extract/<version>.txt`. `{schema}` is replaced with the JSON schema of
+`AgroReport` (`agro/extract/schema.py`). The document goes into the user message inside
 `<document>` tags. Every result row in `results/` stores the prompt version and its hash.
 
 ## Schema change before the runs: `year` may be null
@@ -56,7 +56,7 @@ Measured (golden set, T=0):
 Per field (gpt-4o-mini): `crop_condition` 0 → 70 %, `deficit_oblasts` 40 → 60 %, `moisture_layer`
 70 → 90 %, `month` / `decade` 90 → 100 %. Worse: `year` 100 → 90 % (in a news text without a year the
 model now writes 2023: the date examples in v2 push it to fill the field) and `max_mm` 90 → 80 %.
-Still weak: `crops` 10 %, `moisture_status` 50 %, `hazards` 40 % (see REPORT.md, section 3).
+Still weak: `crops` 10 %, `moisture_status` 50 %, `hazards` 40 % (see reports/hw1.md, section 3).
 qwen2.5:3b: far fewer invalid answers, but more hallucinations, because answers that were failed
 under v1 are now valid and get scored field by field.
 
@@ -65,7 +65,7 @@ crop" is not the crop condition, and ask for both soil layers when the text give
 
 ## v3
 
-What changed and why (from the v2 error analysis, REPORT.md section 3):
+What changed and why (from the v2 error analysis, reports/hw1.md section 3):
 
 - **Year.** v2 examples with concrete years ("June 2025 -> 2025") made the model write a year that
   is not in the text. v3 has no concrete years in the examples and says the year must be copied
@@ -82,11 +82,11 @@ What changed and why (from the v2 error analysis, REPORT.md section 3):
   count as `hostilities`.
 - **Yield outlook.** Compare only with the 5-year average, not with the trend or last year.
 
-Checked first with `make regress MODEL=gpt4o_mini PROMPT=v3 BASELINE=v2` (golden set only).
+Checked first with `make extract-regress MODEL=gpt4o_mini PROMPT=v3 BASELINE=v2` (golden set only).
 Note: the v3 rules come from errors on the same 10 golden texts, so part of the gain may not
 transfer to new texts; a separate test set would be needed to confirm it.
 
-Measured with `make regress MODEL=gpt4o_mini PROMPT=v3 BASELINE=v2` (golden set, T=0):
+Measured with `make extract-regress MODEL=gpt4o_mini PROMPT=v3 BASELINE=v2` (golden set, T=0):
 
 | | v2 | v3 |
 |---|---|---|
@@ -102,4 +102,4 @@ only describe overwintering or weather (`uk_hydromet_2023-02-d2`, `uk_hydromet_2
 model's attention to crops instead of keeping it away from them.
 
 **Decision: v3 rejected** (the check failed: −2.9 pp overall, −30 pp on one field); v2 stays the
-production prompt and v3 is not in the experiment matrix. Report: `results/regression/`.
+production prompt and v3 is not in the experiment matrix. Report: `results/extract/regression/`.

@@ -1,8 +1,8 @@
 # Errors: qwen3b__v2__t07
 
-Every golden-set field where the model differs from the gold value (expected = gold). Use these for the error analysis in REPORT.md.
+Every golden-set field where the model differs from the gold value (expected = gold). Use these for the error analysis in reports/hw1.md.
 
-## Dev set (data/golden/)
+## Dev set (data/extract/golden/)
 
 ### en_jrc_2023-04 (9/14)
 
@@ -90,7 +90,7 @@ invalid after revalidation:
 - (root): Value error, crops: every crop must appear once
 ```
 
-## Test set (data/golden_test/)
+## Test set (data/extract/golden_test/)
 
 ### en_jrc_2022-06: FAILED
 

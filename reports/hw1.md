@@ -1,5 +1,9 @@
 # Report: structured extraction from agrometeorological bulletins (HW1)
 
+> This report was written for the git tag `hw1`, where it was `REPORT.md` and the commands had no prefix.
+> In the current version of the project the same commands are `make extract-…` (`make metrics` → `make extract-metrics`),
+> and the files of stage 1 moved to `agro/extract/`, `data/extract/`, `prompts/extract/`, `results/extract/`.
+
 ## 1. Task and data
 
 - **Corpus:** 41 texts (`data/texts/`): 23 fragments of decadal bulletins of the Ukrainian

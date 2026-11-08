@@ -10,8 +10,8 @@ Files already downloaded are not fetched again, so the script can be re-run safe
 
 Usage:
     pip install pypdf
-    python scripts/fetch_sources.py            # discover + download + extract text
-    python scripts/fetch_sources.py --list     # only show what would be downloaded
+    python -m agro.corpus.fetch                # discover + download + extract text
+    python -m agro.corpus.fetch --list         # only show what would be downloaded
 
 Output:
     data/raw/pdf/<doc_id>.pdf      original PDF files
@@ -32,7 +32,7 @@ from html.parser import HTMLParser
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 PDF_DIR = ROOT / "data" / "raw" / "pdf"
 HTML_DIR = ROOT / "data" / "raw" / "html"
 TEXT_DIR = ROOT / "data" / "raw" / "text"

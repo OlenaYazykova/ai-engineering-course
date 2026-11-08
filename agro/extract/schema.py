@@ -93,7 +93,7 @@ class AgroReport(Strict):
             problems.append("crops: every crop must appear once")
 
         # With the source text in the context: deterministic checks of numbers and dates
-        # (agro_extract/checks.py): mm and Mt values next to their unit, year / month / decade
+        # (agro/extract/checks.py): mm and Mt values next to their unit, year / month / decade
         # written in the text.
         text = (info.context or {}).get("text") if info else None
         if text:

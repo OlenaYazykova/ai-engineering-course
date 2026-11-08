@@ -1,6 +1,6 @@
 """Run a model x prompt x sampling over every text and log every result.
 
-results/<model>__<prompt>__<sampling>.jsonl, one JSON line per text:
+results/extract/<model>__<prompt>__<sampling>.jsonl, one JSON line per text:
   text_id, source, language, model_key, model, prompt_version, prompt_hash, temperature, top_p,
   status (ok / fixed / failed), attempts, seconds, input_tokens, output_tokens, cost_usd,
   raw (first answer), raw_fixed (answer after the correction attempt), parsed (after removing
@@ -17,15 +17,15 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from .providers import CachedProvider, Completion, Provider, ProviderError, make_provider
+from ..common.providers import CachedProvider, Completion, Provider, ProviderError, make_provider
 from .checks import clean_lists
 from .schema import AgroReport, json_schema
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 CONFIG = ROOT / "config.toml"
-TEXTS = ROOT / "data" / "texts"
-PROMPTS = ROOT / "prompts"
-RESULTS = ROOT / "results"
+TEXTS = ROOT / "data" / "extract" / "texts"
+PROMPTS = ROOT / "prompts" / "extract"
+RESULTS = ROOT / "results" / "extract"
 CACHE = ROOT / ".cache" / "responses"
 
 REPAIR_MESSAGE = (
@@ -53,7 +53,7 @@ def source_of(text_id: str) -> tuple[str, str]:
 def load_texts(ids: list[str] | None = None) -> dict[str, str]:
     texts = {p.stem: p.read_text(encoding="utf-8") for p in sorted(TEXTS.glob("*.txt"))}
     if not texts:
-        raise SystemExit(f"No texts in {TEXTS.relative_to(ROOT)}/ (run scripts/build_texts.py first)")
+        raise SystemExit(f"No texts in {TEXTS.relative_to(ROOT)}/ (run `make extract-texts` first)")
     if ids:
         missing = [i for i in ids if i not in texts]
         if missing:
@@ -162,9 +162,9 @@ def run_experiment(model_key: str, prompt: str, sampling_key: str, *, force: boo
     cfg = config or load_config()
     model_cfg = cfg["models"][model_key]
     sampling = cfg["sampling"][sampling_key]
-    max_tokens = int(cfg["run"].get("max_tokens", 1500))
+    max_tokens = int(cfg["extract"].get("max_tokens", 1500))
 
-    RESULTS.mkdir(exist_ok=True)
+    RESULTS.mkdir(parents=True, exist_ok=True)
     name = run_name(model_key, prompt, sampling_key)
     out = RESULTS / f"{name}.jsonl"
     if ids:  # a partial run (smoke test, regression check) never overwrites a full result file
@@ -186,7 +186,7 @@ def run_experiment(model_key: str, prompt: str, sampling_key: str, *, force: boo
     system, prompt_hash = load_prompt(prompt)
     texts = load_texts(ids)
     provider = provider or make_provider(model_cfg)
-    if cfg["run"].get("cache", True) and sampling["temperature"] == 0 and not isinstance(provider, CachedProvider):
+    if cfg["extract"].get("cache", True) and sampling["temperature"] == 0 and not isinstance(provider, CachedProvider):
         provider = CachedProvider(provider, CACHE)
     print(f"run {name}: {model_cfg['model']}, prompt {prompt} ({prompt_hash}), "
           f"T={sampling['temperature']} top_p={sampling['top_p']}, {len(texts)} texts")
@@ -223,7 +223,7 @@ def run_experiment(model_key: str, prompt: str, sampling_key: str, *, force: boo
 def run_all(force: bool = False) -> list[Path]:
     cfg = load_config()
     outs = []
-    for model_key, prompt, sampling_key in cfg["run"]["experiments"]:
+    for model_key, prompt, sampling_key in cfg["extract"]["experiments"]:
         try:
             outs.append(run_experiment(model_key, prompt, sampling_key, force=force, config=cfg))
         except ProviderError as e:  # e.g. missing key: report and go on with the other runs

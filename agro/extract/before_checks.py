@@ -1,14 +1,14 @@
 """Accuracy and hallucinations of the answers BEFORE the fact checks, on the dev and test golden sets.
 
-The answers of the first version (before agro_extract/checks.py existed) are kept in git under the
-tag `hw1-initial`; results/ now holds the answers after the checks. This script reads the old
+The answers of the first version (before the checks in agro/extract/checks.py existed) are kept in git under the
+tag `hw1-initial`; results/extract/ now holds the answers after the checks. This script reads the old
 answers from git (nothing is called, nothing is changed) and scores them against the current dev
-and test golden sets, so the "before" columns of REPORT.md (section 3) can be reproduced:
+and test golden sets, so the "before" columns of reports/hw1.md (section 3) can be reproduced:
 
-    python scripts/before_checks.py                  # from the git tag hw1-initial
-    python scripts/before_checks.py --ref <commit>   # any other commit or tag
+    make extract-before-checks                              # from the git tag hw1-initial
+    python -m agro.extract.before_checks --ref <commit>     # any other commit or tag
 
-The "after" numbers are in results/metrics.md (`python main.py metrics`).
+The "after" numbers are in results/extract/metrics.md (`make extract-metrics`).
 """
 
 import argparse
@@ -17,16 +17,21 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from agro_extract.metrics import FIELDS, GOLDEN, GOLDEN_TEST, flatten, load_golden, score  # noqa: E402
+from agro.extract.metrics import FIELDS, GOLDEN, GOLDEN_TEST, flatten, load_golden, score  # noqa: E402
 
 
 def git_files(ref: str) -> list[str]:
-    out = subprocess.run(["git", "ls-tree", "--name-only", ref, "results/"], cwd=ROOT,
-                         capture_output=True, text=True, check=True).stdout
-    return [p for p in out.split() if p.endswith(".jsonl")]
+    # results/ up to the tag hw1, results/extract/ after the project was split into stages
+    for folder in ("results/extract/", "results/"):
+        out = subprocess.run(["git", "ls-tree", "--name-only", ref, folder], cwd=ROOT,
+                             capture_output=True, text=True, check=True).stdout
+        files = [p for p in out.split() if p.endswith(".jsonl")]
+        if files:
+            return files
+    return []
 
 
 def git_rows(ref: str, path: str) -> list[dict]:

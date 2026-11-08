@@ -5,9 +5,9 @@ import json
 import pytest
 from pydantic import ValidationError
 
-from agro_extract import metrics, run
-from agro_extract.providers import CachedProvider, Completion, Provider, ProviderError
-from agro_extract.schema import AgroReport, json_schema
+from agro.extract import metrics, run
+from agro.common.providers import CachedProvider, Completion, Provider, ProviderError
+from agro.extract.schema import AgroReport, json_schema
 
 TEXT = ("Агрометеорологічний бюлетень по території України за першу декаду липня 2021 р. "
         "Запаси продуктивної вологи в орному шарі були недостатніми: 11-20 мм, в Одеській області менше 10 мм. "
@@ -161,7 +161,7 @@ def test_run_experiment_logs_everything(tmp_path, monkeypatch):
     monkeypatch.setattr(run, "RESULTS", tmp_path / "results")
     monkeypatch.setattr(run, "CACHE", tmp_path / "cache")
     cfg = {"models": {"fake": {"model": "fake", "provider": "x"}},
-           "sampling": {"t0": SAMPLING}, "run": {"max_tokens": 100}}
+           "sampling": {"t0": SAMPLING}, "extract": {"max_tokens": 100}}
     out = run.run_experiment("fake", "v1", "t0", config=cfg, provider=FakeProvider([json.dumps(GOOD)]))
     row = json.loads(out.read_text(encoding="utf-8"))
     for key in ("model", "prompt_version", "prompt_hash", "temperature", "top_p", "status", "seconds", "cost_usd"):
@@ -201,7 +201,7 @@ def test_cache_key_changes_with_prompt(tmp_path):
 
 
 def test_json_object_fallback():
-    from agro_extract.providers import OpenAICompatibleProvider
+    from agro.common.providers import OpenAICompatibleProvider
     p = OpenAICompatibleProvider.__new__(OpenAICompatibleProvider)
     p.cfg = {"response_format": "json_object"}
     assert p._response_format({}) == {"type": "json_object"}
@@ -209,9 +209,9 @@ def test_json_object_fallback():
     assert p._response_format({"x": 1})["json_schema"]["strict"] is True
 
 
-# ---------- deterministic checks (agro_extract/checks.py) ----------
+# ---------- deterministic checks (agro/extract/checks.py) ----------
 
-from agro_extract.checks import clean_lists, number_with_unit  # noqa: E402
+from agro.extract.checks import clean_lists, number_with_unit  # noqa: E402
 
 HYDRO = ("Агрометеорологічний бюлетень по території України за третю декаду липня 2023 р.\n"
          "Станом на 20 липня запаси продуктивної вологи під кукурудзою 101-120 мм, на окремих площах "

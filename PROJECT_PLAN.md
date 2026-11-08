@@ -24,7 +24,7 @@ An agronomist or analyst needs a quick answer to "what is happening with crops a
 | JRC news articles on these bulletins (HTML) | en | a short summary of the same findings |
 | ERA5-Land, Sentinel-2, MODIS (stage 3) | data | soil moisture, NDVI/LAI to check the texts against |
 
-List of documents and links: `data/sources.csv`; download: `scripts/fetch_sources.py`.
+List of documents and links: `data/sources.csv`; download: `make fetch` (`agro/corpus/fetch.py`).
 
 **What can go wrong:**
 

@@ -1,7 +1,7 @@
 """Metrics for every run in results/ against two golden sets:
 
-  data/golden/       dev set (10 texts): used for the error analysis, prompt v2/v3 and the checks;
-  data/golden_test/  held-out test set (10 other texts): labelled after the prompt and the checks
+  data/extract/golden/       dev set (10 texts): used for the error analysis, prompt v2/v3 and the checks;
+  data/extract/golden_test/  held-out test set (10 other texts): labelled after the prompt and the checks
                      were frozen and never used to change them; it shows how the results transfer
                      to texts that nothing was tuned on.
 
@@ -19,7 +19,7 @@ set F1 (partial credit for list fields), hallucinations, latency p50/p95, cost p
 Field accuracy also gets a 95 % bootstrap confidence interval (texts resampled with replacement),
 because both sets are small.
 
-Outputs: results/metrics.md, results/metrics.csv, results/errors/<run>.md (every wrong field, dev and
+Outputs: results/extract/metrics.md, results/extract/metrics.csv, results/extract/errors/<run>.md (every wrong field, dev and
 test).
 """
 
@@ -31,8 +31,8 @@ from pathlib import Path
 
 from .run import RESULTS, ROOT, source_of
 
-GOLDEN = ROOT / "data" / "golden"
-GOLDEN_TEST = ROOT / "data" / "golden_test"
+GOLDEN = ROOT / "data" / "extract" / "golden"
+GOLDEN_TEST = ROOT / "data" / "extract" / "golden_test"
 
 SCALAR = ["year", "month", "decade", "moisture_status", "moisture_layer", "min_mm", "max_mm"]
 SETS = ["deficit_oblasts", "crops", "crop_condition", "crop_bbch", "hazards", "yield_vs_avg", "yield_mt"]
@@ -205,9 +205,9 @@ def main() -> None:
     gold, gold_test = load_golden(GOLDEN), load_golden(GOLDEN_TEST)
     runs = sorted(p for p in RESULTS.glob("*.jsonl"))
     if not runs:
-        raise SystemExit("No results yet: run `make run` first")
+        raise SystemExit("No results yet: run `make extract-run` first")
     if not gold:
-        print("WARNING: data/golden/ is empty, accuracy cannot be measured yet\n")
+        print("WARNING: data/extract/golden/ is empty, accuracy cannot be measured yet\n")
 
     all_m, all_t, all_fields, test_fields = [], [], {}, {}
     (RESULTS / "errors").mkdir(exist_ok=True)
@@ -222,10 +222,10 @@ def main() -> None:
         all_fields[m["run"]] = field_acc
         test_fields[m["run"]] = t_field_acc
         header = (f"# Errors: {m['run']}\n\nEvery golden-set field where the model differs from the gold "
-                  f"value (expected = gold). Use these for the error analysis in REPORT.md.\n\n")
-        body = "## Dev set (data/golden/)\n\n" + ("\n".join(errors) if errors else "No errors.\n")
+                  f"value (expected = gold). Use these for the error analysis in reports/hw1.md.\n\n")
+        body = "## Dev set (data/extract/golden/)\n\n" + ("\n".join(errors) if errors else "No errors.\n")
         if gold_test:
-            body += "\n## Test set (data/golden_test/)\n\n" + ("\n".join(t_errors) if t_errors else "No errors.\n")
+            body += "\n## Test set (data/extract/golden_test/)\n\n" + ("\n".join(t_errors) if t_errors else "No errors.\n")
         (RESULTS / "errors" / f"{path.stem}.md").write_text(header + body, encoding="utf-8")
 
     cols = [("model", "Model"), ("prompt", "Prompt"), ("T", "T"), ("top_p", "top_p"),
@@ -284,7 +284,7 @@ def main() -> None:
     if gold_test:
         i = lines.index("## Dev vs held-out test set")
         print("\n" + "\n".join(lines[i:i + 6 + len(all_t)]))
-    print(f"\nSaved results/metrics.md, results/metrics.csv, results/errors/*.md")
+    print(f"\nSaved results/extract/metrics.md, results/extract/metrics.csv, results/extract/errors/*.md")
 
 
 def check_golden() -> None:
@@ -304,14 +304,14 @@ def check_golden() -> None:
         files = sorted(folder.glob("*.json"))
         if not files:
             if name == "dev":
-                raise SystemExit("data/golden/ is empty")
+                raise SystemExit("data/extract/golden/ is empty")
             continue
         print(f"{name} set ({folder.relative_to(ROOT)}):")
         bad = false_removals = 0
         for p in files:
-            text_path = ROOT / "data" / "texts" / f"{p.stem}.txt"
+            text_path = ROOT / "data" / "extract" / "texts" / f"{p.stem}.txt"
             if not text_path.exists():
-                print(f"  {p.name}: no text data/texts/{p.stem}.txt")
+                print(f"  {p.name}: no text data/extract/texts/{p.stem}.txt")
                 bad += 1
                 continue
             text = text_path.read_text(encoding="utf-8")

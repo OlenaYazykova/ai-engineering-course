@@ -11,8 +11,8 @@ data/raw/
 *.ipynb
 
 # unfinished runs and one-off checks
-results/*.partial
-results/smoke/
+results/**/*.partial
+results/extract/smoke/
 
 # python / notebooks
 __pycache__/

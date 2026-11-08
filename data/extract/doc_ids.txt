@@ -1,0 +1,36 @@
+# Documents of homework 1 (structured extraction): agro/extract/build_texts.py cuts only these.
+# Documents added to the corpus later (homework 2 and on) are not used by homework 1.
+en_jrc_2022-06
+en_jrc_2023-04
+en_jrc_2023-06
+en_jrc_2023-09
+en_jrc_2024-06
+en_jrc_2024-09
+en_jrc_2025-06
+en_jrc_2025-09
+en_jrc_2026-06
+en_jrc_2026-09
+en_jrcnews_2022-06
+en_jrcnews_2022-09
+en_jrcnews_2023-04
+en_jrcnews_2024-06
+en_jrcnews_2025-06
+en_jrcnews_2025-09
+en_jrcnews_2026-06
+en_jrcnews_2026-09
+uk_hydromet_2021-07-d1
+uk_hydromet_2021-08-d1
+uk_hydromet_2021-08-d3
+uk_hydromet_2022-08-d3
+uk_hydromet_2022-09-d1
+uk_hydromet_2022-10-d2
+uk_hydromet_2023-01-d1
+uk_hydromet_2023-02-d2
+uk_hydromet_2023-02-d3
+uk_hydromet_2023-03-d3
+uk_hydromet_2023-04-d3
+uk_hydromet_2023-07-d1
+uk_hydromet_2023-07-d2
+uk_hydromet_2023-07-d3
+uk_hydromet_2023-10-d1
+uk_hydromet_2023-10-d2

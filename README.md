@@ -1,58 +1,71 @@
-# Agro-analyst, stage 1: Structured Extraction Service
+# Agro-analyst
+
+An assistant for agro analysts over the agrometeorological bulletins of the Ukrainian Hydrometeorological
+Center (in Ukrainian) and the JRC MARS bulletins on Ukraine (in English). This is the course capstone project
+of the AI Engineering course; it grows stage by stage, plan: [PROJECT_PLAN.md](PROJECT_PLAN.md).
+
+| Stage | What it does | Code | Commands | Git tag | Report |
+|---|---|---|---|---|---|
+| 1. Structured extraction (homework 1) | bulletin text → JSON (soil moisture, crops, hazards, yield outlook) | `agro/extract/` | `make extract-…` | `hw1` | [reports/hw1.md](reports/hw1.md) |
+| 2. RAG + evals (homework 2) | question → answer with sources, evals in CI | `agro/rag/` | `make rag-…` | in progress | — |
+
+Shared code: `agro/common/` (model providers, response cache), `agro/corpus/` (downloading the documents).
+`make test` runs the unit tests of every stage, `make run` the pipeline of the current stage.
+
+## Stage 1: Structured Extraction Service
 
 The service extracts structured data on crop conditions and soil moisture from "dirty" texts of
 agrometeorological bulletins (Ukrainian Hydrometeorological Center, in Ukrainian) and JRC MARS bulletins
 (in English), and compares cloud models (gpt-4o-mini and gemini-2.5-flash-lite via OpenRouter) with a local one
 (qwen2.5:3b via Ollama) on quality, cost and speed.
 
-This is the first stage of the course capstone project, plan: [PROJECT_PLAN.md](PROJECT_PLAN.md).
-Comparison report: [REPORT.md](REPORT.md).
+Comparison report: [reports/hw1.md](reports/hw1.md). The version submitted for homework 1 is the git tag `hw1`.
 
-## Run
+### Run
 
 ```bash
 pip install -r requirements.txt
 cp .env.example .env            # add OPENROUTER_API_KEY
 ollama pull qwen2.5:3b          # local model (Ollama: https://ollama.com)
-make run                        # or: python main.py
+make extract-run                # or: python main.py extract all
 ```
 
-`make run` runs every experiment from `config.toml` (model × prompt × sampling) over all texts in
-`data/texts/`, skips the ones that are already done, and builds the metrics table `results/metrics.md`.
+`make extract-run` runs every experiment from `config.toml` (model × prompt × sampling) over all texts in
+`data/extract/texts/`, skips the ones that are already done, and builds the metrics table `results/extract/metrics.md`.
 A cloud run takes a few minutes and costs cents; a local run on a laptop takes about 3–5 min per text
-(2–3 hours per run). The finished runs are committed in `results/`, so the table can be rebuilt without
-models or a key: `make metrics`.
+(2–3 hours per run). The finished runs are committed in `results/extract/`, so the table can be rebuilt without
+models or a key: `make extract-metrics`.
 
 | Command | What it does |
 |---|---|
-| `make run` | all experiments + metrics |
-| `make run-all` | everything from scratch (`--force`) |
-| `make metrics` | metrics tables and error lists only |
-| `make smoke MODEL=qwen3b ID=uk_hydromet_2023-07-d1__moisture` | one text with one model |
-| `python main.py run --model gpt4o_mini --prompt v2 --sampling t0` | one experiment |
-| `make regress MODEL=gpt4o_mini PROMPT=v3 BASELINE=v2` | new prompt vs baseline on the dev golden set (exit code 1 if worse) |
-| `make revalidate` | re-check the saved answers with the current checks, then metrics (no model calls) |
-| `make before-checks` | accuracy of the answers before the fact checks (git tag `hw1-initial`) on dev and test, no model calls |
-| `make check-golden` | validate the dev and test golden sets with the same checks as the model answers |
+| `make extract-run` | all experiments + metrics |
+| `make extract-run-all` | everything from scratch (`--force`) |
+| `make extract-metrics` | metrics tables and error lists only |
+| `make extract-smoke MODEL=qwen3b ID=uk_hydromet_2023-07-d1__moisture` | one text with one model |
+| `python main.py extract run --model gpt4o_mini --prompt v2 --sampling t0` | one experiment |
+| `make extract-regress MODEL=gpt4o_mini PROMPT=v3 BASELINE=v2` | new prompt vs baseline on the dev golden set (exit code 1 if worse) |
+| `make extract-revalidate` | re-check the saved answers with the current checks, then metrics (no model calls) |
+| `make extract-before-checks` | accuracy of the answers before the fact checks (git tag `hw1-initial`) on dev and test, no model calls |
+| `make extract-check-golden` | validate the dev and test golden sets with the same checks as the model answers |
 | `make test` | unit tests, no network |
-| `make fetch` / `make texts` | download the documents / cut them into texts |
+| `make fetch` / `make extract-texts` | download the documents / cut them into texts |
 
-## How it works
+### How it works
 
 ```
-data/texts/<id>.txt ── prompts/<version>.txt (+ JSON schema) ──> model ──> JSON
+data/extract/texts/<id>.txt ── prompts/extract/<version>.txt (+ JSON schema) ──> model ──> JSON
                                                                    │
    schema.py + checks.py: types, enums, mm / Mt next to units ─────────┤  strict
         invalid answer → one correction attempt → ok / fixed / failed
                                                                    │
    checks.clean_lists: values not supported by the text ──────────┤  soft: removed / reset + logged
                                                                    ▼
-        results/<model>__<prompt>__<sampling>.jsonl ──> metrics.py against data/golden/ + data/golden_test/
+        results/extract/<model>__<prompt>__<sampling>.jsonl ──> metrics.py against data/extract/golden/ + golden_test/
 ```
 
-- `agro_extract/schema.py`: the `AgroReport` schema (single source of truth for fields, types and enums)
+- `agro/extract/schema.py`: the `AgroReport` schema (single source of truth for fields, types and enums)
   and checks a JSON schema cannot express: ranges, min ≤ max, every crop once.
-- `agro_extract/checks.py`: deterministic checks against the source text.
+- `agro/extract/checks.py`: deterministic checks against the source text.
   **Strict** (the answer is invalid → one correction attempt → `failed`): `min_mm` / `max_mm` must be
   written in the text followed by "мм / mm" (not any number anywhere, e.g. a date or a %),
   `production_mt` followed by "Mt / млн т"; mm values always need a soil layer.
@@ -71,57 +84,58 @@ data/texts/<id>.txt ── prompts/<version>.txt (+ JSON schema) ──> model �
     `vs_5yr_average` needs "5-year average", "середн..." → else `not_stated`;
   - a crop with neither a stage nor a condition and a yield entry with neither a comparison nor a
     production figure are removed (they carry no information).
-- `agro_extract/providers.py`: the common interface `Provider.complete()` and two implementations:
+- `agro/common/providers.py`: the common interface `Provider.complete()` and two implementations:
   OpenRouter with strict structured output and Ollama (native API with the JSON schema in `format` and
   `num_ctx`). Both have a timeout and retries with backoff on network errors, 429 and 5xx.
   `CachedProvider` wraps either one and replays identical T=0 requests from `.cache/responses/`
   (no second payment; the original latency is kept).
-- `agro_extract/run.py`: the run loop, validation, one correction attempt, and a log line for every
+- `agro/extract/run.py`: the run loop, validation, one correction attempt, and a log line for every
   result: model, prompt version and hash, temperature, top_p, status, time, tokens, cost, raw and parsed
   answer, removed or reset values. An interrupted run continues where it stopped.
-- `agro_extract/revalidate.py`: re-applies the current checks to the answers saved in `results/`
+- `agro/extract/revalidate.py`: re-applies the current checks to the answers saved in `results/extract/`
   (no model calls; the previous result is kept in `status_before` / `parsed_before`).
-- `agro_extract/metrics.py`: field accuracy on the dev and test golden sets (overall, Hydromet, JRC,
+- `agro/extract/metrics.py`: field accuracy on the dev and test golden sets (overall, Hydromet, JRC,
   95 % bootstrap interval), set F1,
   hallucinations, removed or reset values, valid %, latency p50/p95, cost per 1000 documents; errors per
-  field in `results/errors/`.
-- `agro_extract/regress.py`: regression check of a new prompt against a baseline on the golden set,
-  report in `results/regression/`.
-- `scripts/before_checks.py`: scores the answers of the first version (before the fact checks, git tag
-  `hw1-initial`) on the dev and test golden sets, for the before / after comparison in REPORT.md.
+  field in `results/extract/errors/`.
+- `agro/extract/regress.py`: regression check of a new prompt against a baseline on the golden set,
+  report in `results/extract/regression/`.
+- `agro/extract/before_checks.py`: scores the answers of the first version (before the fact checks, git tag
+  `hw1-initial`) on the dev and test golden sets, for the before / after comparison in [reports/hw1.md](reports/hw1.md).
 - `config.toml`: models (prices, timeout, retries), sampling configurations, experiment matrix.
-- `prompts/`: prompt versions and `CHANGELOG.md`.
+- `prompts/extract/`: prompt versions and `CHANGELOG.md`.
 
-## Data
+### Data
 
-- `data/texts/`: texts for the model: sections "Зволоження ґрунту" (soil moisture), "Ріст і розвиток"
+- `data/extract/texts/`: texts for the model: sections "Зволоження ґрунту" (soil moisture), "Ріст і розвиток"
   (crop growth) and others from Hydromet bulletins (2021–2023), first pages of JRC MARS Global outlook:
   Ukraine bulletins (2022–2026) and the JRC news articles on them. PDF text is kept as is: broken words
   and table fragments are the "dirtiness" the task is about.
-- `data/golden/` and `data/golden_test/`: dev and held-out test golden sets (see below).
+- `data/extract/golden/` and `data/extract/golden_test/`: dev and held-out test golden sets (see below).
 - `data/sources.csv`: URL and download date of every document.
-- `data/raw/` (not in git): original PDF/HTML, reproduced with `make fetch && make texts`.
+- `data/raw/` (not in git): original PDF/HTML, reproduced with `make fetch && make extract-texts`; homework 1 uses only the documents listed in
+  `data/extract/doc_ids.txt`.
 
 The texts contain no personal data: they are public bulletins of Ukrainian and European institutions.
 
-## Golden set
+### Golden set
 
-Two sets of manually checked answers, `data/<set>/<text_id>.json` = the correct `AgroReport` for
-`data/texts/<text_id>.txt`:
+Two sets of manually checked answers, `data/extract/<set>/<text_id>.json` = the correct `AgroReport` for
+`data/extract/texts/<text_id>.txt`:
 
-- `data/golden/` (**dev**, 10 texts, list in `data/golden_ids.txt`): used for the error analysis,
+- `data/extract/golden/` (**dev**, 10 texts, list in `data/extract/golden_ids.txt`): used for the error analysis,
   prompt v2 / v3 and the deterministic checks. Labelling rules for ambiguous cases are in
-  `prompts/CHANGELOG.md` (v2). `make regress` uses only this set.
-- `data/golden_test/` (**held-out test**, 10 other texts of the same kinds): labelled after the
+  `prompts/extract/CHANGELOG.md` (v2). `make extract-regress` uses only this set.
+- `data/extract/golden_test/` (**held-out test**, 10 other texts of the same kinds): labelled after the
   prompt and the checks were finalised and committed, and never used to change them. It shows how the
   results transfer to texts that nothing was tuned on.
 
-`make metrics` reports accuracy on both sets with a 95 % bootstrap confidence interval.
-`make check-golden` validates both sets with the same strict and soft checks as the model answers:
+`make extract-metrics` reports accuracy on both sets with a 95 % bootstrap confidence interval.
+`make extract-check-golden` validates both sets with the same strict and soft checks as the model answers:
 every dev file must pass all of them; on the test set a correct value that the soft checks would
 remove is reported (a false removal of the unchanged checks), not fixed.
 
-## Troubleshooting
+### Troubleshooting
 
 - `OPENROUTER_API_KEY is missing`: no `.env` with the key.
 - `ConnectError ... is ollama serve running?`: Ollama is not running.

@@ -59,10 +59,10 @@ temperature = 0.7
 top_p = 0.9
 
 # ---------- runs ----------
-[run]
+[extract]
 max_tokens = 1500
 cache = true            # replay identical T=0 requests from .cache/responses/ (no second payment)
-# model x prompt version x sampling; `make run` runs every row that has no result file yet
+# model x prompt version x sampling; `make extract-run` runs every row that has no result file yet
 # Local runs on a laptop CPU are slow (measured: about 3-5 min per text, 2-3 hours per run).
 experiments = [
   ["gpt4o_mini", "v1", "t0"],
@@ -73,4 +73,4 @@ experiments = [
   ["qwen3b", "v2", "t07"],
   ["gemini_flash_lite", "v2", "t0"],
 ]
-# Prompt v3 was rejected by the regression check (results/regression/), so it is not in the matrix.
+# Prompt v3 was rejected by the regression check (results/extract/regression/), so it is not in the matrix.

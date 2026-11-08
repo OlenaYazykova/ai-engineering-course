@@ -1,8 +1,8 @@
 # Errors: qwen3b__v1__t0
 
-Every golden-set field where the model differs from the gold value (expected = gold). Use these for the error analysis in REPORT.md.
+Every golden-set field where the model differs from the gold value (expected = gold). Use these for the error analysis in reports/hw1.md.
 
-## Dev set (data/golden/)
+## Dev set (data/extract/golden/)
 
 ### en_jrc_2023-04: FAILED
 
@@ -90,7 +90,7 @@ invalid after revalidation:
 | deficit_oblasts | [dnipropetrovsk, kherson, kirovohrad, mykolaiv, odesa, poltava, sumy, vinnytsia, volyn] | [chernihiv, kharkiv, kherson, mykolaiv, odesa, poltava, sumy, ternopil] |
 | hazards | [waterlogging] | [] |
 
-## Test set (data/golden_test/)
+## Test set (data/extract/golden_test/)
 
 ### en_jrc_2022-06: FAILED
 

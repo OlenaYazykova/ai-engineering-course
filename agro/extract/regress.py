@@ -5,7 +5,7 @@
 1. runs the new prompt on the golden-set texts only (cheap: 10 texts, cached at T=0);
 2. takes the baseline answers for the same texts from results/ (or runs the baseline too);
 3. compares overall and per-field accuracy, valid answers and hallucinations;
-4. writes results/regression/<model>__<new>_vs_<baseline>.md and exits with code 1 if the new
+4. writes results/extract/regression/<model>__<new>_vs_<baseline>.md and exits with code 1 if the new
    prompt is worse than the baseline by more than the tolerance (overall accuracy, valid answers,
    or any single field), so it can be used as a gate in a script or CI.
 """
@@ -28,7 +28,7 @@ def regress(model_key: str, prompt: str, baseline: str, sampling_key: str = "t0"
             tolerance: float = 2.0, field_tolerance: float = 10.0) -> bool:
     gold = metrics.load_golden()
     if not gold:
-        sys.exit("data/golden/ is empty: the regression check needs the golden set")
+        sys.exit("data/extract/golden/ is empty: the regression check needs the golden set")
     ids = sorted(gold)
     cfg = load_config()
 

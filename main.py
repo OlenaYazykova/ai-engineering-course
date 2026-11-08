@@ -1,12 +1,15 @@
-"""Agro-analyst, stage 1: structured extraction from agrometeorological bulletins.
+"""Agro-analyst: an assistant for agro analysts over Ukrhydrometcenter and JRC MARS bulletins.
 
-    python main.py                       # every experiment from config.toml (skips done ones) + metrics
-    python main.py run --model gpt4o_mini --prompt v1 --sampling t0 [--force]
-    python main.py smoke --model qwen3b --id uk_hydromet_2023-07-d1__moisture
-    python main.py metrics               # tables from results/ against data/golden/
-    python main.py regress --model gpt4o_mini --prompt v3 --baseline v2   # new prompt vs old on golden set
-    python main.py revalidate            # re-check saved answers with the current checks (no model calls)
-    python main.py check-golden
+Every stage of the course project has its own group of commands.
+
+Stage 1 (homework 1), structured extraction:
+    python main.py extract all            # every experiment from config.toml (skips done ones) + metrics
+    python main.py extract run --model gpt4o_mini --prompt v1 --sampling t0 [--force]
+    python main.py extract smoke --model qwen3b --id uk_hydromet_2023-07-d1__moisture
+    python main.py extract metrics        # tables from results/extract/ against data/extract/golden/
+    python main.py extract regress --model gpt4o_mini --prompt v3 --baseline v2   # new prompt vs old
+    python main.py extract revalidate     # re-check saved answers with the current checks (no model calls)
+    python main.py extract check-golden
 """
 
 import argparse
@@ -15,17 +18,18 @@ import sys
 
 from dotenv import load_dotenv
 
-from agro_extract import metrics
-from agro_extract import revalidate
-from agro_extract.regress import regress
-from agro_extract.providers import ProviderError
-from agro_extract.run import load_config, run_all, run_experiment
+from agro.common.providers import ProviderError
+from agro.extract import metrics
+from agro.extract import revalidate
+from agro.extract.regress import regress
+from agro.extract.run import load_config, run_all, run_experiment
 
 
-def main() -> None:
-    load_dotenv()
-    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    sub = p.add_subparsers(dest="cmd")
+def add_extract(stages) -> None:
+    """Stage 1 (homework 1): structured extraction."""
+    e = stages.add_parser("extract", help="stage 1: structured extraction (homework 1)",
+                          description=add_extract.__doc__)
+    sub = e.add_subparsers(dest="cmd")
 
     a = sub.add_parser("all", help="every experiment from config.toml, then metrics (default)")
     a.add_argument("--force", action="store_true", help="redo runs that already have results")
@@ -36,7 +40,7 @@ def main() -> None:
     r.add_argument("--sampling", default="t0")
     r.add_argument("--force", action="store_true")
 
-    s = sub.add_parser("smoke", help="one or a few texts, prints the answer (results/smoke/)")
+    s = sub.add_parser("smoke", help="one or a few texts, prints the answer (results/extract/smoke/)")
     s.add_argument("--model", required=True)
     s.add_argument("--prompt", default="v1")
     s.add_argument("--sampling", default="t0")
@@ -49,10 +53,11 @@ def main() -> None:
     g.add_argument("--baseline", required=True, help="prompt version to compare with")
     g.add_argument("--sampling", default="t0")
     g.add_argument("--tolerance", type=float, default=2.0, help="allowed drop, pp (overall)")
-    sub.add_parser("check-golden", help="validate data/golden/*.json")
+    sub.add_parser("check-golden", help="validate data/extract/golden*/*.json")
     sub.add_parser("revalidate", help="re-check saved answers with the current checks (no model calls)")
 
-    args = p.parse_args()
+
+def run_extract(args) -> None:
     cmd = args.cmd or "all"
     if cmd == "all":
         run_all(force=getattr(args, "force", False))
@@ -79,6 +84,16 @@ def main() -> None:
         metrics.check_golden()
     elif cmd == "revalidate":
         revalidate.main()
+
+
+def main() -> None:
+    load_dotenv()
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    stages = p.add_subparsers(dest="stage", required=True)
+    add_extract(stages)
+    args = p.parse_args()
+    if args.stage == "extract":
+        run_extract(args)
 
 
 if __name__ == "__main__":

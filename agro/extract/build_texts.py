@@ -1,8 +1,10 @@
-"""Cut the downloaded documents into short texts for homework 1 (data/texts/).
+"""Cut the downloaded documents into short texts for homework 1 (data/extract/texts/).
 
-Input:  data/raw/text/<doc_id>.txt   (made by scripts/fetch_sources.py)
-Output: data/texts/<doc_id>.txt      one text per document, ready for the model
-        data/texts_report.csv        what was found in every document and the text length
+Input:  data/raw/text/<doc_id>.txt           (made by `make fetch`, agro/corpus/fetch.py)
+        data/extract/doc_ids.txt             the documents of homework 1: only these are cut, so documents
+                                             added to the corpus later (homework 2) do not change it
+Output: data/extract/texts/<doc_id>.txt      one text per document, ready for the model
+        data/extract/texts_report.csv        what was found in every document and the text length
 
 Rules:
   * uk_hydromet_*  one text per section, each with the bulletin period line:
@@ -17,17 +19,18 @@ Rules:
 Only runs of spaces are cleaned; typos and broken words are kept on purpose ("dirty" texts).
 
 Usage:
-    python scripts/build_texts.py
+    make extract-texts            (python -m agro.extract.build_texts)
 """
 
 import csv
 import re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 RAW_TEXT = ROOT / "data" / "raw" / "text"
-OUT_DIR = ROOT / "data" / "texts"
-REPORT = ROOT / "data" / "texts_report.csv"
+DOC_IDS = ROOT / "data" / "extract" / "doc_ids.txt"
+OUT_DIR = ROOT / "data" / "extract" / "texts"
+REPORT = ROOT / "data" / "extract" / "texts_report.csv"
 
 MAX_CHARS = 6000          # about 1.5-2k tokens: safe for a small local model
 MIN_TEXT_CHARS = 1000     # shorter raw text = scanned PDF without a text layer
@@ -137,11 +140,18 @@ def cut_jrc_pdf(raw: str) -> list[tuple[str, str, str]]:
 
 
 def main() -> None:
+    doc_ids = {line.strip() for line in DOC_IDS.read_text(encoding="utf-8").splitlines()
+               if line.strip() and not line.startswith("#")}
+    paths = [p for p in sorted(RAW_TEXT.glob("*.txt")) if p.stem in doc_ids]   # homework 1 documents only
+    missing = sorted(doc_ids - {p.stem for p in paths})
+    if missing:   # never delete the committed texts because the downloads are missing
+        raise SystemExit(f"{len(missing)} of {len(doc_ids)} documents are not in {RAW_TEXT.relative_to(ROOT)}/ "
+                         f"(e.g. {missing[0]}): run `make fetch` first")
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     for old in OUT_DIR.glob("*.txt"):   # rebuild from scratch, no stale texts
         old.unlink()
     rows = []
-    for path in sorted(RAW_TEXT.glob("*.txt")):
+    for path in paths:
         doc_id = path.stem
         raw = path.read_text(encoding="utf-8")
         if len(clean(raw)) < MIN_TEXT_CHARS:
@@ -173,7 +183,7 @@ def main() -> None:
     for r in rows:
         print(f"{r['doc_id']:<36} {r['parts']:<22} {r['chars']:>6} {r['truncated']}")
     made = sum(1 for r in rows if r["chars"])
-    print(f"\n{made} texts in data/texts/, report: data/texts_report.csv")
+    print(f"\n{made} texts in data/extract/texts/, report: data/extract/texts_report.csv")
 
 
 if __name__ == "__main__":

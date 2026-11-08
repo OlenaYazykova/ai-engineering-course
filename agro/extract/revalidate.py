@@ -2,10 +2,10 @@
 
     python main.py revalidate
 
-Used after the checks in agro_extract/checks.py were made stricter: no model is called, the
+Used after the checks in agro/extract/checks.py were made stricter: no model is called, the
 saved answers are checked again.
 
-For every row of results/*.jsonl and results/regression/*.jsonl:
+For every row of results/extract/*.jsonl and results/extract/regression/*.jsonl:
   * the first answer (raw) is validated with the current checks -> status "ok";
   * if it fails and a corrected answer (raw_fixed) was saved -> that one is validated -> "fixed";
   * otherwise -> "failed" (a new correction request is not sent, so this is a pessimistic count:

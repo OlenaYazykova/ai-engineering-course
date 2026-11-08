@@ -1,8 +1,8 @@
 # Errors: gemini_flash_lite__v2__t0
 
-Every golden-set field where the model differs from the gold value (expected = gold). Use these for the error analysis in REPORT.md.
+Every golden-set field where the model differs from the gold value (expected = gold). Use these for the error analysis in reports/hw1.md.
 
-## Dev set (data/golden/)
+## Dev set (data/extract/golden/)
 
 ### en_jrc_2023-04 (10/14)
 
@@ -69,7 +69,7 @@ invalid after revalidation:
 | deficit_oblasts | [dnipropetrovsk, kherson, kirovohrad, mykolaiv, odesa, poltava, sumy, vinnytsia, volyn] | [dnipropetrovsk, kharkiv, kherson, kirovohrad, mykolaiv, odesa, poltava, sumy, ternopil, vinnytsia, volyn] |
 | hazards | [waterlogging] | [] |
 
-## Test set (data/golden_test/)
+## Test set (data/extract/golden_test/)
 
 ### en_jrc_2022-06 (12/14)
 
