@@ -1,0 +1,8318 @@
+{
+ "A vector | structural | minilm": {
+  "recall@1": 0.11764705882352941,
+  "recall@3": 0.23529411764705882,
+  "recall@5": 0.29411764705882354,
+  "recall@10": 0.4117647058823529,
+  "hit@1": 0.11764705882352941,
+  "hit@3": 0.23529411764705882,
+  "hit@5": 0.29411764705882354,
+  "hit@10": 0.4117647058823529,
+  "MRR": 0.19663865546218487,
+  "ms/query": 62.5670209992677,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#010",
+     "uk_hydromet_2023-07-d2#008",
+     "uk_hydromet_2023-04-d3#011",
+     "uk_hydromet_2023-01-d1#003",
+     "uk_hydromet_2021-08-d1#008"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#012",
+     "uk_hydromet_2022-09-d1#008",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d1#013",
+     "uk_hydromet_2023-07-d2#011"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2022-09-d1#008",
+     "uk_hydromet_2023-07-d1#013",
+     "uk_hydromet_2023-04-d3#014"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 7,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#009",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2021-08-d1#015",
+     "uk_hydromet_2023-03-d3#012",
+     "uk_hydromet_2024-03-d1#008"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-06#003",
+     "en_jrcnews_2023-04#000",
+     "uk_hydromet_2021-08-d1#013",
+     "uk_hydromet_2023-07-d3#014",
+     "en_jrc_2022-06#002"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#086",
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2022-02-d1#006",
+     "uk_hydromet_2023-02-d3#007"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2021-08-d1#013",
+     "en_derzhstat_crops_annual#006",
+     "en_derzhstat_crops_annual#004",
+     "uk_hydromet_2022-08-d3#014",
+     "en_derzhstat_crops_annual#005"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#080",
+     "uk_hydromet_year_2023#005",
+     "uk_hydromet_year_2023#086",
+     "uk_hydromet_year_2022#012",
+     "uk_hydromet_year_2023#010"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2026-06#038",
+     "en_jrc_2026-06#041",
+     "en_jrc_2026-06#040",
+     "en_jrc_2026-06#039",
+     "en_jrc_2026-09#042"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 6,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024-10#002",
+     "uk_odstat_crops_2024#002",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024-10#000"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2021-07-d1#015",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2023-07-d1#016"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-10-d1#011",
+     "uk_hydromet_2023-10-d1#013",
+     "uk_hydromet_2023-04-d3#011",
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_2023-10-d2#009"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2021-08-d1#013",
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2022-08-d3#014",
+     "en_derzhstat_crops_annual#035",
+     "uk_hydromet_2021-08-d1#014"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrcnews_2023-04#000",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2023-09#031",
+     "en_jrcnews_2022-09#001",
+     "en_jrc_2026-06#024"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2021#003",
+     "uk_hydromet_2023-07-d2#002",
+     "uk_hydromet_2021-08-d1#002"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#018",
+     "uk_hydromet_year_2021#016",
+     "uk_hydromet_year_2024#010",
+     "uk_hydromet_year_2021#028",
+     "uk_hydromet_year_2021#021"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2021-08-d1#013",
+     "en_jrcnews_2022-06#003",
+     "uk_hydromet_2023-10-d2#012",
+     "uk_hydromet_2022-08-d3#014"
+    ]
+   }
+  ]
+ },
+ "A vector | structural | mpnet": {
+  "recall@1": 0.11764705882352941,
+  "recall@3": 0.17647058823529413,
+  "recall@5": 0.17647058823529413,
+  "recall@10": 0.17647058823529413,
+  "hit@1": 0.11764705882352941,
+  "hit@3": 0.17647058823529413,
+  "hit@5": 0.17647058823529413,
+  "hit@10": 0.17647058823529413,
+  "MRR": 0.13725490196078433,
+  "ms/query": 107.33094500028528,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2023#025",
+     "uk_hydromet_2021-08-d1#008",
+     "uk_hydromet_2021-08-d3#010",
+     "uk_hydromet_year_2024#033",
+     "uk_hydromet_year_2024#017"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#013",
+     "en_jrc_2024-09#017",
+     "en_jrc_2022-06#002",
+     "en_jrc_2023-06#002",
+     "en_jrc_2024-09#016"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2024_annex#017",
+     "uk_hydromet_year_2020#059",
+     "uk_hydromet_year_2020#083",
+     "uk_hydromet_2022-08-d3#009",
+     "uk_hydromet_year_2019#070"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#009",
+     "uk_hydromet_2023-01-d1#006",
+     "uk_hydromet_2021-08-d1#016",
+     "uk_hydromet_2021-08-d1#015",
+     "uk_hydromet_2023-10-d1#008"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-09#001",
+     "en_jrc_2024-09#017"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2024#010",
+     "uk_hydromet_year_2023#093",
+     "uk_hydromet_year_2023#059",
+     "uk_hydromet_year_2019#060",
+     "uk_hydromet_year_2022#041"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#009",
+     "en_derzhstat_crops_annual#018",
+     "en_derzhstat_crops_annual#003",
+     "en_jrcnews_2022-06#003",
+     "en_derzhstat_crops_annual#012"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2023#093",
+     "uk_hydromet_year_2020#059",
+     "uk_hydromet_year_2022#044",
+     "uk_hydromet_year_2024#027",
+     "uk_hydromet_year_2020#022"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrcnews_2022-06#003",
+     "en_jrcnews_2022-09#001",
+     "en_jrcnews_2022-06#002",
+     "en_jrcnews_2022-06#001",
+     "en_jrcnews_2025-09#002"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#036",
+     "en_derzhstat_crops_annual#030",
+     "en_derzhstat_crops_annual#027",
+     "en_derzhstat_crops_annual#009",
+     "uk_odstat_crops_2024#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#059",
+     "uk_hydromet_year_2020#083",
+     "uk_hydromet_year_2019#070",
+     "uk_hydromet_year_2023#068",
+     "uk_hydromet_year_2024_annex#017"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2021-08-d1#008",
+     "uk_hydromet_2021-08-d3#010",
+     "uk_hydromet_2022-08-d3#002",
+     "uk_hydromet_2023-07-d3#010",
+     "uk_hydromet_2023-04-d3#011"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#009",
+     "en_derzhstat_crops_annual#018",
+     "en_derzhstat_crops_annual#003",
+     "en_derzhstat_crops_annual#036",
+     "en_derzhstat_crops_annual#027"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrcnews_2022-06#003",
+     "en_jrcnews_2022-09#001",
+     "en_jrcnews_2022-06#002",
+     "en_jrcnews_2022-06#001",
+     "en_jrcnews_2025-09#001"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_year_2022#041",
+     "uk_hydromet_year_2019#060",
+     "uk_hydromet_2023-03-d3#002"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2024#012",
+     "uk_hydromet_year_2020#022",
+     "uk_hydromet_year_2023#059",
+     "uk_hydromet_year_2019#060",
+     "uk_hydromet_year_2021#023"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-09#001",
+     "en_jrcnews_2025-09#002"
+    ]
+   }
+  ]
+ },
+ "A vector | structural | e5": {
+  "recall@1": 0.47058823529411764,
+  "recall@3": 0.5882352941176471,
+  "recall@5": 0.5882352941176471,
+  "recall@10": 0.6470588235294118,
+  "hit@1": 0.47058823529411764,
+  "hit@3": 0.5882352941176471,
+  "hit@5": 0.5882352941176471,
+  "hit@10": 0.6470588235294118,
+  "MRR": 0.517156862745098,
+  "ms/query": 161.40827699564397,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-07-d3#003",
+     "uk_hydromet_2023-07-d2#003",
+     "uk_hydromet_2021-07-d1#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d1#012",
+     "uk_hydromet_2023-07-d1#013"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_2023-07-d1#011",
+     "uk_hydromet_2023-04-d3#014"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2023-03-d3#011",
+     "uk_hydromet_2024-03-d1#008"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "uk_hydromet_2022-02-d1#007",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-06#047",
+     "en_jrc_2024-09#001",
+     "en_jrc_2024-09#017"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#014",
+     "uk_hydromet_2023-07-d2#013",
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2023-10-d1#014",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2021#060",
+     "uk_hydromet_year_2022#006",
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2022#036",
+     "uk_hydromet_year_2021#009"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-09#037",
+     "en_jrc_2025-06#039",
+     "en_jrc_2025-09#034",
+     "en_jrc_2025-06#036",
+     "en_jrc_2025-09#036"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2023-07-d3#015",
+     "uk_hydromet_2023-07-d2#014"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-10-d1#009",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2023-10-d1#011",
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2023-04-d3#011"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#032",
+     "uk_hydromet_2021-07-d1#014",
+     "uk_hydromet_2021-08-d1#013",
+     "uk_hydromet_2021-08-d1#012",
+     "en_derzhstat_crops_annual#014"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 8,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2025-09#001",
+     "en_jrc_2025-06#020",
+     "en_jrc_2025-09#018",
+     "en_jrc_2025-09#020",
+     "en_jrc_2025-06#023"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#016",
+     "uk_hydromet_year_2020#027",
+     "uk_hydromet_year_2019#004"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#048",
+     "en_jrc_2025-06#012",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-04#006",
+     "en_jrc_2023-06#047"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#027",
+     "uk_hydromet_2023-07-d1#015",
+     "uk_hydromet_2022-02-d1#007",
+     "uk_hydromet_2021-08-d1#014"
+    ]
+   }
+  ]
+ },
+ "B vector | structural | e5": {
+  "recall@1": 0.47058823529411764,
+  "recall@3": 0.5882352941176471,
+  "recall@5": 0.5882352941176471,
+  "recall@10": 0.6470588235294118,
+  "hit@1": 0.47058823529411764,
+  "hit@3": 0.5882352941176471,
+  "hit@5": 0.5882352941176471,
+  "hit@10": 0.6470588235294118,
+  "MRR": 0.517156862745098,
+  "ms/query": 155.60406498843804,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-07-d3#003",
+     "uk_hydromet_2023-07-d2#003",
+     "uk_hydromet_2021-07-d1#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d1#012",
+     "uk_hydromet_2023-07-d1#013"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_2023-07-d1#011",
+     "uk_hydromet_2023-04-d3#014"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2023-03-d3#011",
+     "uk_hydromet_2024-03-d1#008"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "uk_hydromet_2022-02-d1#007",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-06#047",
+     "en_jrc_2024-09#001",
+     "en_jrc_2024-09#017"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#014",
+     "uk_hydromet_2023-07-d2#013",
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2023-10-d1#014",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2021#060",
+     "uk_hydromet_year_2022#006",
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2022#036",
+     "uk_hydromet_year_2021#009"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-09#037",
+     "en_jrc_2025-06#039",
+     "en_jrc_2025-09#034",
+     "en_jrc_2025-06#036",
+     "en_jrc_2025-09#036"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2023-07-d3#015",
+     "uk_hydromet_2023-07-d2#014"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-10-d1#009",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2023-10-d1#011",
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2023-04-d3#011"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#032",
+     "uk_hydromet_2021-07-d1#014",
+     "uk_hydromet_2021-08-d1#013",
+     "uk_hydromet_2021-08-d1#012",
+     "en_derzhstat_crops_annual#014"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 8,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2025-09#001",
+     "en_jrc_2025-06#020",
+     "en_jrc_2025-09#018",
+     "en_jrc_2025-09#020",
+     "en_jrc_2025-06#023"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#016",
+     "uk_hydromet_year_2020#027",
+     "uk_hydromet_year_2019#004"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#048",
+     "en_jrc_2025-06#012",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-04#006",
+     "en_jrc_2023-06#047"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#027",
+     "uk_hydromet_2023-07-d1#015",
+     "uk_hydromet_2022-02-d1#007",
+     "uk_hydromet_2021-08-d1#014"
+    ]
+   }
+  ]
+ },
+ "B bm25 | structural": {
+  "recall@1": 0.11764705882352941,
+  "recall@3": 0.29411764705882354,
+  "recall@5": 0.4117647058823529,
+  "recall@10": 0.4117647058823529,
+  "hit@1": 0.11764705882352941,
+  "hit@3": 0.29411764705882354,
+  "hit@5": 0.4117647058823529,
+  "hit@10": 0.4117647058823529,
+  "MRR": 0.2323529411764706,
+  "ms/query": 7.352208020165563,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2019#006",
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_year_2022#005",
+     "uk_hydromet_2023-07-d3#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2021-08-d1#010",
+     "uk_hydromet_2023-07-d2#011"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-07-d1#013",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-10-d2#011"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#009",
+     "uk_hydromet_2022-02-d1#006",
+     "uk_hydromet_year_2024#005",
+     "uk_hydromet_2023-03-d3#011",
+     "uk_hydromet_year_2024#018"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_hydromet_2022-08-d3#002",
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#002"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2024-06#008",
+     "en_jrc_2023-06#004",
+     "en_jrc_2023-04#005",
+     "en_jrc_2025-06#014",
+     "en_jrc_2025-06#015"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024#001",
+     "uk_hydromet_2021-08-d1#017",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024-10#000"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2019#075",
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2023#009",
+     "uk_hydromet_year_2022#004",
+     "uk_hydromet_year_2023#010"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-09#013",
+     "en_jrc_2023-09#001",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2025-09#001",
+     "en_jrc_2024-06#001"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024-10#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2023-10-d1#009",
+     "uk_hydromet_2022-09-d1#009",
+     "uk_hydromet_2022-08-d3#011",
+     "uk_hydromet_2022-10-d2#007"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2021-08-d1#013",
+     "uk_hydromet_2021-08-d1#012",
+     "uk_odstat_crops_2024#000",
+     "uk_hydromet_year_2024#053",
+     "uk_hydromet_2022-02-d1#007"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-09#017",
+     "en_jrc_2024-09#015",
+     "en_jrc_2025-09#008",
+     "en_jrc_2026-06#021",
+     "en_jrc_2025-06#009"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 4,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#079",
+     "uk_hydromet_year_2020#077",
+     "uk_hydromet_2023-07-d3#010",
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_2021-07-d1#008"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#010",
+     "en_jrc_2026-06#015",
+     "en_jrc_2024-09#016",
+     "en_jrc_2022-06#006",
+     "en_jrc_2024-09#008"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_hydromet_2022-09-d1#011",
+     "uk_hydromet_year_2022#047",
+     "uk_hydromet_year_2024#111"
+    ]
+   }
+  ]
+ },
+ "B bm25 without stemming | structural": {
+  "recall@1": 0.11764705882352941,
+  "recall@3": 0.29411764705882354,
+  "recall@5": 0.29411764705882354,
+  "recall@10": 0.4117647058823529,
+  "hit@1": 0.11764705882352941,
+  "hit@3": 0.29411764705882354,
+  "hit@5": 0.29411764705882354,
+  "hit@10": 0.4117647058823529,
+  "MRR": 0.2226890756302521,
+  "ms/query": 2.971106005134061,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-01-d1#001",
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_year_2019#006",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-03-d3#012"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2021-08-d1#010",
+     "uk_hydromet_2023-07-d2#011"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-07-d1#013",
+     "uk_hydromet_2023-09-d1#004",
+     "uk_hydromet_2023-07-d2#011"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#009",
+     "uk_hydromet_2022-02-d1#006",
+     "uk_hydromet_2023-03-d3#011",
+     "uk_odstat_crops_2024-10#000",
+     "uk_hydromet_year_2024#018"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#002",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2022-02-d1#007",
+     "uk_hydromet_2022-09-d1#011",
+     "uk_odstat_crops_2024-10#001"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#004",
+     "en_jrc_2024-06#008",
+     "en_jrc_2024-09#016",
+     "en_jrc_2023-04#005",
+     "en_jrc_2025-06#014"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2021-08-d1#017",
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2023-07-d2#013",
+     "uk_hydromet_2021-08-d1#013",
+     "uk_hydromet_2021-08-d1#012"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2019#075",
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2023#009",
+     "uk_hydromet_year_2022#004",
+     "uk_hydromet_year_2023#010"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-09#013",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-09#001",
+     "en_jrc_2024-06#001",
+     "en_jrc_2025-09#001"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#002",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 7,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-10-d1#009",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2022-09-d1#009",
+     "uk_hydromet_2022-08-d3#011",
+     "uk_hydromet_2023-07-d1#009"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2022-02-d1#007",
+     "uk_hydromet_2021-08-d1#013",
+     "uk_hydromet_year_2020#091",
+     "uk_hydromet_2024-03-d1#002",
+     "uk_hydromet_year_2024#053"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-09#017",
+     "en_jrc_2025-09#008",
+     "en_jrc_2024-09#015",
+     "en_jrc_2025-06#009",
+     "en_jrc_2026-06#021"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 7,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#079",
+     "uk_hydromet_year_2020#077",
+     "uk_hydromet_year_2020#083",
+     "uk_hydromet_year_2023#083",
+     "uk_hydromet_year_2020#064"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#010",
+     "en_jrc_2026-06#015",
+     "en_jrc_2024-09#016",
+     "en_jrc_2022-06#006",
+     "en_jrc_2024-09#008"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2024#051",
+     "uk_hydromet_2022-10-d2#012",
+     "uk_hydromet_year_2024#053",
+     "uk_hydromet_2022-09-d1#011",
+     "uk_hydromet_year_2024#111"
+    ]
+   }
+  ]
+ },
+ "B hybrid | structural | e5": {
+  "recall@1": 0.35294117647058826,
+  "recall@3": 0.35294117647058826,
+  "recall@5": 0.35294117647058826,
+  "recall@10": 0.5294117647058824,
+  "hit@1": 0.35294117647058826,
+  "hit@3": 0.35294117647058826,
+  "hit@5": 0.35294117647058826,
+  "hit@10": 0.5294117647058824,
+  "MRR": 0.37628384687208216,
+  "ms/query": 159.76870898157358,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-07-d3#003",
+     "uk_hydromet_2023-07-d2#006",
+     "uk_hydromet_2023-07-d2#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d1#012",
+     "uk_hydromet_2023-04-d3#013"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_2023-07-d1#013",
+     "uk_hydromet_year_2023#095"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#011",
+     "uk_hydromet_2024-03-d1#002",
+     "uk_hydromet_2023-03-d3#009",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2022-02-d1#006"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 7,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-02-d1#007",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2023-07-d2#013",
+     "en_jrcnews_2022-09#002",
+     "uk_odstat_crops_2024-10#000"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2024-09#016",
+     "en_jrc_2025-06#012",
+     "en_jrc_2024-06#008",
+     "en_jrc_2023-06#048",
+     "en_jrc_2024-06#003"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d2#013",
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2023-07-d1#014",
+     "uk_hydromet_2021-08-d1#013",
+     "uk_odstat_crops_2024#000"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2022#006",
+     "uk_hydromet_year_2023#008",
+     "uk_hydromet_year_2021#060",
+     "uk_hydromet_year_2019#075"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 9,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-09#013",
+     "en_jrc_2025-09#001",
+     "en_jrcnews_2025-06#000",
+     "en_jrcnews_2022-09#001",
+     "en_jrcnews_2025-09#002"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-10-d1#009",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2022-08-d3#011",
+     "uk_hydromet_2022-09-d1#009",
+     "uk_hydromet_2023-10-d1#011"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2021-08-d1#013",
+     "uk_hydromet_2021-08-d1#012",
+     "uk_hydromet_year_2020#091",
+     "uk_hydromet_2022-10-d2#007",
+     "en_derzhstat_crops_annual#032"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrcnews_2025-09#001",
+     "en_jrc_2025-09#001",
+     "en_jrc_2024-09#015",
+     "en_jrc_2025-06#019",
+     "en_jrc_2025-09#017"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#079",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#077"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#048",
+     "en_jrc_2024-09#016",
+     "en_jrc_2023-04#008",
+     "en_jrc_2023-04#024",
+     "en_jrc_2024-06#008"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 7,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2022-10-d2#012",
+     "uk_hydromet_2022-09-d1#011",
+     "uk_hydromet_2022-10-d2#007",
+     "uk_hydromet_2023-10-d2#012"
+    ]
+   }
+  ]
+ },
+ "B hybrid + rerank jina | structural | e5": {
+  "recall@1": 0.47058823529411764,
+  "recall@3": 0.5294117647058824,
+  "recall@5": 0.6764705882352942,
+  "recall@10": 0.7058823529411765,
+  "hit@1": 0.47058823529411764,
+  "hit@3": 0.5294117647058824,
+  "hit@5": 0.7058823529411765,
+  "hit@10": 0.7058823529411765,
+  "MRR": 0.5254901960784314,
+  "ms/query": 14376.427322014933,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-07-d1#006",
+     "uk_hydromet_2021-07-d1#003",
+     "uk_hydromet_year_2022#005"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d2#012",
+     "uk_hydromet_2023-07-d1#013"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-04-d3#014",
+     "uk_hydromet_year_2023#095",
+     "uk_hydromet_2023-03-d3#006"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#003",
+     "uk_hydromet_2024-03-d1#002",
+     "uk_hydromet_2024-03-d1#005"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "en_jrc_2022-06#023"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#004",
+     "en_jrc_2024-06#003",
+     "en_jrc_2025-06#007",
+     "en_jrc_2024-06#008",
+     "en_jrc_2025-06#012"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#001",
+     "uk_hydromet_2023-07-d1#014"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2023#139",
+     "uk_hydromet_year_2023#096",
+     "uk_hydromet_2023-01-d1#003",
+     "uk_hydromet_year_2023#008",
+     "uk_hydromet_year_2022#006"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-06#038",
+     "en_jrc_2025-09#036",
+     "en_jrc_2025-06#036",
+     "en_jrc_2026-06#038",
+     "en_jrc_2025-09#034"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024-10#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2023-07-d2#014"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2022-10-d2#007",
+     "uk_hydromet_2023-10-d2#009",
+     "uk_hydromet_2023-10-d2#007"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#032",
+     "en_derzhstat_crops_annual#035",
+     "en_derzhstat_crops_annual#029",
+     "en_derzhstat_crops_annual#005",
+     "en_derzhstat_crops_annual#014"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.5,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-06#022",
+     "en_jrc_2025-06#020",
+     "en_jrc_2025-06#023",
+     "en_jrc_2025-06#021",
+     "en_jrc_2025-06#016"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_year_2020#031",
+     "uk_hydromet_year_2020#027"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2024-09#008",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-04#008",
+     "en_jrc_2023-04#025"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "uk_hydromet_year_2022#047",
+     "uk_odstat_crops_2024#000"
+    ]
+   }
+  ]
+ },
+ "B hybrid + rerank bge | structural | e5": {
+  "recall@1": 0.47058823529411764,
+  "recall@3": 0.6470588235294118,
+  "recall@5": 0.6470588235294118,
+  "recall@10": 0.6764705882352942,
+  "hit@1": 0.47058823529411764,
+  "hit@3": 0.6470588235294118,
+  "hit@5": 0.6470588235294118,
+  "hit@10": 0.7058823529411765,
+  "MRR": 0.565359477124183,
+  "ms/query": 41352.20568999648,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-07-d1#002",
+     "uk_hydromet_2023-07-d2#003",
+     "uk_hydromet_2023-07-d3#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d1#013",
+     "uk_hydromet_2023-07-d2#012"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_year_2023#095",
+     "uk_hydromet_2023-07-d1#011"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#008",
+     "uk_hydromet_2023-03-d3#011"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "en_jrc_2022-06#023"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2024-06#007",
+     "en_jrc_2024-06#003",
+     "en_jrc_2025-06#007",
+     "en_jrc_2022-06#010"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2023-07-d2#013",
+     "uk_odstat_crops_2024#000",
+     "uk_hydromet_2023-07-d1#014",
+     "uk_odstat_crops_2024-10#000"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2023#139",
+     "uk_hydromet_year_2023#096",
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2022#006",
+     "uk_hydromet_year_2022#004"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-06#036",
+     "en_jrc_2025-09#034",
+     "en_jrc_2026-06#038",
+     "en_jrc_2026-09#042",
+     "en_jrc_2025-09#035"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2022-10-d2#007",
+     "uk_hydromet_2023-10-d2#009",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2022-10-d2#006"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#035",
+     "en_derzhstat_crops_annual#029",
+     "en_derzhstat_crops_annual#014",
+     "en_derzhstat_crops_annual#005",
+     "en_derzhstat_crops_annual#032"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 9,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.5
+    },
+    "top": [
+     "en_jrc_2024-09#015",
+     "en_jrc_2025-09#001",
+     "en_jrc_2025-09#018",
+     "en_jrc_2025-06#021",
+     "en_jrc_2025-06#020"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#027",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_year_2020#016"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2023-04#008",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2024-06#008",
+     "en_jrc_2024-06#013"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000"
+    ]
+   }
+  ]
+ },
+ "B vector | fixed | e5": {
+  "recall@1": 0.29411764705882354,
+  "recall@3": 0.6470588235294118,
+  "recall@5": 0.6470588235294118,
+  "recall@10": 0.6764705882352942,
+  "hit@1": 0.29411764705882354,
+  "hit@3": 0.6470588235294118,
+  "hit@5": 0.6470588235294118,
+  "hit@10": 0.7058823529411765,
+  "MRR": 0.45833333333333337,
+  "ms/query": 165.5049079854507,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#001",
+     "uk_hydromet_2023-07-d3#004",
+     "uk_hydromet_2023-07-d3#001",
+     "uk_hydromet_2021-07-d1#001",
+     "uk_hydromet_2023-07-d3#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d2#007",
+     "uk_hydromet_2023-07-d3#009",
+     "uk_hydromet_2023-07-d1#008",
+     "uk_hydromet_2023-07-d1#007",
+     "uk_hydromet_2023-03-d3#007"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#007",
+     "uk_hydromet_2023-07-d3#010",
+     "uk_hydromet_2023-07-d1#009",
+     "uk_hydromet_2023-04-d3#008",
+     "uk_hydromet_2023-07-d2#009"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#004",
+     "uk_hydromet_2024-03-d1#003",
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_year_2024#109",
+     "uk_hydromet_year_2024#108"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2022-02-d1#005",
+     "en_jrcnews_2022-06#000",
+     "en_jrc_2022-06#023",
+     "en_jrcnews_2023-04#000",
+     "en_jrc_2023-04#016"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-04#004",
+     "en_jrc_2023-04#022",
+     "en_jrc_2024-06#002",
+     "en_jrc_2023-04#019"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#009",
+     "uk_hydromet_2023-07-d3#010",
+     "uk_hydromet_2023-07-d1#010",
+     "uk_hydromet_2022-08-d3#010",
+     "uk_hydromet_2023-10-d1#007"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2022#053",
+     "uk_hydromet_year_2023#124",
+     "uk_hydromet_year_2022#044",
+     "uk_hydromet_year_2023#078",
+     "uk_hydromet_year_2022#079"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2026-09#039",
+     "en_jrcnews_2025-09#000",
+     "en_jrc_2025-09#032",
+     "en_jrc_2025-06#034",
+     "en_jrc_2026-06#035"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#002",
+     "uk_odstat_crops_2024#002",
+     "uk_odstat_crops_2024-10#001"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#011",
+     "uk_hydromet_2022-08-d3#010",
+     "uk_hydromet_2022-08-d3#009",
+     "uk_hydromet_2022-09-d1#008",
+     "uk_hydromet_2023-07-d1#011"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#005",
+     "uk_hydromet_2023-10-d2#005",
+     "uk_hydromet_2022-10-d2#001",
+     "uk_hydromet_year_2022#030",
+     "uk_hydromet_2023-10-d2#001"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#052",
+     "uk_hydromet_2021-08-d1#009",
+     "en_derzhstat_crops_annual#028",
+     "uk_hydromet_2021-07-d1#010",
+     "uk_hydromet_year_2020#080"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 8,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.5
+    },
+    "top": [
+     "en_jrcnews_2025-09#000",
+     "en_jrc_2025-06#015",
+     "en_jrcnews_2026-09#000",
+     "en_jrcnews_2023-04#000",
+     "en_jrc_2025-06#014"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#002",
+     "uk_hydromet_year_2020#013",
+     "uk_hydromet_year_2020#019",
+     "uk_hydromet_year_2020#016",
+     "uk_hydromet_year_2020#022"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#004",
+     "en_jrc_2024-09#004",
+     "en_jrc_2023-04#005",
+     "en_jrc_2024-09#000",
+     "en_jrc_2023-04#022"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#010",
+     "en_jrcnews_2022-09#000",
+     "uk_hydromet_2021-08-d1#009",
+     "uk_odstat_crops_2024-10#002",
+     "en_jrc_2022-06#023"
+    ]
+   }
+  ]
+ },
+ "B bm25 | fixed": {
+  "recall@1": 0.29411764705882354,
+  "recall@3": 0.29411764705882354,
+  "recall@5": 0.4411764705882353,
+  "recall@10": 0.4411764705882353,
+  "hit@1": 0.29411764705882354,
+  "hit@3": 0.29411764705882354,
+  "hit@5": 0.47058823529411764,
+  "hit@10": 0.47058823529411764,
+  "MRR": 0.33235294117647063,
+  "ms/query": 5.146041978150606,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 4,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2019#004",
+     "uk_hydromet_year_2020#005",
+     "uk_hydromet_2023-07-d3#004",
+     "uk_hydromet_2023-07-d1#001",
+     "uk_hydromet_2023-07-d3#001"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#009",
+     "uk_hydromet_2023-07-d1#007",
+     "uk_hydromet_2023-04-d3#008",
+     "uk_hydromet_2023-07-d2#007",
+     "uk_hydromet_2021-07-d1#007"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#007",
+     "uk_hydromet_2023-04-d3#008",
+     "uk_hydromet_2023-07-d1#009",
+     "uk_hydromet_2023-09-d1#004",
+     "uk_hydromet_2023-10-d2#006"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2022-02-d1#004",
+     "uk_hydromet_2023-03-d3#007",
+     "uk_hydromet_2023-03-d3#006",
+     "uk_hydromet_2023-03-d3#008",
+     "uk_hydromet_2024-03-d1#000"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_odstat_crops_2024-10#000",
+     "uk_hydromet_2022-08-d3#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024#000",
+     "uk_hydromet_2022-02-d1#004"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#001",
+     "en_jrc_2024-06#006",
+     "en_jrc_2025-06#009",
+     "en_jrc_2023-04#002",
+     "en_jrc_2024-09#004"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_hydromet_2021-08-d1#013",
+     "uk_odstat_crops_2024-10#002",
+     "uk_hydromet_2023-07-d1#009"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-01-d1#003",
+     "uk_hydromet_year_2020#006",
+     "uk_hydromet_year_2022#040",
+     "uk_hydromet_year_2022#004",
+     "uk_hydromet_year_2023#077"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-09#009",
+     "en_jrc_2024-09#006",
+     "en_jrc_2025-09#000",
+     "en_jrcnews_2024-06#000",
+     "en_jrcnews_2022-09#000"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024-10#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#010",
+     "uk_hydromet_2022-09-d1#008",
+     "uk_hydromet_2022-08-d3#009",
+     "uk_hydromet_2023-07-d3#011",
+     "uk_hydromet_2021-08-d3#008"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#005",
+     "uk_hydromet_2023-10-d2#005",
+     "uk_hydromet_2023-10-d2#004",
+     "uk_hydromet_2022-10-d2#006",
+     "uk_hydromet_2023-10-d2#006"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2021-08-d1#009",
+     "uk_hydromet_2021-08-d1#008",
+     "uk_odstat_crops_2024#000",
+     "uk_hydromet_year_2024#042",
+     "uk_hydromet_2021-08-d1#013"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.5,
+     "10": 0.5
+    },
+    "top": [
+     "en_jrc_2024-09#011",
+     "en_jrc_2026-09#015",
+     "en_jrc_2025-09#013",
+     "en_jrc_2026-06#016",
+     "en_jrc_2025-09#009"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#067",
+     "uk_hydromet_2023-10-d2#005",
+     "uk_hydromet_2022-10-d2#005",
+     "uk_hydromet_year_2020#066",
+     "uk_hydromet_year_2020#030"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#005",
+     "en_jrc_2024-09#005",
+     "en_jrc_2024-09#012",
+     "en_jrc_2024-06#006",
+     "en_jrc_2026-06#009"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_odstat_crops_2024-10#000",
+     "uk_hydromet_2022-09-d1#007",
+     "uk_hydromet_2023-09-d1#006",
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2024#041"
+    ]
+   }
+  ]
+ },
+ "B hybrid | fixed | e5": {
+  "recall@1": 0.4117647058823529,
+  "recall@3": 0.5294117647058824,
+  "recall@5": 0.5294117647058824,
+  "recall@10": 0.5882352941176471,
+  "hit@1": 0.4117647058823529,
+  "hit@3": 0.5294117647058824,
+  "hit@5": 0.5294117647058824,
+  "hit@10": 0.5882352941176471,
+  "MRR": 0.47794117647058826,
+  "ms/query": 156.30224699270912,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#001",
+     "uk_hydromet_2023-07-d3#004",
+     "uk_hydromet_2023-07-d3#001",
+     "uk_hydromet_2023-07-d2#004",
+     "uk_hydromet_2023-07-d2#001"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#009",
+     "uk_hydromet_2023-07-d2#007",
+     "uk_hydromet_2023-07-d1#007",
+     "uk_hydromet_2023-07-d1#008",
+     "uk_hydromet_2023-04-d3#008"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#007",
+     "uk_hydromet_2023-04-d3#008",
+     "uk_hydromet_2023-07-d1#009",
+     "uk_hydromet_2023-10-d2#006",
+     "uk_hydromet_2024-03-d1#005"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#004",
+     "uk_hydromet_2023-03-d3#008",
+     "uk_hydromet_2023-03-d3#007",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#000"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2022-02-d1#005",
+     "uk_odstat_crops_2024-10#000",
+     "en_jrcnews_2022-06#000",
+     "uk_hydromet_2022-08-d3#000",
+     "en_jrc_2022-06#023"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2024-06#002",
+     "en_jrc_2024-09#012",
+     "en_jrc_2023-04#022",
+     "en_jrc_2023-04#002",
+     "en_jrc_2024-06#006"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#009",
+     "uk_hydromet_2023-07-d3#010",
+     "uk_hydromet_2021-08-d1#009",
+     "uk_odstat_crops_2024#000",
+     "uk_hydromet_2023-07-d2#009"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2022#040",
+     "uk_hydromet_year_2022#044",
+     "uk_hydromet_year_2022#005",
+     "uk_hydromet_year_2022#069",
+     "uk_hydromet_year_2022#052"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-09#000",
+     "en_jrc_2025-09#009",
+     "en_jrcnews_2025-09#000",
+     "en_jrc_2025-06#000",
+     "en_jrcnews_2024-06#000"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#002",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#001"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#010",
+     "uk_hydromet_2023-07-d3#011",
+     "uk_hydromet_2022-09-d1#008",
+     "uk_hydromet_2022-08-d3#009",
+     "uk_hydromet_2021-08-d3#008"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#005",
+     "uk_hydromet_2023-10-d2#005",
+     "uk_hydromet_2021-08-d3#007",
+     "uk_hydromet_2022-10-d2#006",
+     "uk_hydromet_2022-10-d2#003"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2021-08-d1#009",
+     "uk_hydromet_2021-08-d1#008",
+     "uk_hydromet_year_2020#079",
+     "uk_odstat_crops_2024#000",
+     "uk_hydromet_2023-07-d1#009"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrcnews_2025-09#000",
+     "en_jrc_2025-09#000",
+     "en_jrc_2025-06#015",
+     "en_jrc_2025-06#014",
+     "en_jrc_2025-06#000"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#002",
+     "uk_hydromet_year_2020#030",
+     "uk_hydromet_year_2020#067",
+     "uk_hydromet_year_2020#013",
+     "uk_hydromet_2023-10-d2#005"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#004",
+     "en_jrc_2024-09#012",
+     "en_jrc_2024-09#004",
+     "en_jrc_2023-04#005",
+     "en_jrc_2023-04#019"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 8,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024-10#000",
+     "uk_hydromet_2022-09-d1#008",
+     "uk_odstat_crops_2024-10#002",
+     "uk_hydromet_2021-08-d1#009",
+     "uk_hydromet_2023-10-d2#007"
+    ]
+   }
+  ]
+ },
+ "B hybrid + rerank jina | fixed | e5": {
+  "recall@1": 0.4117647058823529,
+  "recall@3": 0.5882352941176471,
+  "recall@5": 0.6764705882352942,
+  "recall@10": 0.6764705882352942,
+  "hit@1": 0.4117647058823529,
+  "hit@3": 0.5882352941176471,
+  "hit@5": 0.7058823529411765,
+  "hit@10": 0.7058823529411765,
+  "MRR": 0.526470588235294,
+  "ms/query": 9808.566607011016,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#001",
+     "uk_hydromet_2023-07-d3#004",
+     "uk_hydromet_2021-07-d1#001",
+     "uk_hydromet_2023-07-d2#003",
+     "uk_hydromet_year_2019#004"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#009",
+     "uk_hydromet_2023-07-d2#007",
+     "uk_hydromet_2023-07-d1#008",
+     "uk_hydromet_2023-07-d2#006",
+     "uk_hydromet_2023-07-d2#009"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#007",
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_2023-04-d3#008",
+     "uk_hydromet_2023-03-d3#006",
+     "uk_hydromet_2023-07-d3#010"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_2024-03-d1#004",
+     "uk_hydromet_2024-03-d1#000",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#003"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#000",
+     "en_jrcnews_2022-06#000",
+     "en_jrc_2022-06#023",
+     "en_jrc_2023-04#016",
+     "en_jrc_2023-04#007"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2024-06#003",
+     "en_jrc_2024-06#002",
+     "en_jrc_2024-09#012",
+     "en_jrc_2024-09#004",
+     "en_jrc_2024-06#005"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#010",
+     "uk_hydromet_2023-07-d1#009",
+     "uk_hydromet_2023-07-d2#009",
+     "uk_hydromet_2023-09-d1#006",
+     "uk_odstat_crops_2024-10#000"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": 4,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2022#069",
+     "uk_hydromet_year_2023#124",
+     "uk_hydromet_year_2022#053",
+     "uk_hydromet_year_2022#044",
+     "uk_hydromet_year_2022#052"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2026-09#039",
+     "en_jrc_2025-09#032",
+     "en_jrc_2025-09#009",
+     "en_jrc_2026-06#035",
+     "en_jrc_2025-06#034"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#002",
+     "uk_odstat_crops_2024#002",
+     "uk_odstat_crops_2024#001"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#010",
+     "uk_hydromet_2022-08-d3#009",
+     "uk_hydromet_2021-08-d3#008",
+     "uk_hydromet_2023-07-d3#011",
+     "uk_hydromet_2023-07-d2#011"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#006",
+     "uk_hydromet_2022-10-d2#005",
+     "uk_hydromet_2023-10-d2#005",
+     "uk_hydromet_2023-10-d2#006",
+     "uk_hydromet_2023-10-d2#004"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#052",
+     "en_derzhstat_crops_annual#049",
+     "en_derzhstat_crops_annual#031",
+     "en_derzhstat_crops_annual#028",
+     "uk_hydromet_2021-07-d1#010"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.5,
+     "10": 0.5
+    },
+    "top": [
+     "en_jrc_2026-06#001",
+     "en_jrc_2025-06#015",
+     "en_jrc_2024-09#011",
+     "en_jrc_2025-09#006",
+     "en_jrc_2025-09#001"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#013",
+     "uk_hydromet_year_2020#002",
+     "uk_hydromet_year_2020#006",
+     "uk_hydromet_year_2020#019",
+     "uk_hydromet_year_2020#017"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-04#003",
+     "en_jrc_2024-09#005",
+     "en_jrc_2024-06#006",
+     "en_jrc_2023-04#005",
+     "en_jrc_2024-09#004"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#000",
+     "en_jrc_2023-09#014",
+     "en_jrcnews_2022-06#000",
+     "en_jrc_2022-06#023",
+     "uk_hydromet_2022-09-d1#008"
+    ]
+   }
+  ]
+ },
+ "B hybrid + rerank bge | fixed | e5": {
+  "recall@1": 0.4117647058823529,
+  "recall@3": 0.5882352941176471,
+  "recall@5": 0.5882352941176471,
+  "recall@10": 0.6764705882352942,
+  "hit@1": 0.4117647058823529,
+  "hit@3": 0.5882352941176471,
+  "hit@5": 0.5882352941176471,
+  "hit@10": 0.7058823529411765,
+  "MRR": 0.5034313725490196,
+  "ms/query": 32138.626212021336,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#001",
+     "uk_hydromet_2023-07-d3#004",
+     "uk_hydromet_year_2023#030",
+     "uk_hydromet_2023-07-d2#001",
+     "uk_hydromet_year_2023#032"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d2#007",
+     "uk_hydromet_2023-07-d3#009",
+     "uk_hydromet_2023-07-d1#008",
+     "uk_hydromet_2023-07-d3#008",
+     "uk_hydromet_2023-07-d2#008"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#007",
+     "uk_hydromet_2023-04-d3#008",
+     "uk_hydromet_2023-03-d3#006",
+     "uk_hydromet_2023-10-d2#006",
+     "uk_hydromet_2024-03-d1#005"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#004",
+     "uk_hydromet_2024-03-d1#003",
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_year_2024#109"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#000",
+     "en_jrcnews_2022-06#000",
+     "en_jrc_2022-06#023",
+     "en_jrcnews_2023-04#000",
+     "en_jrc_2022-06#021"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2024-06#003",
+     "en_jrc_2024-09#012",
+     "en_jrc_2024-09#000",
+     "en_jrc_2024-06#006",
+     "en_jrc_2025-06#009"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#010",
+     "uk_hydromet_2023-07-d2#009",
+     "uk_hydromet_2023-07-d1#009",
+     "uk_hydromet_2023-07-d1#010",
+     "uk_hydromet_2023-10-d1#007"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2022#069",
+     "uk_hydromet_year_2022#044",
+     "uk_hydromet_year_2022#067",
+     "uk_hydromet_year_2022#053",
+     "uk_hydromet_year_2022#052"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 8,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-06#033",
+     "en_jrc_2025-06#034",
+     "en_jrc_2026-06#035",
+     "en_jrc_2024-09#006",
+     "en_jrc_2025-09#000"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024-10#002",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#010",
+     "uk_hydromet_2022-08-d3#009",
+     "uk_hydromet_2021-08-d3#008",
+     "uk_hydromet_2022-09-d1#008",
+     "uk_hydromet_2023-07-d3#011"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#005",
+     "uk_hydromet_2022-10-d2#006",
+     "uk_hydromet_2023-10-d2#005",
+     "uk_hydromet_2023-10-d2#004",
+     "uk_hydromet_2023-10-d1#007"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#052",
+     "en_derzhstat_crops_annual#049",
+     "uk_hydromet_2021-08-d1#009",
+     "uk_hydromet_year_2020#079",
+     "en_derzhstat_crops_annual#031"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 10,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.5
+    },
+    "top": [
+     "en_jrc_2024-09#004",
+     "en_jrc_2025-09#006",
+     "en_jrc_2024-09#011",
+     "en_jrcnews_2025-09#000",
+     "en_jrcnews_2026-09#000"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#002",
+     "uk_hydromet_year_2020#016",
+     "uk_hydromet_year_2020#019",
+     "uk_hydromet_year_2020#006",
+     "uk_hydromet_year_2020#015"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-04#005",
+     "en_jrc_2024-06#006",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2025-06#009",
+     "en_jrc_2024-09#000"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#000",
+     "en_jrc_2022-06#023",
+     "en_jrcnews_2022-06#000",
+     "uk_hydromet_2022-09-d1#008",
+     "uk_hydromet_year_2022#043"
+    ]
+   }
+  ]
+ },
+ "C hybrid + filters | structural | e5": {
+  "recall@1": 0.4117647058823529,
+  "recall@3": 0.47058823529411764,
+  "recall@5": 0.6764705882352942,
+  "recall@10": 0.7352941176470589,
+  "hit@1": 0.4117647058823529,
+  "hit@3": 0.47058823529411764,
+  "hit@5": 0.7058823529411765,
+  "hit@10": 0.7647058823529411,
+  "MRR": 0.49957983193277317,
+  "ms/query": 176.2403509928845,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d1#006",
+     "uk_hydromet_2023-07-d1#002",
+     "uk_hydromet_2023-07-d1#005",
+     "uk_hydromet_year_2023#037"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d1#012",
+     "uk_hydromet_2023-07-d2#012"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_year_2023#095",
+     "uk_hydromet_2023-03-d3#007",
+     "uk_hydromet_year_2023#162",
+     "uk_hydromet_2023-03-d3#009"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#002",
+     "uk_hydromet_2024-03-d1#008",
+     "uk_hydromet_2024-03-d1#003",
+     "uk_hydromet_2024-03-d1#005"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 7,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#025",
+     "en_jrc_2022-06#022",
+     "en_jrc_2022-06#014",
+     "en_jrcnews_2022-06#001"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#063",
+     "en_derzhstat_crops_annual#057",
+     "en_derzhstat_crops_annual#012",
+     "en_derzhstat_crops_annual#060",
+     "en_derzhstat_crops_annual#036"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#013",
+     "en_derzhstat_crops_annual#004",
+     "en_derzhstat_crops_annual#022",
+     "en_derzhstat_crops_annual#055",
+     "en_derzhstat_crops_annual#001"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2022#006",
+     "uk_hydromet_year_2022#044",
+     "uk_hydromet_year_2022#012",
+     "uk_hydromet_year_2022#048"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-09#013",
+     "en_jrc_2025-09#001",
+     "en_jrcnews_2025-06#000",
+     "en_jrc_2025-06#018",
+     "en_jrcnews_2025-09#002"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2022-08-d3#005",
+     "uk_hydromet_2022-08-d3#009",
+     "uk_hydromet_2022-08-d3#010"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2022-10-d2#006",
+     "uk_hydromet_2022-10-d2#011",
+     "uk_hydromet_2022-10-d2#010",
+     "uk_hydromet_2022-10-d2#003"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#091",
+     "uk_hydromet_year_2020#086",
+     "uk_hydromet_year_2020#093",
+     "en_derzhstat_crops_annual#032",
+     "en_derzhstat_crops_annual#014"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 4,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.5,
+     "10": 0.5
+    },
+    "top": [
+     "en_jrcnews_2025-09#001",
+     "en_jrc_2025-09#001",
+     "en_jrc_2025-06#019",
+     "en_jrc_2025-09#014",
+     "en_jrc_2025-06#018"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#021",
+     "uk_hydromet_year_2020#016"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#063",
+     "en_derzhstat_crops_annual#012",
+     "uk_hydromet_2024-03-d1#006",
+     "en_derzhstat_crops_annual#018",
+     "uk_hydromet_2024-03-d1#005"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-09#000",
+     "en_jrcnews_2022-09#001"
+    ]
+   }
+  ]
+ },
+ "C hybrid + rerank bge + filters | structural | e5": {
+  "recall@1": 0.5882352941176471,
+  "recall@3": 0.7647058823529411,
+  "recall@5": 0.8235294117647058,
+  "recall@10": 0.8529411764705882,
+  "hit@1": 0.5882352941176471,
+  "hit@3": 0.7647058823529411,
+  "hit@5": 0.8235294117647058,
+  "hit@10": 0.8823529411764706,
+  "MRR": 0.6872549019607843,
+  "ms/query": 40467.33265699004,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d1#002",
+     "uk_hydromet_year_2023#035",
+     "uk_hydromet_year_2023#037",
+     "uk_hydromet_2023-07-d1#006"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d1#013",
+     "uk_hydromet_2023-07-d2#012"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_year_2023#095",
+     "uk_hydromet_year_2023#162",
+     "uk_hydromet_2023-03-d3#009",
+     "uk_hydromet_year_2023#020"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#008",
+     "uk_hydromet_year_2024#116"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "en_jrc_2022-06#012"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#056",
+     "en_derzhstat_crops_annual#059",
+     "en_derzhstat_crops_annual#014",
+     "en_derzhstat_crops_annual#005",
+     "en_derzhstat_crops_annual#032"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": 4,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#001",
+     "en_derzhstat_crops_annual#010",
+     "en_derzhstat_crops_annual#013",
+     "en_derzhstat_crops_annual#004",
+     "en_derzhstat_crops_annual#007"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2022#048",
+     "uk_hydromet_year_2022#071",
+     "uk_hydromet_year_2022#056",
+     "uk_hydromet_year_2022#075",
+     "uk_hydromet_year_2022#055"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-06#036",
+     "en_jrc_2025-09#034",
+     "en_jrc_2025-06#018",
+     "en_jrc_2025-09#035",
+     "en_jrc_2025-06#038"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024#001",
+     "en_derzhstat_crops_annual#059"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2022-08-d3#002",
+     "uk_hydromet_2022-08-d3#009",
+     "uk_hydromet_year_2022#027"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#011",
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2022-10-d2#007",
+     "uk_hydromet_2022-10-d2#006",
+     "uk_hydromet_2022-10-d2#010"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#035",
+     "en_derzhstat_crops_annual#029",
+     "en_derzhstat_crops_annual#014",
+     "en_derzhstat_crops_annual#005",
+     "en_derzhstat_crops_annual#032"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 10,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.5
+    },
+    "top": [
+     "en_jrc_2025-09#010",
+     "en_jrc_2025-09#001",
+     "en_jrc_2025-09#018",
+     "en_jrc_2025-06#020",
+     "en_jrcnews_2025-06#000"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#027",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_year_2020#045"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#004",
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_year_2024#102",
+     "uk_hydromet_year_2024#093",
+     "uk_hydromet_year_2024#106"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-09#001",
+     "en_jrcnews_2022-09#000"
+    ]
+   }
+  ]
+ },
+ "D vector | max 300 | e5": {
+  "recall@1": 0.4117647058823529,
+  "recall@3": 0.5882352941176471,
+  "recall@5": 0.5882352941176471,
+  "recall@10": 0.5882352941176471,
+  "hit@1": 0.4117647058823529,
+  "hit@3": 0.5882352941176471,
+  "hit@5": 0.5882352941176471,
+  "hit@10": 0.5882352941176471,
+  "MRR": 0.48039215686274506,
+  "ms/query": 159.36931400210597,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#004",
+     "uk_hydromet_2023-07-d3#009",
+     "uk_hydromet_2023-07-d2#004",
+     "uk_hydromet_2023-07-d3#004",
+     "uk_hydromet_2023-07-d3#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#017",
+     "uk_hydromet_2023-07-d2#015",
+     "uk_hydromet_2023-04-d3#016",
+     "uk_hydromet_2023-07-d1#017",
+     "uk_hydromet_2023-07-d1#019"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#014",
+     "uk_hydromet_2023-04-d3#015",
+     "uk_hydromet_2023-03-d3#015",
+     "uk_hydromet_2023-07-d1#016",
+     "uk_hydromet_2023-10-d2#014"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#008",
+     "uk_hydromet_2024-03-d1#009",
+     "uk_hydromet_2024-03-d1#010",
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2023-03-d3#016"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "uk_hydromet_2022-02-d1#010",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "uk_hydromet_2021-08-d1#017"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#014",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-06#062",
+     "en_jrc_2023-04#009",
+     "en_jrc_2024-09#022"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#020",
+     "uk_hydromet_2023-07-d1#020",
+     "uk_hydromet_2023-07-d2#019",
+     "uk_hydromet_2021-08-d1#017",
+     "uk_hydromet_2022-08-d3#018"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2022#008",
+     "uk_hydromet_year_2022#067",
+     "uk_hydromet_year_2021#014",
+     "uk_hydromet_year_2022#016",
+     "uk_hydromet_year_2023#205"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-09#052",
+     "en_jrc_2025-06#055",
+     "en_jrc_2025-09#047",
+     "en_jrc_2025-06#050",
+     "en_jrc_2025-09#048"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#002",
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024#001"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#018",
+     "uk_hydromet_2021-08-d3#018",
+     "uk_hydromet_2022-09-d1#017",
+     "uk_hydromet_2023-07-d2#021",
+     "uk_hydromet_2023-07-d1#023"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-10-d1#012",
+     "uk_hydromet_2023-10-d2#009",
+     "uk_hydromet_2023-10-d1#014",
+     "uk_hydromet_2022-10-d2#014",
+     "uk_hydromet_2022-10-d2#012"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#043",
+     "uk_hydromet_2021-08-d1#017",
+     "en_derzhstat_crops_annual#019",
+     "en_derzhstat_crops_annual#007",
+     "en_derzhstat_crops_annual#047"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-09#023",
+     "en_jrcnews_2025-09#001",
+     "en_jrc_2025-09#027",
+     "en_jrc_2025-06#030",
+     "en_jrc_2025-06#028"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#040",
+     "uk_hydromet_year_2020#035",
+     "uk_hydromet_year_2020#005",
+     "uk_hydromet_year_2020#051"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-04#011",
+     "en_jrc_2024-09#008",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-04#009",
+     "en_jrc_2024-09#001"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "uk_hydromet_2022-09-d1#017",
+     "uk_hydromet_2021-08-d1#018",
+     "uk_hydromet_2023-07-d2#020",
+     "uk_hydromet_2022-02-d1#010"
+    ]
+   }
+  ]
+ },
+ "D hybrid + rerank bge | max 300 | e5": {
+  "recall@1": 0.47058823529411764,
+  "recall@3": 0.6470588235294118,
+  "recall@5": 0.7058823529411765,
+  "recall@10": 0.7058823529411765,
+  "hit@1": 0.47058823529411764,
+  "hit@3": 0.6470588235294118,
+  "hit@5": 0.7058823529411765,
+  "hit@10": 0.7058823529411765,
+  "MRR": 0.5607843137254902,
+  "ms/query": 28905.07374200388,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#004",
+     "uk_hydromet_2023-07-d3#009",
+     "uk_hydromet_2023-07-d1#009",
+     "uk_hydromet_2023-07-d3#008",
+     "uk_hydromet_2023-07-d2#004"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#017",
+     "uk_hydromet_2023-07-d2#015",
+     "uk_hydromet_2023-07-d2#014",
+     "uk_hydromet_2023-07-d2#017",
+     "uk_hydromet_2023-07-d1#019"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#014",
+     "uk_hydromet_2023-04-d3#015",
+     "uk_hydromet_2023-03-d3#015",
+     "uk_hydromet_2023-10-d2#014",
+     "uk_hydromet_2024-03-d1#011"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#008",
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2024-03-d1#010",
+     "uk_hydromet_2024-03-d1#009",
+     "uk_hydromet_2024-03-d1#011"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#030",
+     "en_jrc_2022-06#033"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#014",
+     "en_jrc_2024-06#009",
+     "en_jrc_2024-06#005",
+     "en_jrc_2023-06#004",
+     "en_jrc_2024-06#011"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#020",
+     "uk_hydromet_2023-07-d2#019",
+     "uk_hydromet_2023-07-d1#020",
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024#001"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2022#073",
+     "uk_hydromet_year_2023#205",
+     "uk_hydromet_year_2022#067",
+     "uk_hydromet_year_2022#008",
+     "uk_hydromet_year_2022#084"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-06#050",
+     "en_jrc_2025-09#047",
+     "en_jrc_2025-06#055",
+     "en_jrc_2025-06#051",
+     "en_jrc_2025-09#048"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024#002",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024#000"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#018",
+     "uk_hydromet_2021-08-d3#018",
+     "uk_hydromet_2022-09-d1#017",
+     "uk_hydromet_2023-07-d2#021",
+     "uk_hydromet_2023-07-d3#021"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#014",
+     "uk_hydromet_2022-10-d2#012",
+     "uk_hydromet_2022-10-d2#010",
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_2023-10-d2#009"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#019",
+     "en_derzhstat_crops_annual#043",
+     "en_derzhstat_crops_annual#046",
+     "en_derzhstat_crops_annual#007",
+     "en_derzhstat_crops_annual#074"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2024-09#020",
+     "en_jrc_2025-09#001",
+     "en_jrcnews_2025-09#001",
+     "en_jrc_2025-09#006",
+     "en_jrc_2025-09#023"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#005",
+     "uk_hydromet_year_2020#035",
+     "uk_hydromet_year_2020#024",
+     "uk_hydromet_year_2020#040"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#014",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2024-06#011",
+     "en_jrc_2023-06#063",
+     "en_jrc_2023-04#011"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-06#003",
+     "uk_hydromet_2022-09-d1#017",
+     "en_jrc_2023-09#002",
+     "uk_odstat_crops_2024-10#000"
+    ]
+   }
+  ]
+ },
+ "D vector | max 450 (used) | e5": {
+  "recall@1": 0.47058823529411764,
+  "recall@3": 0.5882352941176471,
+  "recall@5": 0.5882352941176471,
+  "recall@10": 0.6470588235294118,
+  "hit@1": 0.47058823529411764,
+  "hit@3": 0.5882352941176471,
+  "hit@5": 0.5882352941176471,
+  "hit@10": 0.6470588235294118,
+  "MRR": 0.517156862745098,
+  "ms/query": 161.5650790045038,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-07-d3#003",
+     "uk_hydromet_2023-07-d2#003",
+     "uk_hydromet_2021-07-d1#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d1#012",
+     "uk_hydromet_2023-07-d1#013"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_2023-07-d1#011",
+     "uk_hydromet_2023-04-d3#014"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2023-03-d3#011",
+     "uk_hydromet_2024-03-d1#008"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "uk_hydromet_2022-02-d1#007",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-06#047",
+     "en_jrc_2024-09#001",
+     "en_jrc_2024-09#017"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#014",
+     "uk_hydromet_2023-07-d2#013",
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2023-10-d1#014",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2021#060",
+     "uk_hydromet_year_2022#006",
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2022#036",
+     "uk_hydromet_year_2021#009"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-09#037",
+     "en_jrc_2025-06#039",
+     "en_jrc_2025-09#034",
+     "en_jrc_2025-06#036",
+     "en_jrc_2025-09#036"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2023-07-d3#015",
+     "uk_hydromet_2023-07-d2#014"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-10-d1#009",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2023-10-d1#011",
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2023-04-d3#011"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#032",
+     "uk_hydromet_2021-07-d1#014",
+     "uk_hydromet_2021-08-d1#013",
+     "uk_hydromet_2021-08-d1#012",
+     "en_derzhstat_crops_annual#014"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 8,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2025-09#001",
+     "en_jrc_2025-06#020",
+     "en_jrc_2025-09#018",
+     "en_jrc_2025-09#020",
+     "en_jrc_2025-06#023"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#016",
+     "uk_hydromet_year_2020#027",
+     "uk_hydromet_year_2019#004"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#048",
+     "en_jrc_2025-06#012",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-04#006",
+     "en_jrc_2023-06#047"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#027",
+     "uk_hydromet_2023-07-d1#015",
+     "uk_hydromet_2022-02-d1#007",
+     "uk_hydromet_2021-08-d1#014"
+    ]
+   }
+  ]
+ },
+ "D hybrid + rerank bge | max 450 (used) | e5": {
+  "recall@1": 0.47058823529411764,
+  "recall@3": 0.6470588235294118,
+  "recall@5": 0.6470588235294118,
+  "recall@10": 0.6764705882352942,
+  "hit@1": 0.47058823529411764,
+  "hit@3": 0.6470588235294118,
+  "hit@5": 0.6470588235294118,
+  "hit@10": 0.7058823529411765,
+  "MRR": 0.565359477124183,
+  "ms/query": 40922.676109999884,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-07-d1#002",
+     "uk_hydromet_2023-07-d2#003",
+     "uk_hydromet_2023-07-d3#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d1#013",
+     "uk_hydromet_2023-07-d2#012"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_year_2023#095",
+     "uk_hydromet_2023-07-d1#011"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#008",
+     "uk_hydromet_2023-03-d3#011"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "en_jrc_2022-06#023"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2024-06#007",
+     "en_jrc_2024-06#003",
+     "en_jrc_2025-06#007",
+     "en_jrc_2022-06#010"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2023-07-d2#013",
+     "uk_odstat_crops_2024#000",
+     "uk_hydromet_2023-07-d1#014",
+     "uk_odstat_crops_2024-10#000"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2023#139",
+     "uk_hydromet_year_2023#096",
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2022#006",
+     "uk_hydromet_year_2022#004"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-06#036",
+     "en_jrc_2025-09#034",
+     "en_jrc_2026-06#038",
+     "en_jrc_2026-09#042",
+     "en_jrc_2025-09#035"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2022-10-d2#007",
+     "uk_hydromet_2023-10-d2#009",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2022-10-d2#006"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#035",
+     "en_derzhstat_crops_annual#029",
+     "en_derzhstat_crops_annual#014",
+     "en_derzhstat_crops_annual#005",
+     "en_derzhstat_crops_annual#032"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 9,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.5
+    },
+    "top": [
+     "en_jrc_2024-09#015",
+     "en_jrc_2025-09#001",
+     "en_jrc_2025-09#018",
+     "en_jrc_2025-06#021",
+     "en_jrc_2025-06#020"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#027",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_year_2020#016"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2023-04#008",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2024-06#008",
+     "en_jrc_2024-06#013"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000"
+    ]
+   }
+  ]
+ },
+ "E hybrid + rerank jina, top 20 | structural | e5": {
+  "recall@1": 0.47058823529411764,
+  "recall@3": 0.5294117647058824,
+  "recall@5": 0.6764705882352942,
+  "recall@10": 0.7058823529411765,
+  "hit@1": 0.47058823529411764,
+  "hit@3": 0.5294117647058824,
+  "hit@5": 0.7058823529411765,
+  "hit@10": 0.7058823529411765,
+  "MRR": 0.5254901960784314,
+  "ms/query": 14376.427322014933,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-07-d1#006",
+     "uk_hydromet_2021-07-d1#003",
+     "uk_hydromet_year_2022#005"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d2#012",
+     "uk_hydromet_2023-07-d1#013"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-04-d3#014",
+     "uk_hydromet_year_2023#095",
+     "uk_hydromet_2023-03-d3#006"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#003",
+     "uk_hydromet_2024-03-d1#002",
+     "uk_hydromet_2024-03-d1#005"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "en_jrc_2022-06#023"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-06#004",
+     "en_jrc_2024-06#003",
+     "en_jrc_2025-06#007",
+     "en_jrc_2024-06#008",
+     "en_jrc_2025-06#012"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#001",
+     "uk_hydromet_2023-07-d1#014"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2023#139",
+     "uk_hydromet_year_2023#096",
+     "uk_hydromet_2023-01-d1#003",
+     "uk_hydromet_year_2023#008",
+     "uk_hydromet_year_2022#006"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-06#038",
+     "en_jrc_2025-09#036",
+     "en_jrc_2025-06#036",
+     "en_jrc_2026-06#038",
+     "en_jrc_2025-09#034"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024-10#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2023-07-d2#014"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 3,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2022-10-d2#007",
+     "uk_hydromet_2023-10-d2#009",
+     "uk_hydromet_2023-10-d2#007"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#032",
+     "en_derzhstat_crops_annual#035",
+     "en_derzhstat_crops_annual#029",
+     "en_derzhstat_crops_annual#005",
+     "en_derzhstat_crops_annual#014"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 5,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.5,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-06#022",
+     "en_jrc_2025-06#020",
+     "en_jrc_2025-06#023",
+     "en_jrc_2025-06#021",
+     "en_jrc_2025-06#016"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_year_2020#031",
+     "uk_hydromet_year_2020#027"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2024-09#008",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-04#008",
+     "en_jrc_2023-04#025"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "uk_hydromet_year_2022#047",
+     "uk_odstat_crops_2024#000"
+    ]
+   }
+  ]
+ },
+ "E hybrid + rerank jina, top 10 | structural | e5": {
+  "recall@1": 0.5294117647058824,
+  "recall@3": 0.5294117647058824,
+  "recall@5": 0.5294117647058824,
+  "recall@10": 0.5294117647058824,
+  "hit@1": 0.5294117647058824,
+  "hit@3": 0.5294117647058824,
+  "hit@5": 0.5294117647058824,
+  "hit@10": 0.5294117647058824,
+  "MRR": 0.5294117647058824,
+  "ms/query": 6414.442239009077,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2021-07-d1#003",
+     "uk_hydromet_year_2022#005",
+     "uk_hydromet_2023-07-d2#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d2#012",
+     "uk_hydromet_2023-07-d1#013"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-04-d3#014",
+     "uk_hydromet_year_2023#095",
+     "uk_hydromet_2023-07-d1#011"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#003",
+     "uk_hydromet_2024-03-d1#002",
+     "uk_hydromet_2024-03-d1#008",
+     "uk_hydromet_2023-03-d3#011"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-06#003",
+     "uk_hydromet_2022-02-d1#007",
+     "uk_odstat_crops_2024#000"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2024-06#003",
+     "en_jrc_2024-06#008",
+     "en_jrc_2025-06#012",
+     "en_jrc_2024-06#007",
+     "en_jrc_2024-09#016"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_hydromet_2023-07-d1#014",
+     "uk_hydromet_2023-10-d1#014",
+     "uk_hydromet_2023-07-d2#013",
+     "uk_hydromet_2023-07-d3#014"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2023#008",
+     "uk_hydromet_year_2022#006",
+     "uk_hydromet_year_2023#010",
+     "uk_hydromet_year_2022#004",
+     "uk_hydromet_year_2022#043"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-09#034",
+     "en_jrc_2025-06#039",
+     "en_jrc_2025-09#037",
+     "en_jrc_2025-09#013",
+     "en_jrcnews_2025-09#002"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024-10#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2023-07-d2#014"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2023-10-d2#009",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2023-10-d1#011",
+     "uk_hydromet_2023-07-d2#008"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#032",
+     "en_derzhstat_crops_annual#014",
+     "uk_hydromet_2021-07-d1#014",
+     "uk_hydromet_2021-08-d1#013",
+     "uk_hydromet_2021-08-d1#012"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#020",
+     "en_jrc_2025-09#020",
+     "en_jrc_2025-09#018",
+     "en_jrc_2025-06#019",
+     "en_jrc_2024-09#015"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_year_2020#027",
+     "uk_hydromet_year_2020#016"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-04#008",
+     "en_jrc_2023-04#024",
+     "en_jrc_2024-09#009",
+     "en_jrc_2023-06#010",
+     "en_jrc_2024-09#007"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#027",
+     "uk_hydromet_2022-10-d2#007",
+     "uk_hydromet_2022-09-d1#011",
+     "uk_hydromet_2023-10-d2#012"
+    ]
+   }
+  ]
+ },
+ "E hybrid + rerank bge, top 20 | structural | e5": {
+  "recall@1": 0.47058823529411764,
+  "recall@3": 0.6470588235294118,
+  "recall@5": 0.6470588235294118,
+  "recall@10": 0.6764705882352942,
+  "hit@1": 0.47058823529411764,
+  "hit@3": 0.6470588235294118,
+  "hit@5": 0.6470588235294118,
+  "hit@10": 0.7058823529411765,
+  "MRR": 0.565359477124183,
+  "ms/query": 41352.20568999648,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-07-d1#002",
+     "uk_hydromet_2023-07-d2#003",
+     "uk_hydromet_2023-07-d3#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d1#013",
+     "uk_hydromet_2023-07-d2#012"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_year_2023#095",
+     "uk_hydromet_2023-07-d1#011"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#008",
+     "uk_hydromet_2023-03-d3#011"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "en_jrc_2022-06#023"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2024-06#007",
+     "en_jrc_2024-06#003",
+     "en_jrc_2025-06#007",
+     "en_jrc_2022-06#010"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2023-07-d2#013",
+     "uk_odstat_crops_2024#000",
+     "uk_hydromet_2023-07-d1#014",
+     "uk_odstat_crops_2024-10#000"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2023#139",
+     "uk_hydromet_year_2023#096",
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2022#006",
+     "uk_hydromet_year_2022#004"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-06#036",
+     "en_jrc_2025-09#034",
+     "en_jrc_2026-06#038",
+     "en_jrc_2026-09#042",
+     "en_jrc_2025-09#035"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2022-10-d2#007",
+     "uk_hydromet_2023-10-d2#009",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2022-10-d2#006"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#035",
+     "en_derzhstat_crops_annual#029",
+     "en_derzhstat_crops_annual#014",
+     "en_derzhstat_crops_annual#005",
+     "en_derzhstat_crops_annual#032"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 9,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.5
+    },
+    "top": [
+     "en_jrc_2024-09#015",
+     "en_jrc_2025-09#001",
+     "en_jrc_2025-09#018",
+     "en_jrc_2025-06#021",
+     "en_jrc_2025-06#020"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#027",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_year_2020#016"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2023-04#008",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2024-06#008",
+     "en_jrc_2024-06#013"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000"
+    ]
+   }
+  ]
+ },
+ "E hybrid + rerank bge, top 10 | structural | e5": {
+  "recall@1": 0.47058823529411764,
+  "recall@3": 0.5294117647058824,
+  "recall@5": 0.5294117647058824,
+  "recall@10": 0.5294117647058824,
+  "hit@1": 0.47058823529411764,
+  "hit@3": 0.5294117647058824,
+  "hit@5": 0.5294117647058824,
+  "hit@10": 0.5294117647058824,
+  "MRR": 0.5,
+  "ms/query": 18819.7559939872,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-07-d2#003",
+     "uk_hydromet_2023-07-d3#003",
+     "uk_hydromet_2021-07-d1#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d1#013",
+     "uk_hydromet_2023-07-d2#012"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_year_2023#095",
+     "uk_hydromet_2023-07-d1#011"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#008",
+     "uk_hydromet_2023-03-d3#011",
+     "uk_hydromet_2023-03-d3#009",
+     "uk_hydromet_2022-02-d1#006"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024#000"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2024-06#007",
+     "en_jrc_2024-06#003",
+     "en_jrc_2022-06#010",
+     "en_jrc_2024-06#004"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2023-07-d2#013",
+     "uk_odstat_crops_2024#000",
+     "uk_hydromet_2023-07-d1#014",
+     "uk_hydromet_2023-10-d1#014"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2022#006",
+     "uk_hydromet_year_2022#004",
+     "uk_hydromet_year_2023#008",
+     "uk_hydromet_year_2021#009"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-09#034",
+     "en_jrc_2025-09#001",
+     "en_jrc_2025-09#013",
+     "en_jrc_2025-09#037",
+     "en_jrc_2025-06#039"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2023-10-d2#009",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2023-10-d1#011",
+     "uk_hydromet_2023-10-d1#009"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#014",
+     "en_derzhstat_crops_annual#032",
+     "uk_hydromet_2021-08-d1#013",
+     "uk_hydromet_2021-07-d1#014",
+     "uk_hydromet_year_2020#091"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2024-09#015",
+     "en_jrc_2025-09#001",
+     "en_jrc_2025-09#018",
+     "en_jrc_2025-06#020",
+     "en_jrcnews_2025-09#001"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#027",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_year_2020#016"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2023-04#008",
+     "en_jrc_2024-06#008",
+     "en_jrc_2024-06#013",
+     "en_jrc_2024-09#007",
+     "en_jrc_2023-06#048"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#027",
+     "uk_odstat_crops_2024-10#000",
+     "uk_hydromet_2022-09-d1#011",
+     "uk_odstat_crops_2024-10#001"
+    ]
+   }
+  ]
+ },
+ "E vector + rerank bge, top 20 (no BM25) | structural | e5": {
+  "recall@1": 0.47058823529411764,
+  "recall@3": 0.6176470588235294,
+  "recall@5": 0.6176470588235294,
+  "recall@10": 0.6176470588235294,
+  "hit@1": 0.47058823529411764,
+  "hit@3": 0.6470588235294118,
+  "hit@5": 0.6470588235294118,
+  "hit@10": 0.6470588235294118,
+  "MRR": 0.5588235294117647,
+  "ms/query": 38057.440004020464,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-07-d1#002",
+     "uk_hydromet_2023-07-d2#003",
+     "uk_hydromet_2023-07-d3#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d1#013",
+     "uk_hydromet_2023-07-d2#012"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_year_2023#095",
+     "uk_hydromet_2023-07-d1#011"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#008",
+     "uk_hydromet_2023-03-d3#011"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "en_jrc_2022-06#022"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2024-06#007",
+     "en_jrc_2024-06#003",
+     "en_jrc_2023-04#022",
+     "en_jrc_2024-09#001"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2023-07-d2#013",
+     "uk_hydromet_2023-07-d1#014",
+     "uk_hydromet_2023-09-d1#007",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2022#075",
+     "uk_hydromet_year_2022#080",
+     "uk_hydromet_year_2023#139",
+     "uk_hydromet_year_2023#096",
+     "uk_hydromet_year_2022#043"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-06#036",
+     "en_jrc_2025-09#034",
+     "en_jrc_2026-06#038",
+     "en_jrc_2026-09#042",
+     "en_jrc_2025-06#018"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2023-10-d2#009",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2022-10-d2#006",
+     "uk_hydromet_2022-10-d2#010"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 0.5,
+     "5": 0.5,
+     "10": 0.5
+    },
+    "top": [
+     "en_derzhstat_crops_annual#056",
+     "en_derzhstat_crops_annual#008",
+     "en_derzhstat_crops_annual#035",
+     "en_derzhstat_crops_annual#029",
+     "en_derzhstat_crops_annual#017"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2025-09#001",
+     "en_jrcnews_2026-09#000",
+     "en_jrc_2025-09#018",
+     "en_jrc_2025-06#021"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#027",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_year_2020#020"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2023-04#008",
+     "en_jrc_2024-06#007",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2024-06#008"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "en_jrc_2022-06#013"
+    ]
+   }
+  ]
+ },
+ "E vector + rerank bge, top 10 (no BM25) | structural | e5": {
+  "recall@1": 0.47058823529411764,
+  "recall@3": 0.5882352941176471,
+  "recall@5": 0.5882352941176471,
+  "recall@10": 0.6470588235294118,
+  "hit@1": 0.47058823529411764,
+  "hit@3": 0.5882352941176471,
+  "hit@5": 0.5882352941176471,
+  "hit@10": 0.6470588235294118,
+  "MRR": 0.5378151260504201,
+  "ms/query": 17644.65811100672,
+  "rows": [
+   {
+    "id": "d01",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d1#003",
+     "uk_hydromet_2023-07-d3#006",
+     "uk_hydromet_2023-07-d1#002",
+     "uk_hydromet_2023-07-d2#003",
+     "uk_hydromet_2023-07-d3#003"
+    ]
+   },
+   {
+    "id": "d02",
+    "kind": "exact",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#012",
+     "uk_hydromet_2023-07-d2#011",
+     "uk_hydromet_2023-07-d2#010",
+     "uk_hydromet_2023-07-d1#013",
+     "uk_hydromet_2023-07-d2#012"
+    ]
+   },
+   {
+    "id": "d03",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2023-03-d3#010",
+     "uk_hydromet_2023-04-d3#013",
+     "uk_hydromet_2023-10-d2#011",
+     "uk_hydromet_year_2023#095",
+     "uk_hydromet_2023-07-d1#011"
+    ]
+   },
+   {
+    "id": "d04",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2024-03-d1#005",
+     "uk_hydromet_2024-03-d1#007",
+     "uk_hydromet_2024-03-d1#006",
+     "uk_hydromet_2024-03-d1#008",
+     "uk_hydromet_2023-03-d3#011"
+    ]
+   },
+   {
+    "id": "d05",
+    "kind": "cross_lingual",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrc_2022-06#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "en_jrc_2022-06#023"
+    ]
+   },
+   {
+    "id": "d06",
+    "kind": "cross_lingual",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2024-06#003",
+     "en_jrc_2023-04#022",
+     "en_jrc_2024-09#001",
+     "en_jrc_2024-09#016"
+    ]
+   },
+   {
+    "id": "d07",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2023-07-d3#014",
+     "uk_hydromet_2023-07-d2#013",
+     "uk_hydromet_2023-07-d1#014",
+     "uk_hydromet_2023-07-d1#015",
+     "uk_hydromet_2023-10-d1#014"
+    ]
+   },
+   {
+    "id": "d08",
+    "kind": "table",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_year_2023#139",
+     "uk_hydromet_year_2023#096",
+     "uk_hydromet_year_2022#043",
+     "uk_hydromet_year_2022#006",
+     "uk_hydromet_year_2021#009"
+    ]
+   },
+   {
+    "id": "d09",
+    "kind": "stale",
+    "first_rank": 2,
+    "recall": {
+     "1": 0.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-06#036",
+     "en_jrc_2025-09#034",
+     "en_jrc_2026-06#038",
+     "en_jrc_2026-09#042",
+     "en_jrc_2025-09#035"
+    ]
+   },
+   {
+    "id": "d10",
+    "kind": "stale",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_odstat_crops_2024#000",
+     "uk_odstat_crops_2024-10#000",
+     "uk_odstat_crops_2024-10#001",
+     "uk_odstat_crops_2024#001",
+     "uk_odstat_crops_2024-10#002"
+    ]
+   },
+   {
+    "id": "d11",
+    "kind": "similar",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_2022-08-d3#014",
+     "uk_hydromet_2021-08-d3#012",
+     "uk_hydromet_2022-09-d1#012",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2023-07-d1#015"
+    ]
+   },
+   {
+    "id": "d12",
+    "kind": "similar",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "uk_hydromet_2022-10-d2#009",
+     "uk_hydromet_2023-10-d2#009",
+     "uk_hydromet_2023-10-d2#007",
+     "uk_hydromet_2022-10-d2#006",
+     "uk_hydromet_2023-10-d1#011"
+    ]
+   },
+   {
+    "id": "d13",
+    "kind": "multi_chunk",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_derzhstat_crops_annual#035",
+     "en_derzhstat_crops_annual#029",
+     "en_derzhstat_crops_annual#014",
+     "en_derzhstat_crops_annual#005",
+     "en_derzhstat_crops_annual#032"
+    ]
+   },
+   {
+    "id": "d14",
+    "kind": "multi_chunk",
+    "first_rank": 7,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrc_2025-09#001",
+     "en_jrc_2025-09#018",
+     "en_jrc_2025-06#020",
+     "en_jrcnews_2025-09#001",
+     "en_jrc_2025-09#020"
+    ]
+   },
+   {
+    "id": "d15",
+    "kind": "paraphrase",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "uk_hydromet_year_2020#003",
+     "uk_hydromet_year_2020#027",
+     "uk_hydromet_year_2020#004",
+     "uk_hydromet_year_2020#037",
+     "uk_hydromet_year_2020#016"
+    ]
+   },
+   {
+    "id": "d16",
+    "kind": "yes_no",
+    "first_rank": null,
+    "recall": {
+     "1": 0.0,
+     "3": 0.0,
+     "5": 0.0,
+     "10": 0.0
+    },
+    "top": [
+     "en_jrc_2025-06#012",
+     "en_jrc_2023-04#008",
+     "en_jrcnews_2024-06#000",
+     "en_jrc_2023-06#047",
+     "en_jrc_2024-06#006"
+    ]
+   },
+   {
+    "id": "d19",
+    "kind": "cross_lingual",
+    "first_rank": 1,
+    "recall": {
+     "1": 1.0,
+     "3": 1.0,
+     "5": 1.0,
+     "10": 1.0
+    },
+    "top": [
+     "en_jrcnews_2022-09#002",
+     "en_jrcnews_2022-06#003",
+     "en_jrc_2022-06#027",
+     "uk_hydromet_2022-08-d3#013",
+     "uk_hydromet_2021-08-d1#014"
+    ]
+   }
+  ]
+ }
+}

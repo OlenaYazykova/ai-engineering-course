@@ -74,3 +74,12 @@ experiments = [
   ["gemini_flash_lite", "v2", "t0"],
 ]
 # Prompt v3 was rejected by the regression check (results/extract/regression/), so it is not in the matrix.
+
+
+# ---------------------------------------------------------------- stage 2: RAG
+[rag]
+# Chosen on the dev questions by `make rag-retrieval-eval` (results/rag/retrieval_dev.md).
+embedding = "e5"        # minilm | mpnet | e5 (agro/rag/embed.py)
+reranker = "bge"        # jina | bge (agro/rag/search.py)
+chunk_tokens = 450      # structural chunk size, tokens (agro/rag/chunking.py; compared: part D)
+rerank_top = 20         # candidates reordered by the reranker (20 vs 10: part E; time grows with it)

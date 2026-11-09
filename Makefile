@@ -3,7 +3,7 @@ PY ?= python
 # Every stage of the course project has its own prefix: extract- (homework 1), rag- (homework 2), ...
 # `make run` runs the pipeline of the current stage.
 
-.PHONY: install test fetch run rag-ingest rag-chunk \
+.PHONY: install test fetch run rag-ingest rag-chunk rag-index rag-retrieval-eval rag-lint-testset \
         extract-run extract-run-all extract-metrics extract-smoke extract-regress extract-revalidate \
         extract-before-checks extract-check-golden extract-texts
 
@@ -18,7 +18,7 @@ test:                   ## unit tests of every stage, no network
 fetch:                  ## download the source documents (PDF / HTML) into data/raw/
 	$(PY) -m agro.corpus.fetch
 
-run: rag-ingest rag-chunk  ## the pipeline of the current stage (homework 2: RAG; index and evals follow)
+run: rag-ingest rag-chunk rag-lint-testset rag-index rag-retrieval-eval  ## the pipeline of the current stage (homework 2: RAG; answers and evals follow)
 
 # ---------- stage 2: RAG + evals (homework 2) ----------
 
@@ -27,6 +27,15 @@ rag-ingest:             ## data/raw/ -> cleaned documents in data/corpus/ + mani
 
 rag-chunk:              ## data/corpus/ -> data/rag/chunks.jsonl + fixed-size baseline + results/rag/chunking.md
 	$(PY) main.py rag chunk
+
+rag-index:              ## embeddings (3 models, cached) + Qdrant indexes in .cache/qdrant/
+	$(PY) main.py rag index
+
+rag-lint-testset:       ## check the test set: fields, kinds, every evidence phrase is in its document
+	$(PY) main.py rag lint-testset
+
+rag-retrieval-eval:     ## recall@k / MRR of vector / BM25 / hybrid / reranker / filters on the dev questions
+	$(PY) main.py rag retrieval-eval
 
 # ---------- stage 1: structured extraction (homework 1) ----------
 

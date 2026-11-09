@@ -14,6 +14,10 @@ Stage 1 (homework 1), structured extraction:
 Stage 2 (homework 2), RAG over the corpus:
     python main.py rag ingest [--force] [--only DOC_ID ...]   # data/raw/ -> data/corpus/ (+ manifest)
     python main.py rag chunk                                   # data/corpus/ -> data/rag/chunks.jsonl
+    python main.py rag index [--models e5 ...]                 # embeddings + Qdrant (cached)
+    python main.py rag search "питання" [--year 2023 --month 7 --source JRC] [--auto-filters]
+    python main.py rag retrieval-eval [--split dev]            # recall@k / MRR -> results/rag/
+    python main.py rag lint-testset                            # checks of the test set itself
 """
 
 import argparse
@@ -98,6 +102,22 @@ def add_rag(stages) -> None:
     ing.add_argument("--force", action="store_true", help="read every document again (ignore the cache)")
     ing.add_argument("--only", nargs="+", help="read these documents again")
     sub.add_parser("chunk", help="cut the documents into chunks -> data/rag/chunks.jsonl (+ fixed-size baseline)")
+    idx = sub.add_parser("index", help="embeddings + Qdrant index of the structural chunks")
+    idx.add_argument("--models", nargs="+", default=["minilm", "mpnet", "e5"])
+    s = sub.add_parser("search", help="search the corpus and print the chunks found")
+    s.add_argument("query")
+    s.add_argument("--method", default="hybrid_rerank", choices=["vector", "bm25", "hybrid", "hybrid_rerank", "vector_rerank"])
+    s.add_argument("-k", type=int, default=5)
+    s.add_argument("--chunker", default="structural", choices=["structural", "fixed"])
+    s.add_argument("--model", help="embedding model (default: config.toml [rag])")
+    s.add_argument("--reranker", help="reranker (default: config.toml [rag])")
+    s.add_argument("--auto-filters", action="store_true", help="read year / month / decade / source from the question")
+    for name, typ in (("year", int), ("month", int), ("decade", int), ("source", str), ("language", str),
+                      ("topic", str), ("kind", str), ("date-from", str), ("date-to", str)):
+        s.add_argument(f"--{name}", type=typ)
+    sub.add_parser("lint-testset", help="check the test set: fields, kinds, evidence phrases in the documents")
+    ev = sub.add_parser("retrieval-eval", help="recall@k / MRR of the search configurations")
+    ev.add_argument("--split", default="dev", choices=["dev", "test"])
 
 
 def run_rag(args) -> None:
@@ -107,6 +127,28 @@ def run_rag(args) -> None:
     elif args.cmd == "chunk":
         from agro.rag.chunking import run
         run()
+    elif args.cmd == "index":
+        from agro.rag.search import run_index
+        run_index(models=tuple(args.models))
+    elif args.cmd == "search":
+        from agro.rag.filters import Filters, from_question
+        from agro.rag.search import Retriever, print_hits
+        flt = Filters(year=args.year, month=args.month, decade=args.decade, source=args.source,
+                      language=args.language, topic=args.topic, kind=args.kind,
+                      date_from=args.date_from, date_to=args.date_to)
+        if args.auto_filters:
+            auto = from_question(args.query)
+            flt = Filters(**{k: getattr(flt, k) if getattr(flt, k) is not None else getattr(auto, k)
+                             for k in flt.__dataclass_fields__})
+        print(f"filters: {flt.active() or 'none'}")
+        r = Retriever(args.chunker, args.model, args.reranker)
+        print_hits(r.search(args.query, k=args.k, method=args.method, flt=flt if flt.active() else None))
+    elif args.cmd == "lint-testset":
+        from agro.rag.testset import run
+        run()
+    elif args.cmd == "retrieval-eval":
+        from agro.rag.retrieval_eval import run
+        run(args.split)
 
 
 def main() -> None:
