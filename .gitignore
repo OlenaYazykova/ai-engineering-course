@@ -4,8 +4,9 @@
 # source documents: large, re-downloaded with `make fetch`
 data/raw/
 
-# response cache (re-created by the runs)
+# caches (re-created by the runs) and downloaded models (OCR, embeddings, tokenizer)
 .cache/
+.models/
 
 # notebooks with working notes
 *.ipynb

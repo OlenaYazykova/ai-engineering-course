@@ -9,8 +9,48 @@ of the AI Engineering course; it grows stage by stage, plan: [PROJECT_PLAN.md](P
 | 1. Structured extraction (homework 1) | bulletin text → JSON (soil moisture, crops, hazards, yield outlook) | `agro/extract/` | `make extract-…` | `hw1` | [reports/hw1.md](reports/hw1.md) |
 | 2. RAG + evals (homework 2) | question → answer with sources, evals in CI | `agro/rag/` | `make rag-…` | in progress | — |
 
-Shared code: `agro/common/` (model providers, response cache), `agro/corpus/` (downloading the documents).
-`make test` runs the unit tests of every stage, `make run` the pipeline of the current stage.
+Shared code: `agro/common/` (model providers, response cache, paths), `agro/corpus/` (the documents:
+download, reading every format, OCR, cleaning, duplicates). `make test` runs the unit tests of every stage,
+`make run` the pipeline of the current stage.
+
+## Stage 2: RAG over the bulletins + evals (in progress)
+
+Step 1 (done): corpus, ingestion, personal data masking, chunking. Steps 2-4 (index and hybrid search, answers with
+citations, evals in CI) follow.
+
+### Run
+
+```bash
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu   # OCR needs torch; CPU build
+make install
+make fetch          # originals into data/raw/ (one CSV is exported by hand: the command says how)
+make run            # = make rag-ingest rag-chunk
+```
+
+Models (OCR, tokenizer, later embeddings) are downloaded on first use into `.models/` in the project
+folder (or `AGRO_MODELS_DIR` from `.env`), never into the home folder. LibreOffice (`soffice`) is needed
+for the one `.doc` file.
+
+### Corpus
+
+48 documents, 6 formats (PDF, HTML, DOCX, DOC, XLSX, CSV), Ukrainian and English: Hydromet decadal
+bulletins and annual reviews, JRC MARS bulletins and news, Odesa oblast and national crop statistics.
+Sources, licences, the reading of every format and the traps of the corpus (a duplicate, outdated
+versions, similar documents, an off-topic document): [data/corpus/README.md](data/corpus/README.md).
+Every document: `data/corpus/manifest.csv`.
+
+Personal data (names of analysts and staff, e-mails, phones) is masked before the corpus is written, by
+Microsoft Presidio with spaCy NER (Ukrainian and English) and our rules as a Presidio recognizer; every
+document is checked again after masking: [data/corpus/README.md](data/corpus/README.md#personal-data).
+
+### Chunking
+
+Structural (`agro/rag/chunking.py`): a chunk never crosses a heading; paragraphs of one section are packed
+up to 450 tokens (`chunk_tokens` in config.toml; a longer paragraph is split at sentence ends); a table is its own chunk, split by rows
+with the header row repeated in every part; every chunk carries a context line (document, period,
+section) for the embeddings and for the model. Compared with fixed windows of 450 tokens / 50 overlap
+on the same corpus, and with structural chunks of 300 tokens: [results/rag/chunking.md](results/rag/chunking.md)
+(chunks starting mid-sentence, tables cut without their header); retrieval quality of all three: step 2.
 
 ## Stage 1: Structured Extraction Service
 

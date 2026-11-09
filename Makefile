@@ -3,7 +3,7 @@ PY ?= python
 # Every stage of the course project has its own prefix: extract- (homework 1), rag- (homework 2), ...
 # `make run` runs the pipeline of the current stage.
 
-.PHONY: install test fetch run \
+.PHONY: install test fetch run rag-ingest rag-chunk \
         extract-run extract-run-all extract-metrics extract-smoke extract-regress extract-revalidate \
         extract-before-checks extract-check-golden extract-texts
 
@@ -18,8 +18,15 @@ test:                   ## unit tests of every stage, no network
 fetch:                  ## download the source documents (PDF / HTML) into data/raw/
 	$(PY) -m agro.corpus.fetch
 
-run:                    ## the pipeline of the current stage (homework 2: RAG, in progress)
-	@echo "Stage 2 (RAG) is in progress. Stage 1: make extract-run"
+run: rag-ingest rag-chunk  ## the pipeline of the current stage (homework 2: RAG; index and evals follow)
+
+# ---------- stage 2: RAG + evals (homework 2) ----------
+
+rag-ingest:             ## data/raw/ -> cleaned documents in data/corpus/ + manifest (cached, OCR where set)
+	$(PY) main.py rag ingest
+
+rag-chunk:              ## data/corpus/ -> data/rag/chunks.jsonl + fixed-size baseline + results/rag/chunking.md
+	$(PY) main.py rag chunk
 
 # ---------- stage 1: structured extraction (homework 1) ----------
 

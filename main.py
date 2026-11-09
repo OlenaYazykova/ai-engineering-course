@@ -10,6 +10,10 @@ Stage 1 (homework 1), structured extraction:
     python main.py extract regress --model gpt4o_mini --prompt v3 --baseline v2   # new prompt vs old
     python main.py extract revalidate     # re-check saved answers with the current checks (no model calls)
     python main.py extract check-golden
+
+Stage 2 (homework 2), RAG over the corpus:
+    python main.py rag ingest [--force] [--only DOC_ID ...]   # data/raw/ -> data/corpus/ (+ manifest)
+    python main.py rag chunk                                   # data/corpus/ -> data/rag/chunks.jsonl
 """
 
 import argparse
@@ -86,14 +90,36 @@ def run_extract(args) -> None:
         revalidate.main()
 
 
+def add_rag(stages) -> None:
+    """Stage 2 (homework 2): RAG over the corpus."""
+    r = stages.add_parser("rag", help="stage 2: RAG over the corpus (homework 2)", description=add_rag.__doc__)
+    sub = r.add_subparsers(dest="cmd", required=True)
+    ing = sub.add_parser("ingest", help="read, clean and de-duplicate the documents -> data/corpus/")
+    ing.add_argument("--force", action="store_true", help="read every document again (ignore the cache)")
+    ing.add_argument("--only", nargs="+", help="read these documents again")
+    sub.add_parser("chunk", help="cut the documents into chunks -> data/rag/chunks.jsonl (+ fixed-size baseline)")
+
+
+def run_rag(args) -> None:
+    if args.cmd == "ingest":
+        from agro.corpus.ingest import run
+        run(force=args.force, only=args.only)
+    elif args.cmd == "chunk":
+        from agro.rag.chunking import run
+        run()
+
+
 def main() -> None:
     load_dotenv()
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     stages = p.add_subparsers(dest="stage", required=True)
     add_extract(stages)
+    add_rag(stages)
     args = p.parse_args()
     if args.stage == "extract":
         run_extract(args)
+    elif args.stage == "rag":
+        run_rag(args)
 
 
 if __name__ == "__main__":
