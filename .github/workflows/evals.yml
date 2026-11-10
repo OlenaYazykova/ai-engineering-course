@@ -1,0 +1,137 @@
+# Evals of the RAG (homework 2, step 4) on every push to main and every pull request that touches the
+# system: code, prompts, chunks, test set, configuration. Two jobs:
+#   1. checks: unit tests and the lint of the test set. No key, no cost.
+#   2. evals:  every question of dev and test through the system (search, answer, checks), scored by the
+#              code and by the LLM judge, then the gate against evals/baseline.json: a metric below its
+#              threshold fails the run. The report is on the page of the run (Summary), the files are an
+#              artifact of the run.
+# The key: Settings -> Secrets and variables -> Actions -> New repository secret, name OPENROUTER_API_KEY.
+# One run (45 questions, 1 repeat): about $0.04 (generation $0.57 + judge $0.27 per 1000 questions).
+# The first run downloads the models (e5, bge, ~4 GB) and computes the reranker scores on the CPU of the
+# runner (~40 s per question); later runs take them from the cache of Actions. More repeats (pass@1,
+# unstable questions): Actions -> evals -> Run workflow, `repeats` 3.
+name: evals
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "agro/**"
+      - "evals/**"
+      - "prompts/**"
+      - "data/rag/**"
+      - "data/corpus/**"
+      - "config.toml"
+      - "main.py"
+      - "Makefile"
+      - "requirements.txt"
+      - ".github/workflows/evals.yml"
+  pull_request:
+    paths:
+      - "agro/**"
+      - "evals/**"
+      - "prompts/**"
+      - "data/rag/**"
+      - "data/corpus/**"
+      - "config.toml"
+      - "main.py"
+      - "Makefile"
+      - "requirements.txt"
+      - ".github/workflows/evals.yml"
+  workflow_dispatch:
+    inputs:
+      repeats:
+        description: "Runs of every question (3: pass@1 and unstable questions)"
+        default: "3"
+
+# a new push to the same branch cancels the run in progress, so it is not paid twice
+concurrency:
+  group: evals-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install (torch from the CPU index, as in README)
+        run: |
+          pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+      - name: Unit tests (no network, no models)
+        id: tests
+        run: make test
+      - name: Lint of the test set (every evidence phrase is in its document)
+        id: lint
+        run: |
+          set -o pipefail
+          make rag-lint-testset | tee lint.txt
+      - name: Checks in the summary
+        if: always()
+        run: |
+          { echo "## Checks"; echo; echo "- unit tests: ${{ steps.tests.outcome }}";
+            echo "- test set: $(tail -1 lint.txt 2>/dev/null || echo 'not run')"; } >> "$GITHUB_STEP_SUMMARY"
+
+  evals:
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: The key is set
+        run: |
+          if [ -z "$OPENROUTER_API_KEY" ]; then
+            echo "OPENROUTER_API_KEY is not set: Settings -> Secrets and variables -> Actions" | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+      - name: Install
+        run: |
+          pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+      - name: Models from the cache (e5, bge, tokenizer)
+        uses: actions/cache@v6
+        with:
+          path: .models
+          key: models-${{ hashFiles('config.toml') }}
+          restore-keys: models-
+      - name: Index, embeddings, reranker scores and verdicts of the judge from the cache
+        uses: actions/cache/restore@v6
+        with:
+          path: .cache
+          key: cache-${{ github.run_id }}
+          restore-keys: cache-
+      - name: Evals of dev and test, then the gate
+        env:
+          REPEATS: ${{ inputs.repeats || '1' }}
+        run: |
+          set -o pipefail
+          make evals REPEATS="$REPEATS" 2>&1 | tee evals-output.txt
+      - name: Save the cache (also when the gate fails, so the next run is faster)
+        if: always()
+        uses: actions/cache/save@v6
+        with:
+          path: .cache
+          key: cache-${{ github.run_id }}
+      - name: The output when the evals did not reach the report
+        if: failure()
+        run: |
+          if [ ! -f evals/results/test.json ]; then
+            { echo "## The evals did not finish"; echo '```'; tail -40 evals-output.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: evals-results
+          path: evals/results/

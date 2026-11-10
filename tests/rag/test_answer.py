@@ -10,7 +10,8 @@ from agro.rag import answer as answer_mod
 from agro.rag.answer import NO_ANSWER_MARKER, Answerer, language
 from agro.rag.answer_eval import score, summary, threshold_rows
 from agro.rag.search import Hit
-from agro.rag.verify import extract_numbers, has_fact, sentences, uncited_sentences, verify_numbers
+from agro.rag.verify import (extract_numbers, has_fact, sentences, uncited_sentences, verify_numbers,
+                             verify_numbers_by_sentence)
 
 
 # ---------------------------------------------------------------- numbers
@@ -33,6 +34,19 @@ def test_verify_numbers_against_cited_chunks():
     assert verify_numbers("[2] [3, 4] запаси 50 мм", src).ok                       # citation marks are not numbers
 
 
+def test_numbers_checked_in_the_chunk_of_their_sentence():
+    june = "June 2025 Bulletin: Ukraine | 24 769"
+    september = "September 2025 Bulletin: Ukraine | 2024: 23 546 | 2025: 27 863"
+    a = "In June 2025 the forecast was 23,546 thousand t [1]. In September it was 27,863 [2]."
+    assert verify_numbers(a, [june, september]).ok                       # all cited chunks together: passes
+    c = verify_numbers_by_sentence(a, {1: june, 2: september})
+    assert not c.ok and c.unsupported == ["23,546 (не у фрагменті [1])"]   # the chunk of its sentence: fails
+    ok = "In June 2025 the forecast was 24 769 thousand t [1]. In September it was 27,863 [2]."
+    assert verify_numbers_by_sentence(ok, {1: june, 2: september}).ok
+    # a sentence without [n] is checked against every cited chunk (it is reported as uncited anyway)
+    assert verify_numbers_by_sentence("It was 24 769 in June. Then 27,863 [2].", {1: june, 2: september}).ok
+
+
 def test_key_facts_forms_and_numbers():
     a = "Озимі у фазах 3-го листка та кущіння, стан переважно доброму [1]. Production 24,769 kt; 0,6–0,7 норми."
     assert has_fact(a, "кущіння") and has_fact(a, "добрий") and has_fact(a, "3-го листка")
@@ -52,6 +66,7 @@ def test_uncited_sentences():
     a = ("Так. Запаси 22-50 мм [1]. Даних по Одеській області в документах немає. Це був найтепліший рік.\n"
          "- рядок без посилання")
     assert uncited_sentences(a) == ["Це був найтепліший рік.", "- рядок без посилання"]
+    assert uncited_sentences("Сума 15-20 °С [2]. Документи не надають конкретних значень норми.") == []
 
 
 def test_language():

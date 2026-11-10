@@ -6,6 +6,15 @@ the cited chunks, sentences without [n], [n] of a chunk that was not given). `{m
 with the no-answer marker `НЕМАЄ_ВІДПОВІДІ`, `{problems}` with what the checks found. The version used
 is `config.toml [answer] prompt`.
 
+## v3
+
+From the manual labelling of the dev answers (step 4, evals/calibration/): 5 of the 17 answers of v2
+ended with a sentence like "Інших даних про частку в документах немає" / "There is no information on
+other specific values for the Kyiv region" (d05, d06, d15, d19, d21) though the question was answered in
+full; v1 had none. The rule of a partial answer of v2 was applied to complete answers. v3: say what is
+missing only for a part of the question that the chunks do not answer; nothing when the answer is
+complete. `retry_v3.txt` is the same as `retry_v2.txt`.
+
 ## v2
 
 From the errors of v1 on the dev set (results/rag/answers_dev_v1.md, README, step 3):

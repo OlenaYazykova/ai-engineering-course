@@ -108,7 +108,7 @@ fusion_alpha = 0.8      # relative: weight of the vector list (part F: 0.9 / 0.8
 [answer]
 # Answers with sources (agro/rag/answer.py), measured by `make rag-answer-eval` (results/rag/answers_dev.md).
 model = "gpt4o_mini"    # the generator
-prompt = "v2"           # prompts/rag/answer_<v>.txt + retry_<v>.txt (prompts/rag/CHANGELOG.md)
+prompt = "v3"           # prompts/rag/answer_<v>.txt + retry_<v>.txt (prompts/rag/CHANGELOG.md)
 sampling = "t0"
 max_tokens = 700
 cache = true            # replay identical T=0 requests from .cache/answers/ (no second payment)
@@ -119,3 +119,11 @@ max_per_doc = 3         # chunks of one document in the first pass (room for the
                         # places left are filled with the chunks it skipped
 threshold = 0.3         # best chunk below it (reranker, 0..1): "not in the documents" without a model call;
                         # half of the lowest best chunk of the dev questions with an answer (`make rag-threshold`)
+
+[evals]
+# The LLM judge (evals/judge.py): another family than the generator; calibrated by `make evals-calibrate`.
+judge_model = "gemini_flash_lite"
+judge_prompt = "v1"     # prompts/judge/<v>.txt (prompts/judge/CHANGELOG.md)
+judge_sampling = "t0"
+judge_max_tokens = 1200
+judge_cache = true      # replay identical T=0 requests from .cache/judge/

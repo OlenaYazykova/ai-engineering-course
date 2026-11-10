@@ -17,7 +17,7 @@ The chain follows the lecture example (autoparts-rag-evals, pipeline.py):
 4. The model answers by the prompt prompts/rag/answer_<version>.txt: a [n] after every sentence with a
    fact, or the marker НЕМАЄ_ВІДПОВІДІ when the chunks have no answer. From v2 the prompt names the
    language of the answer ({language}: the language of the question, found by the code).
-5. Checks without a model (agro/rag/verify.py): every number is in the cited chunks, every [n] is a
+5. Checks without a model (agro/rag/verify.py): every number is in the chunks its sentence cites, every [n] is a
    chunk that was given, every sentence with a fact has a [n]. If a check fails, the model gets one
    more try with the problems listed (prompts/rag/retry_<version>.txt). If the numbers or citations are
    still wrong, the answer is withdrawn ("retracted"): a wrong number is worse than no answer.
@@ -35,7 +35,7 @@ from ..common.providers import CachedProvider, Provider, ProviderError, make_pro
 from ..common.settings import CACHE, ROOT
 from .search import Hit, Retriever
 from .tokens import count_tokens
-from .verify import cited_numbers, uncited_sentences, verify_numbers
+from .verify import cited_numbers, uncited_sentences, verify_numbers_by_sentence
 
 PROMPTS = ROOT / "prompts" / "rag"
 ANSWER_CACHE = CACHE / "answers"
@@ -167,8 +167,9 @@ class Answerer:
     def check(text: str, context: list[Hit], question: str) -> dict:
         cited = cited_numbers(text)
         invalid = [n for n in cited if not 1 <= n <= len(context)]
-        sources = [context[n - 1].chunk.for_embedding() for n in cited if 1 <= n <= len(context)]
-        numbers = verify_numbers(text, sources, question)
+        by_n = {n: context[n - 1].chunk.for_embedding() for n in cited if 1 <= n <= len(context)}
+        sources = list(by_n.values())
+        numbers = verify_numbers_by_sentence(text, by_n, question)
         uncited = uncited_sentences(text)
         problems = []
         if not sources:
@@ -176,7 +177,8 @@ class Answerer:
         if invalid:
             problems.append("посилання на фрагменти, яких немає: " + ", ".join(f"[{n}]" for n in invalid))
         if numbers.unsupported:
-            problems.append("числа, яких немає в процитованих фрагментах: " + ", ".join(numbers.unsupported))
+            problems.append("числа, яких немає у фрагментах, на які посилається їхнє речення: "
+                            + ", ".join(numbers.unsupported))
         if uncited:
             problems.append("речення без посилання [n]: " + " / ".join(f"«{s[:80]}»" for s in uncited))
         return {"cited": cited, "invalid_citations": invalid, "unsupported_numbers": numbers.unsupported,

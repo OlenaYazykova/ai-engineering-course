@@ -1,0 +1,321 @@
+{
+ "split": "dev",
+ "questions": 23,
+ "answerable": 19,
+ "no_answer": 4,
+ "repeats": 3,
+ "config": {
+  "model": "openai/gpt-4o-mini",
+  "prompt": "v3",
+  "k": 5,
+  "threshold": 0.3,
+  "context_tokens": 3000,
+  "judge": "google/gemini-2.5-flash-lite",
+  "judge_prompt": "v1"
+ },
+ "metrics": {
+  "pass": {
+   "mean": 0.8695652173913043,
+   "min": 0.8695652173913043,
+   "max": 0.8695652173913043
+  },
+  "judge_correct": {
+   "mean": 0.8421052631578947,
+   "min": 0.8421052631578947,
+   "max": 0.8421052631578947
+  },
+  "judge_grounded": {
+   "mean": 1.0,
+   "min": 1.0,
+   "max": 1.0
+  },
+  "correct": {
+   "mean": 0.8421052631578947,
+   "min": 0.8421052631578947,
+   "max": 0.8421052631578947
+  },
+  "cited_source": {
+   "mean": 0.8947368421052632,
+   "min": 0.8947368421052632,
+   "max": 0.8947368421052632
+  },
+  "abstained_no_answer": {
+   "mean": 1.0,
+   "min": 1.0,
+   "max": 1.0
+  },
+  "false_abstain": {
+   "mean": 0.08771929824561403,
+   "min": 0.05263157894736842,
+   "max": 0.10526315789473684
+  },
+  "unsupported_numbers": {
+   "mean": 0,
+   "min": 0,
+   "max": 0
+  },
+  "uncited": {
+   "mean": 0.07017543859649122,
+   "min": 0.05263157894736842,
+   "max": 0.10526315789473684
+  },
+  "retried": {
+   "mean": 0.17391304347826086,
+   "min": 0.17391304347826086,
+   "max": 0.17391304347826086
+  },
+  "retracted": {
+   "mean": 0.0,
+   "min": 0.0,
+   "max": 0.0
+  },
+  "recall@5": {
+   "mean": 0.868421052631579,
+   "min": 0.868421052631579,
+   "max": 0.868421052631579
+  },
+  "hit@5": {
+   "mean": 0.8947368421052632,
+   "min": 0.8947368421052632,
+   "max": 0.8947368421052632
+  },
+  "MRR": {
+   "mean": 0.8078947368421052,
+   "min": 0.8078947368421052,
+   "max": 0.8078947368421052
+  },
+  "cost_per_1000": {
+   "mean": 0.5875565217391304,
+   "min": 0.5859913043478261,
+   "max": 0.5895847826086956
+  },
+  "judge_cost_per_1000": {
+   "mean": 0.27001594202898554,
+   "min": 0.264204347826087,
+   "max": 0.2814826086956522
+  }
+ },
+ "pass@1": 0.8695652173913043,
+ "per_kind": {
+  "cross_lingual": 0.6666666666666666,
+  "exact": 1.0,
+  "multi_chunk": 0.5,
+  "no_answer": 1.0,
+  "paraphrase": 1.0,
+  "similar": 0.5,
+  "stale": 1.0,
+  "table": 1.0,
+  "yes_no": 1.0
+ },
+ "per_question": [
+  {
+   "id": "d01",
+   "kind": "exact",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d02",
+   "kind": "exact",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d03",
+   "kind": "paraphrase",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d04",
+   "kind": "paraphrase",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d05",
+   "kind": "cross_lingual",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d06",
+   "kind": "cross_lingual",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d07",
+   "kind": "table",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d08",
+   "kind": "table",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d09",
+   "kind": "stale",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d10",
+   "kind": "stale",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d11",
+   "kind": "similar",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d12",
+   "kind": "similar",
+   "passes": 0,
+   "runs": 3,
+   "outcomes": [
+    "refused_model"
+   ]
+  },
+  {
+   "id": "d13",
+   "kind": "multi_chunk",
+   "passes": 0,
+   "runs": 3,
+   "outcomes": [
+    "answer",
+    "refused_model"
+   ]
+  },
+  {
+   "id": "d14",
+   "kind": "multi_chunk",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d15",
+   "kind": "paraphrase",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d16",
+   "kind": "yes_no",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d17",
+   "kind": "no_answer",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "refused_model"
+   ]
+  },
+  {
+   "id": "d18",
+   "kind": "no_answer",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "refused_model"
+   ]
+  },
+  {
+   "id": "d19",
+   "kind": "cross_lingual",
+   "passes": 0,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d20",
+   "kind": "no_answer",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "refused_threshold"
+   ]
+  },
+  {
+   "id": "d21",
+   "kind": "yes_no",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d22",
+   "kind": "exact",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "answer"
+   ]
+  },
+  {
+   "id": "d23",
+   "kind": "no_answer",
+   "passes": 3,
+   "runs": 3,
+   "outcomes": [
+    "refused_threshold"
+   ]
+  }
+ ],
+ "unstable": []
+}

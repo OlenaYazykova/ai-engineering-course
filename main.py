@@ -22,6 +22,14 @@ Stage 2 (homework 2), RAG over the corpus:
     python main.py rag ask "питання" [-k 5]                     # answer with sources [n] or "not in the documents"
     python main.py rag threshold [--split dev]                 # threshold of "not in the documents" (no model calls)
     python main.py rag answer-eval [--split dev] [--k 3 5 10]  # answers of the test set questions -> results/rag/
+
+Stage 2, evals (homework 2, step 4):
+    python main.py evals label-dump                            # answers to label by hand -> evals/calibration/
+    python main.py evals label-load                            # the filled table -> evals/calibration/labels.jsonl
+    python main.py evals calibrate                             # the judge against the labels -> agreement.md
+    python main.py evals run [--split dev|test|all] [--repeats 3] [--fresh]   # the evals -> evals/results/
+    python main.py evals baseline                              # evals/results/ -> evals/baseline.json
+    python main.py evals gate                                  # evals/results/ vs evals/baseline.json (CI)
 """
 
 import argparse
@@ -176,17 +184,56 @@ def run_rag(args) -> None:
         run(args.split, tuple(args.k))
 
 
+def add_evals(stages) -> None:
+    """Stage 2 (homework 2, step 4): evals of the answers."""
+    e = stages.add_parser("evals", help="stage 2: evals of the RAG answers (homework 2, step 4)",
+                          description=add_evals.__doc__)
+    sub = e.add_subparsers(dest="cmd", required=True)
+    sub.add_parser("label-dump", help="answers to label by hand -> evals/calibration/to_label.xlsx")
+    sub.add_parser("label-load", help="the filled table -> evals/calibration/labels.jsonl")
+    sub.add_parser("calibrate", help="the judge on the labelled answers -> evals/calibration/agreement.md")
+    r = sub.add_parser("run", help="the test set through the system, scored by the code and the judge -> evals/results/")
+    r.add_argument("--split", default="dev", choices=["dev", "test", "all"])
+    r.add_argument("--repeats", type=int, default=1, help="runs of the answers (more than 1: no replay from the cache)")
+    r.add_argument("--fresh", action="store_true", help="call the model even for one run (no replay from the cache; CI)")
+    sub.add_parser("baseline", help="evals/results/{dev,test}.json -> evals/baseline.json")
+    sub.add_parser("gate", help="evals/results/{dev,test}.json against evals/baseline.json (exit code 1 below a threshold)")
+
+
+def run_evals(args) -> None:
+    from evals import calibration
+
+    if args.cmd == "label-dump":
+        calibration.dump()
+    elif args.cmd == "label-load":
+        calibration.load_labels()
+    elif args.cmd == "calibrate":
+        calibration.calibrate()
+    elif args.cmd == "run":
+        from evals.run import run
+        run(args.split, args.repeats, fresh=args.fresh)
+    elif args.cmd == "baseline":
+        from evals.gate import make_baseline
+        make_baseline()
+    elif args.cmd == "gate":
+        from evals.gate import run_gate
+        run_gate()
+
+
 def main() -> None:
     load_dotenv()
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     stages = p.add_subparsers(dest="stage", required=True)
     add_extract(stages)
     add_rag(stages)
+    add_evals(stages)
     args = p.parse_args()
     if args.stage == "extract":
         run_extract(args)
     elif args.stage == "rag":
         run_rag(args)
+    elif args.stage == "evals":
+        run_evals(args)
 
 
 if __name__ == "__main__":

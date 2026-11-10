@@ -119,12 +119,29 @@ def verify_numbers(answer: str, sources: list[str], question: str = "") -> Numbe
     return NumberCheck(not unsupported, unsupported, len(numbers))
 
 
+def verify_numbers_by_sentence(answer: str, cited_sources: dict[int, str], question: str = "") -> NumberCheck:
+    """Every number of a sentence must be in the chunks THAT sentence cites, not in any chunk the answer
+    cites: "In June 2025 the forecast was 23,546 [3]" fails when 23 546 is only in chunk [2] (there: the
+    production of 2024). A sentence without a valid [n] is checked against every chunk the answer cites
+    (it is reported as uncited anyway). cited_sources: n -> text of chunk [n]."""
+    unsupported, checked = [], 0
+    every = list(cited_sources.values())
+    for s in sentences(answer):
+        own = [cited_sources[n] for n in cited_numbers(s) if n in cited_sources]
+        c = verify_numbers(s, own or every, question)
+        checked += c.checked
+        marks = ", ".join(f"[{n}]" for n in cited_numbers(s) if n in cited_sources)
+        unsupported += [f"{u} (не у фрагменті {marks})" if own else u for u in c.unsupported]
+    return NumberCheck(not unsupported, unsupported, checked)
+
+
 # ---------------------------------------------------------------- citations
 
 _SENTENCE_END = re.compile(r"(?<=[.!?…])\s+(?=[^\s\[])|\n+")
 # sentences that say what is missing need no citation
-_ABSENCE = re.compile(r"немає|не містять|не наведен|не вказан|відсутн|not (?:contain|include|given|stated|mention)|"
-                      r"no (?:information|data)|do(?:es)? not (?:say|give|provide)", re.IGNORECASE)
+_ABSENCE = re.compile(r"немає|не містять|не містить|не наведен|не вказан|не зазначен|не надають|не наводять|"
+                      r"не подають|відсутн|not (?:contain|include|given|stated|mention)|"
+                      r"no (?:information|data)|there is no|do(?:es)? not (?:say|give|provide)", re.IGNORECASE)
 
 
 def cited_numbers(answer: str) -> list[int]:

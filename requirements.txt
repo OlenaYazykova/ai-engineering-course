@@ -31,3 +31,6 @@ fastembed>=0.4         # embeddings and rerankers on CPU (ONNX, no torch)
 qdrant-client>=1.10    # vector database, local mode
 rank-bm25>=0.2
 numpy>=1.26
+
+# stage 2: the charts of REPORT.md
+seaborn>=0.13

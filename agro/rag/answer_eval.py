@@ -13,7 +13,7 @@ source found may score lower, and a refusal of an answerable question costs more
 (the model can still say НЕМАЄ_ВІДПОВІДІ).
 
 Answers (results/rag/answers_dev_<prompt>.md: one file per prompt version, so the versions can be compared).
-Per question, deterministic (agro/rag/verify.py):
+Per question, deterministic (evals/scoring.py, agro/rag/verify.py):
   retrieved     share of the expected sources among the chunks found (retrieve_k)
   in context    share of the expected sources among the chunks given to the model
   answered      the outcome is an answer (not a refusal)
@@ -28,13 +28,13 @@ of search and of generation (calls replayed from the cache report their original
 """
 
 import json
-import statistics
+
+from evals.scoring import score, summary   # the deterministic scoring functions live in evals/ (step 4)
 
 from ..common.settings import RESULTS_RAG
-from .answer import Answerer, AnswerResult, probability
-from .retrieval_eval import found_share, relevant
+from .answer import Answerer, probability
+from .retrieval_eval import found_share
 from .testset import load
-from .verify import key_facts_found
 
 KS = (3, 5, 10)
 THRESHOLDS = (0.0, 0.01, 0.02, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.8, 0.9)
@@ -106,65 +106,6 @@ def run_threshold(split: str = "dev") -> float:
 
 
 # ---------------------------------------------------------------- answers
-
-def score(q: dict, res: AnswerResult, hits, k_hits) -> dict:
-    """Deterministic metrics of one answer (see the module docstring)."""
-    by_id = {h.chunk.chunk_id: h for h in hits}
-    context = [by_id[c] for c in res.context if c in by_id]
-    cited = [by_id[c["chunk_id"]].chunk for c in res.citations if c["chunk_id"] in by_id]
-    answered = res.outcome == "answer"
-    row = {"id": q["id"], "kind": q["kind"], "language": q["language"], "outcome": res.outcome,
-           "answerable": bool(q["sources"]), "answered": answered,
-           "retried": bool(res.checks.get("retried")), "retracted": res.outcome == "retracted",
-           "context_tokens": res.context_tokens, "input_tokens": res.input_tokens,
-           "output_tokens": res.output_tokens, "cost_usd": res.cost_usd,
-           "seconds_retrieval": res.seconds.get("retrieval", 0.0),
-           "seconds_generation": res.seconds.get("generation", 0.0)}
-    if not q["sources"]:
-        return row | {"abstained": not answered}
-    facts = key_facts_found(res.text, q["key_facts"]) if answered else [False] * len(q["key_facts"])
-    docs = {c.doc_id for c in cited}
-    expected = [s["doc_id"] for s in q["sources"]]
-    final = res.checks.get("final", {})
-    return row | {
-        "retrieved": found_share(k_hits, q),
-        "in_context": found_share(context, q) if context else 0.0,
-        "facts": facts,
-        "correct": answered and all(facts),
-        "cited_source": answered and (any(d in docs for d in expected) if q.get("match") == "any"
-                                      else all(d in docs for d in expected)),
-        "cited_evidence": answered and any(relevant(c, s) for c in cited for s in q["sources"]),
-        "uncited": answered and bool(final.get("uncited_sentences")),
-        "false_abstain": not answered,
-    }
-
-
-def summary(rows: list[dict]) -> dict:
-    ans = [r for r in rows if r["answerable"]]
-    no = [r for r in rows if not r["answerable"]]
-
-    def share(items, key):
-        return sum(bool(r[key]) for r in items) / len(items) if items else 0.0
-
-    n = len(rows)
-    return {
-        "questions": n, "answerable": len(ans), "no_answer": len(no),
-        "retrieved": sum(r["retrieved"] for r in ans) / len(ans),
-        "in_context": sum(r["in_context"] for r in ans) / len(ans),
-        "answered": share(ans, "answered"), "correct": share(ans, "correct"),
-        "cited_source": share(ans, "cited_source"), "cited_evidence": share(ans, "cited_evidence"),
-        "uncited": share(ans, "uncited"), "false_abstain": share(ans, "false_abstain"),
-        "abstained_no_answer": share(no, "abstained"),
-        "retried": share(rows, "retried"), "retracted": share(rows, "retracted"),
-        "refused_threshold": sum(r["outcome"] == "refused_threshold" for r in rows) / n,
-        "context_tokens": statistics.mean(r["context_tokens"] for r in rows),
-        "tokens_per_question": statistics.mean(r["input_tokens"] + r["output_tokens"] for r in rows),
-        "cost_per_1000": 1000 * statistics.mean(r["cost_usd"] for r in rows),
-        "s_retrieval": statistics.median(r["seconds_retrieval"] for r in rows),
-        "s_generation": statistics.median(r["seconds_generation"] for r in rows),
-        "errors": sum(r["outcome"] == "error" for r in rows),
-    }
-
 
 def run(split: str = "dev", ks=KS) -> dict:
     if split == "test":

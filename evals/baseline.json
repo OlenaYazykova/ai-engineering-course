@@ -1,0 +1,82 @@
+{
+ "created": "2026-11-11",
+ "rules": {
+  "pass": {
+   "drop": 0.1
+  },
+  "judge_correct": {
+   "drop": 0.1
+  },
+  "correct": {
+   "drop": 0.1
+  },
+  "judge_grounded": {
+   "drop": 0.1
+  },
+  "abstained_no_answer": {
+   "min": 0.75
+  },
+  "unsupported_numbers": {
+   "max": 0
+  },
+  "recall@5": {
+   "drop": 0.05
+  },
+  "hit@5": {
+   "drop": 0.05
+  },
+  "MRR": {
+   "drop": 0.05
+  }
+ },
+ "splits": {
+  "dev": {
+   "questions": 23,
+   "repeats": 3,
+   "config": {
+    "model": "openai/gpt-4o-mini",
+    "prompt": "v3",
+    "k": 5,
+    "threshold": 0.3,
+    "context_tokens": 3000,
+    "judge": "google/gemini-2.5-flash-lite",
+    "judge_prompt": "v1"
+   },
+   "metrics": {
+    "pass": 0.8696,
+    "judge_correct": 0.8421,
+    "correct": 0.8421,
+    "judge_grounded": 1.0,
+    "abstained_no_answer": 1.0,
+    "unsupported_numbers": 0,
+    "recall@5": 0.8684,
+    "hit@5": 0.8947,
+    "MRR": 0.8079
+   }
+  },
+  "test": {
+   "questions": 22,
+   "repeats": 3,
+   "config": {
+    "model": "openai/gpt-4o-mini",
+    "prompt": "v3",
+    "k": 5,
+    "threshold": 0.3,
+    "context_tokens": 3000,
+    "judge": "google/gemini-2.5-flash-lite",
+    "judge_prompt": "v1"
+   },
+   "metrics": {
+    "pass": 0.7273,
+    "judge_correct": 0.6667,
+    "correct": 0.7222,
+    "judge_grounded": 1.0,
+    "abstained_no_answer": 1.0,
+    "unsupported_numbers": 0,
+    "recall@5": 0.6667,
+    "hit@5": 0.6667,
+    "MRR": 0.5474
+   }
+  }
+ }
+}

@@ -7,17 +7,19 @@ of the AI Engineering course; it grows stage by stage, plan: [PROJECT_PLAN.md](P
 | Stage | What it does | Code | Commands | Git tag | Report |
 |---|---|---|---|---|---|
 | 1. Structured extraction (homework 1) | bulletin text → JSON (soil moisture, crops, hazards, yield outlook) | `agro/extract/` | `make extract-…` | `hw1` | [reports/hw1.md](reports/hw1.md) |
-| 2. RAG + evals (homework 2) | question → answer with sources, evals in CI | `agro/rag/` | `make rag-…` | `hw2-v1` (steps 1-2), in progress | — |
+| 2. RAG + evals (homework 2) | question → answer with sources, evals in CI | `agro/rag/`, `evals/` | `make rag-…`, `make evals-…` | `hw2-v1` (steps 1-2), `hw2` | [REPORT.md](REPORT.md) |
 
 Shared code: `agro/common/` (model providers, response cache, paths), `agro/corpus/` (the documents:
 download, reading every format, OCR, cleaning, duplicates). `make test` runs the unit tests of every stage,
 `make run` the pipeline of the current stage.
 
-## Stage 2: RAG over the bulletins + evals (in progress)
+## Stage 2: RAG over the bulletins + evals
 
 Step 1 (done): corpus, ingestion, personal data masking, chunking. Step 2 (done): index, hybrid search, reranking,
 filters, retrieval metrics. Step 3 (done): answers with sources, "not in the documents", checks of numbers
-and citations; prompts v1 and v2 measured on dev. Step 4 (evals in CI) follows.
+and citations; prompts v1 and v2 measured on dev. Step 4 (done): test set, scoring by the code and by a
+calibrated LLM judge, faithfulness, evals in GitHub Actions with a gate; prompt v3. Results, experiments and
+errors: **[REPORT.md](REPORT.md)**.
 
 ### Run
 
@@ -25,7 +27,8 @@ and citations; prompts v1 and v2 measured on dev. Step 4 (evals in CI) follows.
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu   # EasyOCR (comparison) needs torch
 make install
 make fetch          # originals into data/raw/ (one CSV is exported by hand: the command says how)
-make run            # = make rag-ingest rag-chunk rag-lint-testset rag-index rag-retrieval-eval rag-threshold rag-answer-eval
+make run            # = make rag-ingest rag-chunk rag-lint-testset rag-index rag-retrieval-eval rag-threshold rag-answer-eval evals
+make evals          # what CI runs, from the chunks in git (no `make fetch` needed): index, evals of dev and test, gate
 make rag-ask Q="Яку максимальну температуру повітря зафіксували в Миколаєві в першій декаді липня 2023 року?"
 python main.py rag search "Запаси вологи під кукурудзою на 31 липня 2023" --auto-filters
 ```
@@ -183,10 +186,10 @@ against 0.756.
    for the second document of a question), then the places left filled with the chunks that limit
    skipped; the best k = 5, within a budget of 3000 tokens. Each chunk is numbered [n] and starts with its
    document, period and section.
-4. **Answer** (gpt-4o-mini, temperature 0, prompt v2): in the language of the question (named in the
+4. **Answer** (gpt-4o-mini, temperature 0, prompt v3): in the language of the question (named in the
    prompt by the code), only facts of the chunks, a [n] after every sentence with a fact, numbers copied
    with their units, or the marker `НЕМАЄ_ВІДПОВІДІ` when no part of the question has an answer.
-5. **Checks without a model** (`agro/rag/verify.py`): every number of the answer is in the chunks it cites
+5. **Checks without a model** (`agro/rag/verify.py`): every number of the answer is in the chunk its sentence cites
    (with the same unit; "24 769" = "24,769", "22-50 мм" = 22 мм and 50 мм), every [n] is a chunk that was
    given, every sentence with a fact has a [n]. A failed check gets one more try with the problems listed;
    if the numbers or citations are still wrong, the answer is withdrawn: a wrong number is worse than none.
@@ -277,6 +280,36 @@ after the retry (their numbers are verified, so they are kept and counted as `un
 "Документи не надають конкретних значень" is not yet recognised as a statement of what is missing, so
 it asks for a citation. The rules of v2 for d06 and d07 come from single dev questions; the held-out test
 set checks whether they hold.
+
+### Evals (step 4)
+
+`evals/`: the test set, the scoring functions (`scoring.py`: deterministic; `judge.py`: LLM judge), the
+calibration of the judge on manual labels (`calibration.py`, `calibration/`), the run (`run.py`), the gate
+(`gate.py`, `baseline.json`) and the results (`results/`). What every metric means and who computes it:
+[evals/METRICS.md](evals/METRICS.md).
+
+```bash
+make evals-run                       # dev, 1 run: code + judge -> evals/results/dev.md
+make evals-run SPLIT=all REPEATS=3   # dev and test, 3 runs (the numbers of REPORT.md)
+make evals-gate                      # the results against evals/baseline.json: exit code 1 below a threshold
+make evals-calibrate                 # the judge against the manual labels -> evals/calibration/agreement.md
+make report-charts                   # the charts of REPORT.md -> reports/hw2/
+```
+
+* **Keys**: `OPENROUTER_API_KEY` in `.env` (copy `.env.example`; `.env` is not in git). For CI the same key
+  goes to the repository: Settings → Secrets and variables → Actions → New repository secret,
+  name `OPENROUTER_API_KEY`.
+* **CI** ([.github/workflows/evals.yml](.github/workflows/evals.yml)): on every push to main and every
+  pull request that touches the system, job `checks` (unit tests, lint of the test set; no key) and job
+  `evals` (every question of dev and test with fresh model calls, the judge, the gate). The report is on the
+  page of the run (Summary), the result files are its artifact. More runs: Actions → evals → Run workflow.
+  After its one measurement for the report, the test split is part of this regression set; it is never used
+  for tuning.
+* **Cost per 1000 questions**: answers (gpt-4o-mini, retries included) $0.54-0.59, LLM judge (Gemini 2.5
+  Flash-Lite) $0.27; embeddings and reranker run locally. One CI run (45 questions) is about $0.04.
+* **Stretch items done**: contextual chunk headers (document | period | section embedded with every chunk),
+  caching of embeddings, reranker scores and model answers (`.cache/`), incremental ingestion (unchanged
+  documents come from the cache of `make rag-ingest`).
 
 ### Test set
 

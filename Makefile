@@ -4,7 +4,7 @@ PY ?= python
 # `make run` runs the pipeline of the current stage.
 
 .PHONY: install test fetch run rag-ingest rag-chunk rag-index rag-retrieval-eval rag-lint-testset rag-ocr-compare \
-        rag-ask rag-threshold rag-answer-eval \
+        rag-ask rag-threshold rag-answer-eval evals-label-dump evals-label-load evals-calibrate evals-run evals-baseline evals-gate evals report-charts \
         extract-run extract-run-all extract-metrics extract-smoke extract-regress extract-revalidate \
         extract-before-checks extract-check-golden extract-texts
 
@@ -19,7 +19,7 @@ test:                   ## unit tests of every stage, no network
 fetch:                  ## download the source documents (PDF / HTML) into data/raw/
 	$(PY) -m agro.corpus.fetch
 
-run: rag-ingest rag-chunk rag-lint-testset rag-index rag-retrieval-eval rag-threshold rag-answer-eval  ## the pipeline of the current stage (homework 2: RAG; evals follow)
+run: rag-ingest rag-chunk rag-lint-testset rag-index rag-retrieval-eval rag-threshold rag-answer-eval evals  ## the pipeline of the current stage (homework 2: RAG + evals)
 
 # ---------- stage 2: RAG + evals (homework 2) ----------
 
@@ -49,6 +49,32 @@ rag-threshold:          ## threshold of "not in the documents" from the reranker
 
 rag-answer-eval:        ## answers of the dev questions for k = 3 / 5 / 10 -> results/rag/answers_dev_<prompt>.md (+ .jsonl)
 	$(PY) main.py rag answer-eval
+
+evals-label-dump:       ## answers to label by hand (calibration of the judge) -> evals/calibration/to_label.xlsx
+	$(PY) main.py evals label-dump
+
+evals-label-load:       ## the filled table -> evals/calibration/labels.jsonl
+	$(PY) main.py evals label-load
+
+evals-calibrate:        ## the judge on the labelled answers vs the labels -> evals/calibration/agreement.md
+	$(PY) main.py evals calibrate
+
+evals-run:              ## the evals of the dev set: code + judge -> evals/results/dev.md (SPLIT=all REPEATS=3 for more)
+	$(PY) main.py evals run --split $(or $(SPLIT),dev) --repeats $(or $(REPEATS),1)
+
+evals-baseline:         ## evals/results/{dev,test}.json of the final run -> evals/baseline.json
+	$(PY) main.py evals baseline
+
+evals-gate:             ## evals/results/{dev,test}.json against evals/baseline.json; fails below a threshold
+	$(PY) main.py evals gate
+
+report-charts:          ## the charts of REPORT.md from the result files in git -> reports/hw2/*.png
+	$(PY) reports/charts_hw2.py
+
+evals:                  ## what CI runs, from the chunks in git: index (e5) + every question of dev and test + gate
+	$(PY) main.py rag index --models e5
+	$(PY) main.py evals run --split all --repeats $(or $(REPEATS),1) --fresh
+	$(PY) main.py evals gate
 
 # ---------- stage 1: structured extraction (homework 1) ----------
 
