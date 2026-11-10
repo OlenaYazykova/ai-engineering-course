@@ -16,8 +16,8 @@ download, reading every format, OCR, cleaning, duplicates). `make test` runs the
 ## Stage 2: RAG over the bulletins + evals (in progress)
 
 Step 1 (done): corpus, ingestion, personal data masking, chunking. Step 2 (done): index, hybrid search, reranking,
-filters, retrieval metrics. Step 3 (in progress): answers with sources, "not in the documents", checks of numbers
-and citations; prompt v1 measured. Step 4 (evals in CI) follows.
+filters, retrieval metrics. Step 3 (done): answers with sources, "not in the documents", checks of numbers
+and citations; prompts v1 and v2 measured on dev. Step 4 (evals in CI) follows.
 
 ### Run
 
@@ -179,18 +179,20 @@ against 0.756.
 1. **Search**: the system of step 2 (hybrid + bge + filters), the best 10 chunks.
 2. **Threshold**: the reranker score of the best chunk turned into 0..1; below 0.3 the answer is
    "У документах цього немає" at once, without a model call.
-3. **Context**: chunks with at least half the threshold, at most 3 of one document (room for the second
-   document of a question), the best k = 5, within a budget of 3000 tokens. Each chunk is numbered [n] and
-   starts with its document, period and section.
-4. **Answer** (gpt-4o-mini, temperature 0): only facts of the chunks, a [n] after every sentence with a
-   fact, numbers copied with their units, or the marker `НЕМАЄ_ВІДПОВІДІ` when the chunks have no answer.
+3. **Context**: chunks with at least half the threshold, at most 3 of one document in a first pass (room
+   for the second document of a question), then the places left filled with the chunks that limit
+   skipped; the best k = 5, within a budget of 3000 tokens. Each chunk is numbered [n] and starts with its
+   document, period and section.
+4. **Answer** (gpt-4o-mini, temperature 0, prompt v2): in the language of the question (named in the
+   prompt by the code), only facts of the chunks, a [n] after every sentence with a fact, numbers copied
+   with their units, or the marker `НЕМАЄ_ВІДПОВІДІ` when no part of the question has an answer.
 5. **Checks without a model** (`agro/rag/verify.py`): every number of the answer is in the chunks it cites
    (with the same unit; "24 769" = "24,769", "22-50 мм" = 22 мм and 50 мм), every [n] is a chunk that was
    given, every sentence with a fact has a [n]. A failed check gets one more try with the problems listed;
    if the numbers or citations are still wrong, the answer is withdrawn: a wrong number is worse than none.
 6. **Sources** under the answer: document, period, section and page of every chunk cited.
 
-An answer of the dev set (d14) as `make rag-ask` prints it:
+An answer of the dev set (d14, prompt v1) as `make rag-ask` prints it:
 
 ```text
 У червні 2025 року прогноз виробництва пшениці в Україні становив 24 769 тис. т [4]. У вересні 2025 року
@@ -241,6 +243,40 @@ The 5 wrong answers of v1, the input of prompt v2:
 
 The checks of citations also split "24 769 тис. т" after "тис." and took the rest for a sentence without a
 citation: part of the retries (0.17) are false.
+
+**Prompt v2** ([CHANGELOG](prompts/rag/CHANGELOG.md)): the language of the answer named in the prompt;
+the marker only when no part of the question has an answer; the value of the named oblast preferred to
+the general one; wheat / winter wheat, area / production told apart. In the code: the two passes of the
+limit per document (above) and no sentence end after "тис.", "млн", "р.", "обл.". The test set is the
+same as for v1 ([results/rag/answers_dev_v2.md](results/rag/answers_dev_v2.md)):
+
+| k chunks | correct | cited source | false abstain | no-answer abstained | retried | context tokens | $ / 1000 questions |
+|---|---|---|---|---|---|---|---|
+| 3 | 14 / 19 (0.74) | 0.79 | 4 / 19 | 4 / 4 | 0.26 | 1273 | 0.49 |
+| **5 (used)** | **17 / 19 (0.89)** | **0.89** | **2 / 19** | **4 / 4** | 0.17 | 1991 | 0.58 |
+| 10 | 17 / 19 (0.89) | 0.95 | 1 / 19 | 4 / 4 | 0.26 | 2303 | 0.70 |
+
+k = 5 again: 10 chunks give the same 17 correct answers for 20% more; the one more answer they give (d12)
+is wrong, where k = 5 refuses.
+
+v1 -> v2 at k = 5, question by question:
+
+| id | v1 | v2 |
+|---|---|---|
+| d06 | 1-5 cm, in Ukrainian | **7-10 cm in some districts of Kyiv oblast, in English** |
+| d07 | 209867.9 (winter wheat) | **217538.5** (wheat, from the 4th chunk of the document, now in the context) |
+| d16 | "Ні, снігу не було" | **"No, there was no snow on the fields"** |
+| d09, d14 | right, in Ukrainian | right, in English |
+| d12 | a wrong value: the sum of temperatures since 1 October (15-20 °С above the norm) instead of the sum since September (20-70 °С below, chunk #007, not found) | refusal: the chunk with the answer is not found, and the model no longer answers from the neighbouring one; counted as a false abstain, but a refusal is better than a wrong number |
+| d13 | refusal, 27 c/ha in the context | the same: the rule of a partial answer did not help. The value is in a table with one column per year (2019 ... 2025), the 2020 column is the second; open for step 4 |
+
+Correct 14 -> 17 of 19, in context 0.82 -> 0.87, no-answer questions 4 of 4 refused in both, no answer
+withdrawn, no invented number in a final answer. Cost $0.51 -> $0.58 per 1000 questions (a longer prompt,
+a fuller context). Left for step 4: d13; two answers (d04, d14) keep an opening sentence without [n]
+after the retry (their numbers are verified, so they are kept and counted as `uncited`); a sentence like
+"Документи не надають конкретних значень" is not yet recognised as a statement of what is missing, so
+it asks for a citation. The rules of v2 for d06 and d07 come from single dev questions; the held-out test
+set checks whether they hold.
 
 ### Test set
 

@@ -137,8 +137,23 @@ def cited_numbers(answer: str) -> list[int]:
     return out
 
 
+# a full stop after these is not the end of a sentence: "24 769 тис. т", "у 2019 р. опадів", "Kyiv obl. 7-10".
+# Units that end sentences ("випало 46 мм.") are not in the list.
+_ABBREVIATIONS = {"тис", "млн", "млрд", "т", "ц", "р", "рр", "обл", "с", "стор", "табл", "див", "п", "ст",
+                  "th", "obl", "approx", "e.g", "i.e", "vs", "p"}
+
+
 def sentences(answer: str) -> list[str]:
-    return [s.strip() for s in _SENTENCE_END.split(answer) if s and s.strip() and re.search(r"\w", s)]
+    out, start = [], 0
+    for m in _SENTENCE_END.finditer(answer):
+        if "\n" not in m.group(0):
+            word = re.search(r"([\w.]+)\.$", answer[start:m.start()])
+            if word and word.group(1).lower() in _ABBREVIATIONS:
+                continue
+        out.append(answer[start:m.start()])
+        start = m.end()
+    out.append(answer[start:])
+    return [s.strip() for s in out if s and s.strip() and re.search(r"\w", s)]
 
 
 def uncited_sentences(answer: str) -> list[str]:

@@ -10,7 +10,7 @@ from agro.rag import answer as answer_mod
 from agro.rag.answer import NO_ANSWER_MARKER, Answerer, language
 from agro.rag.answer_eval import score, summary, threshold_rows
 from agro.rag.search import Hit
-from agro.rag.verify import extract_numbers, has_fact, uncited_sentences, verify_numbers
+from agro.rag.verify import extract_numbers, has_fact, sentences, uncited_sentences, verify_numbers
 
 
 # ---------------------------------------------------------------- numbers
@@ -40,6 +40,12 @@ def test_key_facts_forms_and_numbers():
     assert not has_fact(a, "задовільний") and not has_fact(a, "27 863")
     assert has_fact("Ні, 36,9 ц/га проти 46 [1]", "Ні") and has_fact("No, there was no snow [1].", "No")
     assert not has_fact("Yes, it was above [1].", "No")
+
+
+def test_sentences_do_not_end_after_abbreviations():
+    a = "У червні 24 769 тис. т [4]. У вересні 27 863 тис. т [2]. Випало 46 мм. Далі [1]."
+    assert sentences(a) == ["У червні 24 769 тис. т [4].", "У вересні 27 863 тис. т [2].", "Випало 46 мм.", "Далі [1]."]
+    assert sentences("No. There was no snow [1].") == ["No.", "There was no snow [1]."]
 
 
 def test_uncited_sentences():
@@ -101,7 +107,10 @@ def test_select_context_floor_cap_and_budget():
     assert [h.chunk.chunk_id for h in ctx] == ["a#1", "b#2"]           # c#3 below half of the threshold
     many = [Hit(chunk(i, "a", "x " * 10), 3.0) for i in range(5)] + [Hit(chunk(9, "b", "y"), 2.0)]
     ctx, _ = a.select_context(many)
-    assert [h.chunk.doc_id for h in ctx] == ["a", "a", "a", "b"]        # at most 3 chunks of one document
+    assert [h.chunk.doc_id for h in ctx] == ["a", "a", "a", "a", "b"]   # 3 of "a", then "b", then a 4th "a" ...
+    assert [h.chunk.chunk_id for h in ctx] == ["a#0", "a#1", "a#2", "a#3", "b#9"]   # ... in rank order
+    few = [Hit(chunk(i, "a", "x"), 3.0) for i in range(5)]
+    assert len(a.select_context(few)[0]) == 5                           # one document only: no room is kept
     a.cfg = CFG | {"context_tokens": 25}
     big = [Hit(chunk(1, "a", "x " * 10), 3.0), Hit(chunk(2, "b", "x " * 20), 2.0), Hit(chunk(3, "c", "y"), 1.0)]
     ctx, tokens = a.select_context(big)
@@ -123,6 +132,19 @@ def test_answer_with_citations():
     user = model.calls[0][1]["content"]
     assert '<document index="1">' in user and "section: Вологість ґрунту" in user and "Інше" not in user
     assert res.cost_usd == pytest.approx((1000 * 1.0 + 100 * 2.0) / 1e6)
+
+
+def test_language_of_the_answer_in_the_prompt():
+    model = FakeModel(["Soil 22-50 mm [1].", "Запаси 22-50 мм [1]."])
+    a = Answerer(provider=model, cfg=CFG)
+    a.system = "Мова відповіді: {language}. Rules."
+    a.answer("What were the moisture reserves?", hits=hits())
+    a.answer("Які запаси вологи?", hits=hits())
+    assert model.calls[0][0]["content"] == "Мова відповіді: англійською (in English). Rules."
+    assert model.calls[1][0]["content"] == "Мова відповіді: українською. Rules."
+    v1 = Answerer(provider=FakeModel([]), cfg=CFG | {"prompt": "v1"}).system
+    v2 = Answerer(provider=FakeModel([]), cfg=CFG | {"prompt": "v2"}).system
+    assert "{language}" not in v1 and v2.count("{language}") == 2      # v1 stays as it was measured
 
 
 def test_marker_is_a_refusal():

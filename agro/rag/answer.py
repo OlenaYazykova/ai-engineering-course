@@ -12,9 +12,11 @@ The chain follows the lecture example (autoparts-rag-evals, pipeline.py):
 3. Context: chunks with a score of at least half the threshold, at most `max_per_doc` from one document
    (so a two-document question keeps room for the second one), the best `k`, and only while they fit
    in `context_tokens` (a chunk that does not fit is skipped; the first one is always kept). Every
-   chunk is numbered [1]..[k] and starts with its document, period and section.
+   chunk is numbered [1]..[k] and starts with its document, period and section. Places left after the
+   limit per document are filled with the chunks it skipped (a question about one table).
 4. The model answers by the prompt prompts/rag/answer_<version>.txt: a [n] after every sentence with a
-   fact, or the marker НЕМАЄ_ВІДПОВІДІ when the chunks have no answer.
+   fact, or the marker НЕМАЄ_ВІДПОВІДІ when the chunks have no answer. From v2 the prompt names the
+   language of the answer ({language}: the language of the question, found by the code).
 5. Checks without a model (agro/rag/verify.py): every number is in the cited chunks, every [n] is a
    chunk that was given, every sentence with a fact has a [n]. If a check fails, the model gets one
    more try with the problems listed (prompts/rag/retry_<version>.txt). If the numbers or citations are
@@ -39,6 +41,7 @@ PROMPTS = ROOT / "prompts" / "rag"
 ANSWER_CACHE = CACHE / "answers"
 NO_ANSWER_MARKER = "НЕМАЄ_ВІДПОВІДІ"
 REFUSAL = {"uk": "У документах цього немає.", "en": "The documents do not contain this."}
+LANGUAGE = {"uk": "українською", "en": "англійською (in English)"}   # {language} of the prompts (v2)
 RETRACTED = {"uk": "У документах цього немає: відповідь не пройшла перевірку чисел і посилань.",
              "en": "The documents do not contain this: the answer failed the check of numbers and citations."}
 DEFAULTS = {"model": "gpt4o_mini", "prompt": "v1", "sampling": "t0", "max_tokens": 700, "cache": True,
@@ -128,22 +131,29 @@ class Answerer:
         return hits, time.perf_counter() - t + self.retriever.cached_seconds
 
     def select_context(self, hits: list[Hit], k: int | None = None) -> tuple[list[Hit], int]:
+        """Two passes over the hits in rank order: first with at most max_per_doc chunks of one document
+        (room for the second document of a question), then, if places are left, the chunks the limit
+        skipped (a question about one table needs no room for another document). In rank order."""
         k = k or self.cfg["k"]
         floor = self.cfg["threshold"] * 0.5
         per_doc: dict[str, int] = {}
-        out, tokens = [], 0
-        for h in hits:
-            if len(out) == k:
-                break
-            if probability(h.score) < floor or per_doc.get(h.chunk.doc_id, 0) >= self.cfg["max_per_doc"]:
-                continue
-            n = count_tokens(h.chunk.for_embedding())
-            if out and tokens + n > self.cfg["context_tokens"]:
-                continue                       # does not fit the budget: a smaller chunk further down may
-            out.append(h)
-            tokens += n
-            per_doc[h.chunk.doc_id] = per_doc.get(h.chunk.doc_id, 0) + 1
-        return out, tokens
+        chosen: list[int] = []
+        tokens = 0
+        for capped in (True, False):
+            for i, h in enumerate(hits):
+                if len(chosen) == k:
+                    break
+                if i in chosen or probability(h.score) < floor:
+                    continue
+                if capped and per_doc.get(h.chunk.doc_id, 0) >= self.cfg["max_per_doc"]:
+                    continue
+                n = count_tokens(h.chunk.for_embedding())
+                if chosen and tokens + n > self.cfg["context_tokens"]:
+                    continue                   # does not fit the budget: a smaller chunk further down may
+                chosen.append(i)
+                tokens += n
+                per_doc[h.chunk.doc_id] = per_doc.get(h.chunk.doc_id, 0) + 1
+        return [hits[i] for i in sorted(chosen)], tokens
 
     @staticmethod
     def user_message(question: str, context: list[Hit]) -> str:
@@ -197,7 +207,7 @@ class Answerer:
             return res
         context, res.context_tokens = self.select_context(hits, k)
         res.context = [h.chunk.chunk_id for h in context]
-        messages = [{"role": "system", "content": self.system},
+        messages = [{"role": "system", "content": self.system.replace("{language}", LANGUAGE[lang])},
                     {"role": "user", "content": self.user_message(question, context)}]
         try:
             text = self._call(messages, res)
@@ -209,7 +219,7 @@ class Answerer:
             if checks["problems"]:
                 res.first_answer = text
                 note = self.retry_note.replace("{problems}", "; ".join(checks["problems"])) \
-                    .replace("{marker}", NO_ANSWER_MARKER)
+                    .replace("{marker}", NO_ANSWER_MARKER).replace("{language}", LANGUAGE[lang])
                 retry = self._call(messages + [{"role": "assistant", "content": text},
                                                {"role": "user", "content": note}], res)
                 res.checks["retried"] = True
