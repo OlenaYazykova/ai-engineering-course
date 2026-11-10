@@ -32,6 +32,8 @@ class ProviderError(Exception):
 
 
 class Provider:
+    """complete(messages, schema, ...): `schema` is a JSON schema of the answer, or None for free text."""
+
     def __init__(self, cfg: dict):
         self.cfg = cfg
         self.model = cfg["model"]
@@ -78,8 +80,9 @@ class OpenAICompatibleProvider(Provider):
 
     def _response_format(self, schema: dict) -> dict:
         # "json_schema": strict structured output; "json_object": valid JSON only, the schema is
-        # in the prompt (fallback for models without strict schema support); "text": free text (OCR)
-        if self.cfg.get("response_format", "json_schema") == "text":
+        # in the prompt (fallback for models without strict schema support); "text": free text (OCR).
+        # No schema (schema=None): free text too (answers of the RAG with [n] citations).
+        if schema is None or self.cfg.get("response_format", "json_schema") == "text":
             return None
         if self.cfg.get("response_format", "json_schema") == "json_object":
             return {"type": "json_object"}
@@ -129,7 +132,6 @@ class OllamaProvider(Provider):
         body = {
             "model": self.model,
             "messages": messages,
-            "format": _inline_refs(schema),   # decoding is constrained to the JSON schema
             "stream": False,
             "options": {
                 "temperature": sampling["temperature"],
@@ -138,6 +140,8 @@ class OllamaProvider(Provider):
                 "num_predict": max_tokens,
             },
         }
+        if schema is not None:
+            body["format"] = _inline_refs(schema)   # decoding is constrained to the JSON schema
 
         def call():
             try:

@@ -16,7 +16,8 @@ download, reading every format, OCR, cleaning, duplicates). `make test` runs the
 ## Stage 2: RAG over the bulletins + evals (in progress)
 
 Step 1 (done): corpus, ingestion, personal data masking, chunking. Step 2 (done): index, hybrid search, reranking,
-filters, retrieval metrics. Steps 3-4 (answers with citations, evals in CI) follow.
+filters, retrieval metrics. Step 3 (in progress): answers with sources, "not in the documents", checks of numbers
+and citations; prompt v1 measured. Step 4 (evals in CI) follows.
 
 ### Run
 
@@ -24,7 +25,8 @@ filters, retrieval metrics. Steps 3-4 (answers with citations, evals in CI) foll
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu   # EasyOCR (comparison) needs torch
 make install
 make fetch          # originals into data/raw/ (one CSV is exported by hand: the command says how)
-make run            # = make rag-ingest rag-chunk rag-lint-testset rag-index rag-retrieval-eval
+make run            # = make rag-ingest rag-chunk rag-lint-testset rag-index rag-retrieval-eval rag-threshold rag-answer-eval
+make rag-ask Q="Яку максимальну температуру повітря зафіксували в Миколаєві в першій декаді липня 2023 року?"
 python main.py rag search "Запаси вологи під кукурудзою на 31 липня 2023" --auto-filters
 ```
 
@@ -168,6 +170,77 @@ best equals the vector list (0.603). BM25 pays off in the whole chain with filte
 0.3 gives the reranker 92% of the expected sources among its 20 candidates, against 87% for the relative
 fusion with alpha 0.9 (in effect the order of the vector list), and the whole chain reaches MRR 0.808
 against 0.756.
+
+### Answers with sources (step 3)
+
+`agro/rag/answer.py`, the chain of the lecture example (autoparts-rag-evals, `pipeline.py`), settings in
+`config.toml` `[answer]`, prompts in `prompts/rag/` ([CHANGELOG](prompts/rag/CHANGELOG.md)):
+
+1. **Search**: the system of step 2 (hybrid + bge + filters), the best 10 chunks.
+2. **Threshold**: the reranker score of the best chunk turned into 0..1; below 0.3 the answer is
+   "У документах цього немає" at once, without a model call.
+3. **Context**: chunks with at least half the threshold, at most 3 of one document (room for the second
+   document of a question), the best k = 5, within a budget of 3000 tokens. Each chunk is numbered [n] and
+   starts with its document, period and section.
+4. **Answer** (gpt-4o-mini, temperature 0): only facts of the chunks, a [n] after every sentence with a
+   fact, numbers copied with their units, or the marker `НЕМАЄ_ВІДПОВІДІ` when the chunks have no answer.
+5. **Checks without a model** (`agro/rag/verify.py`): every number of the answer is in the chunks it cites
+   (with the same unit; "24 769" = "24,769", "22-50 мм" = 22 мм and 50 мм), every [n] is a chunk that was
+   given, every sentence with a fact has a [n]. A failed check gets one more try with the problems listed;
+   if the numbers or citations are still wrong, the answer is withdrawn: a wrong number is worse than none.
+6. **Sources** under the answer: document, period, section and page of every chunk cited.
+
+An answer of the dev set (d14) as `make rag-ask` prints it:
+
+```text
+У червні 2025 року прогноз виробництва пшениці в Україні становив 24 769 тис. т [4]. У вересні 2025 року
+прогноз виробництва пшениці зріс до 27 863 тис. т [2]. Таким чином, прогноз виробництва пшениці змінився з
+червня на вересень 2025 року.
+
+Sources:
+[4] JRC MARS Bulletin - Global outlook: Crop monitoring in Ukraine, June 2025 (2025-06, Ukraine yield forecasts for total wheat - 16 June 2025 Bulletin, p. 13) — en_jrc_2025-06
+[2] JRC MARS Bulletin - Global outlook: Crop monitoring in Ukraine, September 2025 (2025-09, Ukraine yield forecasts for total wheat - 15 September 2025 Bulletin, p. 13) — en_jrc_2025-09
+```
+
+The first answer of the model to this question had "прогноз зріс на 3 094 тис. т": a difference it computed
+itself, a number that is in no chunk. The check of numbers caught it, and the retry answered without it. The
+answer is in Ukrainian, though the question is in English: an error of prompt v1 (below).
+
+**Threshold** ([results/rag/threshold_dev.md](results/rag/threshold_dev.md), `make rag-threshold`, no model
+calls): the best chunk of every dev question with an answer scores 0.89 ... 1.00; of the 4 questions without
+an answer, two score 0.041 (lentils, d20) and 0.000 (2016, d23), two are near misses that score 0.70 (d17:
+a bulletin of March 2024 for February 2024) and 0.58 (d18: a JRC bulletin for another country). The
+threshold is half the lowest score of an answerable question (0.89 / 2, rounded down to the candidate
+0.3): it refuses d20 and d23 without a model call; d17 and d18 go to the model, which has to say
+`НЕМАЄ_ВІДПОВІДІ`. A threshold of 0.8 would refuse all four on dev, but it rests on two questions and
+leaves no room for a new answerable question that scores lower (d07: 0.89).
+
+**Prompt v1 on the dev set** (23 questions, 19 with an answer; metrics without a judge, `correct` = every key
+fact of the test set is in the answer; [results/rag/answers_dev_v1.md](results/rag/answers_dev_v1.md), every
+answer with its context and checks in `answers_dev_v1.jsonl`):
+
+| k chunks | correct | cited source | false abstain | no-answer abstained | retried | context tokens | $ / 1000 questions |
+|---|---|---|---|---|---|---|---|
+| 3 | 12 / 19 (0.63) | 0.89 | 2 / 19 | 4 / 4 | 0.17 | 1273 | 0.41 |
+| **5 (used)** | **14 / 19 (0.74)** | **0.95** | **1 / 19** | **4 / 4** | 0.17 | 1736 | 0.51 |
+| 10 | 14 / 19 (0.74) | 0.95 | 1 / 19 | 4 / 4 | 0.17 | 1846 | 0.53 |
+
+k = 5: 3 chunks lose two questions, 10 add nothing and cost more (the floor of half the threshold and the
+limit per document leave few more chunks: ~1850 tokens, not the budget of 3000). No answer was withdrawn, no invented number reached a final answer. Time: the
+search 36.5 s per question (the bge reranker on a CPU; its scores are cached), the answer 1.3 s.
+
+The 5 wrong answers of v1, the input of prompt v2:
+
+| id | what happened | cause |
+|---|---|---|
+| d06, d16 | an English question answered in Ukrainian (d16: "Ні, снігу на полях не було" is right, the key fact "No" is not found); d09 and d14 too, right in content | the rule "answer in the language of the question" is in a Ukrainian prompt, and the model follows the language of the prompt |
+| d06 | the chunk says "1-5 см, в окремих районах … Київської … – 7-10 см", the answer took the general 1-5 cm for Kyiv oblast | reading: a value given for the named oblast is not preferred to the general one |
+| d07 | the chunk with the answer (wheat, all holdings) was the 4th of the same document; the limit of 3 chunks per document dropped it though the context had room, and the model took the table of winter wheat (209867.9 instead of 217538.5) | the limit per document |
+| d13 | the yield of 27 c/ha (Mykolaiv oblast, 2020) was in the context, the model refused the whole question because the second part (the reason) was not | the rule of the marker outweighs the rule of a partial answer |
+| d12 | the chunk with the answer was not found (a trap of similar chunks of one bulletin, known from step 2) | search |
+
+The checks of citations also split "24 769 тис. т" after "тис." and took the rest for a sentence without a
+citation: part of the retries (0.17) are false.
 
 ### Test set
 

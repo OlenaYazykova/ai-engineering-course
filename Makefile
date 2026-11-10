@@ -4,6 +4,7 @@ PY ?= python
 # `make run` runs the pipeline of the current stage.
 
 .PHONY: install test fetch run rag-ingest rag-chunk rag-index rag-retrieval-eval rag-lint-testset rag-ocr-compare \
+        rag-ask rag-threshold rag-answer-eval \
         extract-run extract-run-all extract-metrics extract-smoke extract-regress extract-revalidate \
         extract-before-checks extract-check-golden extract-texts
 
@@ -18,7 +19,7 @@ test:                   ## unit tests of every stage, no network
 fetch:                  ## download the source documents (PDF / HTML) into data/raw/
 	$(PY) -m agro.corpus.fetch
 
-run: rag-ingest rag-chunk rag-lint-testset rag-index rag-retrieval-eval  ## the pipeline of the current stage (homework 2: RAG; answers and evals follow)
+run: rag-ingest rag-chunk rag-lint-testset rag-index rag-retrieval-eval rag-threshold rag-answer-eval  ## the pipeline of the current stage (homework 2: RAG; evals follow)
 
 # ---------- stage 2: RAG + evals (homework 2) ----------
 
@@ -39,6 +40,15 @@ rag-lint-testset:       ## check the test set: fields, kinds, every evidence phr
 
 rag-retrieval-eval:     ## recall@k / MRR of vector / BM25 / hybrid / reranker / filters on the dev questions
 	$(PY) main.py rag retrieval-eval
+
+rag-ask:                ## one answer with sources: make rag-ask Q="Яку максимальну температуру ..."
+	$(PY) main.py rag ask "$(Q)"
+
+rag-threshold:          ## threshold of "not in the documents" from the reranker scores of the dev questions (no model calls)
+	$(PY) main.py rag threshold
+
+rag-answer-eval:        ## answers of the dev questions for k = 3 / 5 / 10 -> results/rag/answers_dev_<prompt>.md (+ .jsonl)
+	$(PY) main.py rag answer-eval
 
 # ---------- stage 1: structured extraction (homework 1) ----------
 

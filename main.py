@@ -19,6 +19,9 @@ Stage 2 (homework 2), RAG over the corpus:
     python main.py rag retrieval-eval [--split dev]            # recall@k / MRR -> results/rag/
     python main.py rag lint-testset                            # checks of the test set itself
     python main.py rag ocr-compare                             # vision OCR vs EasyOCR -> results/rag/
+    python main.py rag ask "питання" [-k 5]                     # answer with sources [n] or "not in the documents"
+    python main.py rag threshold [--split dev]                 # threshold of "not in the documents" (no model calls)
+    python main.py rag answer-eval [--split dev] [--k 3 5 10]  # answers of the test set questions -> results/rag/
 """
 
 import argparse
@@ -120,6 +123,14 @@ def add_rag(stages) -> None:
     sub.add_parser("ocr-compare", help="vision OCR transcripts vs EasyOCR on the same pages -> results/rag/")
     ev = sub.add_parser("retrieval-eval", help="recall@k / MRR of the search configurations")
     ev.add_argument("--split", default="dev", choices=["dev", "test"])
+    a = sub.add_parser("ask", help="answer a question from the documents, with sources")
+    a.add_argument("query")
+    a.add_argument("-k", type=int, help="chunks given to the model (default: config.toml [answer] k)")
+    t = sub.add_parser("threshold", help="threshold of \"not in the documents\" from the reranker scores")
+    t.add_argument("--split", default="dev", choices=["dev", "test"])
+    ae = sub.add_parser("answer-eval", help="answers of the test set questions for several k -> results/rag/")
+    ae.add_argument("--split", default="dev", choices=["dev", "test"])
+    ae.add_argument("--k", type=int, nargs="+", default=[3, 5, 10])
 
 
 def run_rag(args) -> None:
@@ -154,6 +165,15 @@ def run_rag(args) -> None:
     elif args.cmd == "retrieval-eval":
         from agro.rag.retrieval_eval import run
         run(args.split)
+    elif args.cmd == "ask":
+        from agro.rag.answer import ask
+        ask(args.query, k=args.k)
+    elif args.cmd == "threshold":
+        from agro.rag.answer_eval import run_threshold
+        run_threshold(args.split)
+    elif args.cmd == "answer-eval":
+        from agro.rag.answer_eval import run
+        run(args.split, tuple(args.k))
 
 
 def main() -> None:
