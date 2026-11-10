@@ -11,7 +11,7 @@ url: https://joint-research-centre.ec.europa.eu/jrc-news-and-updates/fair-positi
 related: en_jrc_2023-04
 ocr_pages: 
 doc_hash: ee46e95a7185eb11
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # JRC news: crop monitoring in Ukraine, April 2023

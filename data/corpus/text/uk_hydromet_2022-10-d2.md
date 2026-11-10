@@ -11,7 +11,7 @@ url: https://agro.od.gov.ua/wp-content/uploads/2022/10/agrometeorologichnyj_byul
 related: uk_hydromet_2023-10-d2
 ocr_pages: 
 doc_hash: e32e1faaba49075e
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # Агрометеорологічний бюлетень по території України, друга декада жовтня 2022 р.

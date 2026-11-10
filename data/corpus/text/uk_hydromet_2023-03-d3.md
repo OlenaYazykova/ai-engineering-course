@@ -11,7 +11,7 @@ url: https://agro.od.gov.ua/wp-content/uploads/2023/04/agrometeorologichnyj_byul
 related: 
 ocr_pages: 
 doc_hash: e29b9e2423d03657
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # Агрометеорологічний бюлетень по території України, третя декада березня 2023 р.

@@ -11,7 +11,7 @@ url: https://www.od.ukrstat.gov.ua/arh/sx/sx29_10_2024.xlsx
 related: 
 ocr_pages: 
 doc_hash: 603586d0ae00f11e
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # Виробництво сільськогосподарських культур в Одеській області на 1 жовтня 2024 року (попередні дані)

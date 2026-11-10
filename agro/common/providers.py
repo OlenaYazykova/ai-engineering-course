@@ -78,7 +78,9 @@ class OpenAICompatibleProvider(Provider):
 
     def _response_format(self, schema: dict) -> dict:
         # "json_schema": strict structured output; "json_object": valid JSON only, the schema is
-        # in the prompt (fallback for models without strict schema support)
+        # in the prompt (fallback for models without strict schema support); "text": free text (OCR)
+        if self.cfg.get("response_format", "json_schema") == "text":
+            return None
         if self.cfg.get("response_format", "json_schema") == "json_object":
             return {"type": "json_object"}
         return {"type": "json_schema",
@@ -88,6 +90,7 @@ class OpenAICompatibleProvider(Provider):
         import openai
 
         def call():
+            fmt = self._response_format(schema)
             try:
                 r = self.client.chat.completions.create(
                     model=self.model,
@@ -95,7 +98,7 @@ class OpenAICompatibleProvider(Provider):
                     temperature=sampling["temperature"],
                     top_p=sampling["top_p"],
                     max_tokens=max_tokens,
-                    response_format=self._response_format(schema),
+                    **({"response_format": fmt} if fmt else {}),
                     # OpenRouter: route only to providers that support every parameter we send
                     extra_body={"provider": {"require_parameters": True}},
                 )

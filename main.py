@@ -18,6 +18,7 @@ Stage 2 (homework 2), RAG over the corpus:
     python main.py rag search "питання" [--year 2023 --month 7 --source JRC] [--auto-filters]
     python main.py rag retrieval-eval [--split dev]            # recall@k / MRR -> results/rag/
     python main.py rag lint-testset                            # checks of the test set itself
+    python main.py rag ocr-compare                             # vision OCR vs EasyOCR -> results/rag/
 """
 
 import argparse
@@ -116,6 +117,7 @@ def add_rag(stages) -> None:
                       ("topic", str), ("kind", str), ("date-from", str), ("date-to", str)):
         s.add_argument(f"--{name}", type=typ)
     sub.add_parser("lint-testset", help="check the test set: fields, kinds, evidence phrases in the documents")
+    sub.add_parser("ocr-compare", help="vision OCR transcripts vs EasyOCR on the same pages -> results/rag/")
     ev = sub.add_parser("retrieval-eval", help="recall@k / MRR of the search configurations")
     ev.add_argument("--split", default="dev", choices=["dev", "test"])
 
@@ -145,6 +147,9 @@ def run_rag(args) -> None:
         print_hits(r.search(args.query, k=args.k, method=args.method, flt=flt if flt.active() else None))
     elif args.cmd == "lint-testset":
         from agro.rag.testset import run
+        run()
+    elif args.cmd == "ocr-compare":
+        from agro.corpus.ocr_compare import run
         run()
     elif args.cmd == "retrieval-eval":
         from agro.rag.retrieval_eval import run

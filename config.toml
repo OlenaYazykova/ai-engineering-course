@@ -37,6 +37,19 @@ price_out = 0.40
 timeout_s = 60
 max_retries = 2
 
+# Reads scanned pages (agro/corpus/vision_ocr.py): an image in, Markdown out.
+# Output price includes the "thinking" tokens of the model.
+[models.gemini_flash]
+provider = "openai_compatible"
+base_url = "https://openrouter.ai/api/v1"
+api_key_env = "OPENROUTER_API_KEY"
+model = "google/gemini-2.5-flash"
+response_format = "text"
+price_in = 0.30
+price_out = 2.50
+timeout_s = 180
+max_retries = 2
+
 # Optional: a stronger local model if the laptop has 16 GB RAM or more.
 # Add ["qwen7b", "v1", "t0"] to experiments below to use it.
 [models.qwen7b]
@@ -77,9 +90,17 @@ experiments = [
 
 
 # ---------------------------------------------------------------- stage 2: RAG
+[corpus]
+# Scanned pages: "vision" (models.gemini_flash, transcripts kept in data/ocr/) or "easyocr" (local, weaker)
+ocr_engine = "vision"
+
 [rag]
 # Chosen on the dev questions by `make rag-retrieval-eval` (results/rag/retrieval_dev.md).
 embedding = "e5"        # minilm | mpnet | e5 (agro/rag/embed.py)
 reranker = "bge"        # jina | bge (agro/rag/search.py)
 chunk_tokens = 450      # structural chunk size, tokens (agro/rag/chunking.py; compared: part D)
 rerank_top = 20         # candidates reordered by the reranker (20 vs 10: part E; time grows with it)
+bm25_tokens = "lemma"   # lemma | stem6 | none: words of BM25 (results/rag/retrieval_dev.md, part F)
+fusion = "rrf"          # rrf | relative: how the vector and BM25 lists are joined (part F)
+bm25_weight = 0.3       # rrf: weight of the BM25 list, the vector list has 1 (part F: 1.0 ... 0.1)
+fusion_alpha = 0.8      # relative: weight of the vector list (part F: 0.9 / 0.8 / 0.7)

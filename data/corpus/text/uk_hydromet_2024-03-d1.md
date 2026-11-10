@@ -11,7 +11,7 @@ url: https://agro.od.gov.ua/wp-content/uploads/2024/03/agro.pdf
 related: 
 ocr_pages: 
 doc_hash: c152f605a2364143
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # Агрометеорологічний бюлетень по території України, перша декада березня 2024 р.

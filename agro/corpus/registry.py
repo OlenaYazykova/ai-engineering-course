@@ -2,7 +2,7 @@
 
 Columns: doc_id, format (pdf/html/docx/doc/xlsx/csv), language, source, title, period, effective
 (the date the document describes or was published; the newer document wins when two disagree),
-topic, ocr ('' / 'all' / 'pages:12,13'), url, downloaded_at, note.
+topic, ocr ('' / 'all' / 'all except:2,9' / 'pages:12,13'), url, downloaded_at, note.
 """
 
 import csv
@@ -48,10 +48,18 @@ class DocMeta:
         m = re.search(r"-d(\d)$", self.period)
         return int(m.group(1)) if m else None
 
+    @property
+    def ocr_whole_scan(self) -> bool:
+        """The whole document is a scan ('all' / 'all except:...'), not single table pages."""
+        return self.ocr.startswith("all")
+
     def ocr_pages(self, n_pages: int) -> set[int]:
         """1-based page numbers to read with OCR."""
         if self.ocr == "all":
             return set(range(1, n_pages + 1))
+        if self.ocr.startswith("all except:"):
+            skip = {int(p) for p in self.ocr[len("all except:"):].split(",") if p.strip()}
+            return set(range(1, n_pages + 1)) - skip
         if self.ocr.startswith("pages:"):
             return {int(p) for p in self.ocr[len("pages:"):].split(",") if p.strip()}
         return set()

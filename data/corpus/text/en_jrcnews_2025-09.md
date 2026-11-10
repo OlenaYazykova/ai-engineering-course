@@ -11,7 +11,7 @@ url: https://joint-research-centre.ec.europa.eu/jrc-news-and-updates/contrasting
 related: en_jrc_2025-09
 ocr_pages: 
 doc_hash: 7699615b0ac37c69
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # JRC news: crop monitoring in Ukraine, September 2025

@@ -11,7 +11,7 @@ url: https://data.gov.ua/dataset/eb52e916-ad25-4f67-a113-b7bdebf5f3c2/resource/8
 related: 
 ocr_pages: 
 doc_hash: 4b9f37944341a5b7
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # Огляд погоди та стихійних гідрометеорологічних явищ на території України за 2023 рік

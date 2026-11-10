@@ -11,7 +11,7 @@ url: https://agro.od.gov.ua/wp-content/uploads/2021/09/agrometeorologichnyj_byul
 related: uk_hydromet_2022-08-d3
 ocr_pages: 
 doc_hash: fc971d8882325031
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # Агрометеорологічний бюлетень по території України, третя декада серпня 2021 р.

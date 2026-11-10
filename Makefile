@@ -3,7 +3,7 @@ PY ?= python
 # Every stage of the course project has its own prefix: extract- (homework 1), rag- (homework 2), ...
 # `make run` runs the pipeline of the current stage.
 
-.PHONY: install test fetch run rag-ingest rag-chunk rag-index rag-retrieval-eval rag-lint-testset \
+.PHONY: install test fetch run rag-ingest rag-chunk rag-index rag-retrieval-eval rag-lint-testset rag-ocr-compare \
         extract-run extract-run-all extract-metrics extract-smoke extract-regress extract-revalidate \
         extract-before-checks extract-check-golden extract-texts
 
@@ -24,6 +24,9 @@ run: rag-ingest rag-chunk rag-lint-testset rag-index rag-retrieval-eval  ## the 
 
 rag-ingest:             ## data/raw/ -> cleaned documents in data/corpus/ + manifest (cached, OCR where set)
 	$(PY) main.py rag ingest
+
+rag-ocr-compare:        ## vision OCR transcripts (data/ocr/) vs EasyOCR on the same pages -> results/rag/ocr_compare.md
+	$(PY) main.py rag ocr-compare
 
 rag-chunk:              ## data/corpus/ -> data/rag/chunks.jsonl + fixed-size baseline + results/rag/chunking.md
 	$(PY) main.py rag chunk

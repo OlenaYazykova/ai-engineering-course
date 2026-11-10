@@ -11,7 +11,7 @@ url: https://stat.gov.ua/en/explorer?urn=SSSU%3ADF_AREA_HARVESTS_CROP_YIELD_A%28
 related: 
 ocr_pages: 
 doc_hash: e92a8086ef831b7f
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # Areas, gross harvests and crop yield by region, annual (State Statistics Service of Ukraine)

@@ -20,6 +20,14 @@ Configurations (results/rag/retrieval.md):
      and the share of chunks longer than the input window of the model (they are cut before embedding)
   E. reranker speed vs quality: 20 or 10 candidates, both rerankers; vector + reranker without BM25
      (what BM25 adds to the candidates)
+  F. fusion of the two lists: RRF with the weight of BM25 1.0 ... 0.1, or relative score fusion with the
+     vector weight alpha 0.9 / 0.8 / 0.7; BM25 on 6-letter stems or dictionary forms. Hybrid without the
+     reranker for every variant; then the whole chain (hybrid + reranker + filters) for the setting of
+     the checkpoint, the chosen one and the best relative fusion. The setting is chosen by the whole chain:
+     the reranker can only reorder the candidates it gets, so the order of the hybrid alone decides little.
+
+For every configuration with a reranker, "recall before rerank" is the share of the expected sources
+among the candidates the reranker gets (20): what search lost cannot be found by the reranker.
 """
 
 import json
@@ -30,7 +38,7 @@ import time
 from ..common.settings import RESULTS_RAG, ROOT
 from .chunking import SIZES, chunk_file, chunk_size, load_chunks
 from .embed import window_stats
-from .search import RERANKERS, Retriever, ensure_index
+from .search import RERANKERS, TOKENS, Retriever, ensure_index
 
 EVALS = ROOT / "evals"
 KS = (1, 3, 5, 10)
@@ -68,30 +76,44 @@ def score_question(hits, q: dict) -> dict:
             "top": [h.chunk.chunk_id for h in hits[:5]]}
 
 
+def found_share(hits, q: dict) -> float:
+    """Share of the expected sources among these hits (one is enough for `match: any`)."""
+    found = [any(relevant(h.chunk, s) for h in hits) for s in q["sources"]]
+    return float(any(found)) if q.get("match") == "any" else sum(found) / len(found)
+
+
 def evaluate(retriever: Retriever, questions: list[dict], method: str, auto_filters: bool = False) -> dict:
     rows, times = [], []
     for q in questions:
+        retriever.cached_seconds = 0.0          # reranker time of the pairs taken from the cache
         t = time.perf_counter()
         hits = retriever.search(q["question"], k=max(KS), method=method, auto_filters=auto_filters)
-        times.append(1000 * (time.perf_counter() - t))
+        times.append(1000 * (time.perf_counter() - t + retriever.cached_seconds))
         rows.append(score_question(hits, q))
+        if method.endswith("_rerank"):
+            rows[-1]["candidates_recall"] = found_share(retriever.last_candidates, q)
     n = len(rows)
-    return {
+    out = {
         **{f"recall@{k}": sum(r["recall"][k] for r in rows) / n for k in KS},
         **{f"hit@{k}": sum(1 for r in rows if r["first_rank"] and r["first_rank"] <= k) / n for k in KS},
         "MRR": sum(1 / r["first_rank"] for r in rows if r["first_rank"]) / n,
         "ms/query": statistics.median(times),
         "rows": rows,
     }
+    if method.endswith("_rerank"):
+        out["recall_before_rerank"] = sum(r["candidates_recall"] for r in rows) / n
+    return out
 
 
 def _row(name: str, m: dict) -> str:
     name = name.replace(" | ", ", ")
+    before = f"{m['recall_before_rerank']:.2f}" if "recall_before_rerank" in m else "-"
     return (f"| {name} | {m['recall@1']:.2f} | {m['recall@3']:.2f} | {m['recall@5']:.2f} | {m['recall@10']:.2f} "
-            f"| {m['MRR']:.3f} | {m['ms/query']:.0f} |")
+            f"| {m['hit@5']:.2f} | {m['MRR']:.3f} | {before} | {m['ms/query']:.0f} |")
 
 
-HEAD = "| configuration | recall@1 | recall@3 | recall@5 | recall@10 | MRR | ms/query |\n|---|---|---|---|---|---|---|"
+HEAD = ("| configuration | recall@1 | recall@3 | recall@5 | recall@10 | hit@5 | MRR | recall before rerank | ms/query |\n"
+        "|---|---|---|---|---|---|---|---|---|")
 
 
 def run(split: str = "dev", models=("minilm", "mpnet", "e5")) -> dict:
@@ -123,18 +145,21 @@ def run(split: str = "dev", models=("minilm", "mpnet", "e5")) -> dict:
         r = Retriever(chunker, best_model)
         r.rerank_top = 20                     # part B: 20 candidates (part E compares with 10)
         do(f"B vector | {chunker} | {best_model}", r, "vector")
-        do(f"B bm25 | {chunker}", r, "bm25")
+        do(f"B bm25 ({r.bm25.tokens}) | {chunker}", r, "bm25")
         if chunker == "structural":
-            do("B bm25 without stemming | structural", Retriever(chunker, best_model, stem=None), "bm25")
+            for tokens in TOKENS:
+                if tokens != r.bm25.tokens:
+                    do(f"B bm25 ({tokens}) | structural", Retriever(chunker, best_model, bm25_tokens=tokens), "bm25")
         do(f"B hybrid | {chunker} | {best_model}", r, "hybrid")
         for rk in RERANKERS:
             r.reranker_key = rk
             do(f"B hybrid + rerank {rk} | {chunker} | {best_model}", r, "hybrid_rerank")
     best_rk = max(RERANKERS, key=lambda rk: results[f"B hybrid + rerank {rk} | structural | {best_model}"]["MRR"])
-    # C. filters
+    # C. filters, the configured system (the setting of the checkpoint hw2-v1 is in part F)
     r = Retriever("structural", best_model, best_rk)
     do(f"C hybrid + filters | structural | {best_model}", r, "hybrid", auto=True)
     do(f"C hybrid + rerank {best_rk} + filters | structural | {best_model}", r, "hybrid_rerank", auto=True)
+
 
     # D. chunk sizes (the size used is config.toml [rag] chunk_tokens; the others are in .cache/chunks)
     used = chunk_size()
@@ -167,6 +192,36 @@ def run(split: str = "dev", models=("minilm", "mpnet", "e5")) -> dict:
         r.rerank_top = top
         do(f"E vector + rerank {best_rk}, top {top} (no BM25) | structural | {best_model}", r, "vector_rerank")
 
+    # F. fusion x words of BM25; the best variant (MRR of hybrid) with the reranker and with filters
+    variants = [(tokens, "rrf", w) for tokens in ("stem6", "lemma") for w in (1.0, 0.5, 0.3, 0.2, 0.15, 0.1)]
+    variants += [(tokens, "relative", a) for tokens in ("stem6", "lemma") for a in (0.9, 0.8, 0.7)]
+    retrievers = {tokens: Retriever("structural", best_model, best_rk, bm25_tokens=tokens) for tokens in ("stem6", "lemma")}
+
+    def setup(tokens, fusion, value):
+        r = retrievers[tokens]
+        r.fusion = fusion
+        if fusion == "rrf":
+            r.bm25_weight = value
+        else:
+            r.fusion_alpha = value
+        return r
+
+    def label(tokens, fusion, value):
+        return f"bm25 {tokens}, " + (f"rrf, bm25 weight {value}" if fusion == "rrf" else f"relative, alpha {value}")
+
+    for v in variants:
+        do(f"F hybrid | {label(*v)} | {best_model}", setup(*v), "hybrid")
+    cfg = Retriever("structural", best_model, best_rk)
+    chosen = (cfg.bm25.tokens, cfg.fusion, cfg.bm25_weight if cfg.fusion == "rrf" else cfg.fusion_alpha)
+    best_relative = max((v for v in variants if v[1] == "relative"),
+                        key=lambda v: results[f"F hybrid | {label(*v)} | {best_model}"]["MRR"])
+    for v in dict.fromkeys([("stem6", "rrf", 1.0), chosen, best_relative]):
+        r = setup(*v)
+        r.rerank_top = 20
+        do(f"F hybrid + rerank {best_rk} + filters | {label(*v)}" + (" (chosen)" if v == chosen else "")
+           + (" (checkpoint hw2-v1)" if v == ("stem6", "rrf", 1.0) else "")
+           + f" | {best_model}", r, "hybrid_rerank", auto=True)
+
     write_report(split, questions, results, best_model, best_rk, windows, used)
     return results
 
@@ -177,13 +232,17 @@ def write_report(split, questions, results, best_model, best_rk, windows, used) 
              f"{len(questions)} questions with an expected source (no-answer questions excluded). "
              "A chunk is relevant if it is from the expected document and contains the evidence phrase "
              "(agro/rag/retrieval_eval.py). recall@k: share of expected sources found in the top k; "
-             "MRR: 1 / rank of the first relevant chunk.", ""]
+             "hit@5: share of questions with a relevant chunk in the top 5 (recall@5 of lesson 7); "
+             "MRR: 1 / rank of the first relevant chunk; recall before rerank: share of expected sources "
+             "among the 20 candidates the reranker gets.", ""]
     for part, title in (("A", "A. Embedding models (vector search, structural chunks)"),
                         ("B", f"B. Methods and chunking (embeddings: {best_model})"),
                         ("C", "C. Metadata filters read from the question"),
                         ("D", f"D. Structural chunk size (embeddings: {best_model}, reranker: {best_rk})"),
                         ("E", f"E. Reranker: candidates reordered (top 20 / 10), with and without BM25 "
-                              f"(embeddings: {best_model}, no filters)")):
+                              f"(embeddings: {best_model}, no filters)"),
+                        ("F", f"F. Fusion of the lists (RRF with a BM25 weight / relative score fusion) and words "
+                              f"of BM25 (embeddings: {best_model}, structural chunks)")):
         lines += [f"## {title}", "", HEAD]
         lines += [_row(name[2:], m) for name, m in results.items() if name.startswith(part)]
         lines.append("")
@@ -197,7 +256,10 @@ def write_report(split, questions, results, best_model, best_rk, windows, used) 
                                         if w else "- | - | - |"))
     lines.append("")
     lines += [f"Structural chunk size used: {used} tokens (config.toml [rag] chunk_tokens).", ""]
-    lines += [f"Chosen: embeddings **{best_model}**, reranker **{best_rk}** (best MRR on {split}).", "",
+    cfg = Retriever("structural", best_model, best_rk)
+    fusion = f"rrf, bm25 weight {cfg.bm25_weight}" if cfg.fusion == "rrf" else f"relative, alpha {cfg.fusion_alpha}"
+    lines += [f"Chosen: embeddings **{best_model}**, reranker **{best_rk}** (best MRR on {split}); "
+              f"BM25 **{cfg.bm25.tokens}**, fusion **{fusion}** (config.toml [rag], part F).", "",
               "## Per question (best configuration with filters)", "",
               "| id | kind | first relevant rank | recall@5 | top 3 chunks |", "|---|---|---|---|---|"]
     best = results[f"C hybrid + rerank {best_rk} + filters | structural | {best_model}"]

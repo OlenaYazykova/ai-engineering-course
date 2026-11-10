@@ -11,7 +11,7 @@ url: https://data.gov.ua/dataset/eb52e916-ad25-4f67-a113-b7bdebf5f3c2/resource/1
 related: 
 ocr_pages: 
 doc_hash: b8f7c91882e6b180
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # Узагальнена інформація про якість атмосферного повітря в населених пунктах у 2024 році (додаток)

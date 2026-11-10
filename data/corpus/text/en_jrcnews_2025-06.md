@@ -11,7 +11,7 @@ url: https://joint-research-centre.ec.europa.eu/jrc-news-and-updates/average-yie
 related: 
 ocr_pages: 
 doc_hash: 740ada80ba47ed84
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # JRC news: crop monitoring in Ukraine, June 2025

@@ -11,7 +11,7 @@ url: https://joint-research-centre.ec.europa.eu/jrc-news-and-updates/below-avera
 related: en_jrc_2024-06
 ocr_pages: 
 doc_hash: 252af35182021ce5
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # JRC news: crop monitoring in Ukraine, June 2024

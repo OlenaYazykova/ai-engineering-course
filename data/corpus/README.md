@@ -89,9 +89,18 @@ are not personal data and are kept: the questions need them.
   contents and imprint lines are dropped. Words broken by a hyphen at a line end are glued; a
   paragraph cut by a page or column break is glued back. Bulleted lines become Markdown list items
   (`- ...`), one per line, so a list item is not glued into the paragraph before it.
-* **OCR** (EasyOCR, uk + en) for the pages set in the `ocr` column of the registry: the scanned bulletin
-  `uk_hydromet_2023-09-d1` and the forecast tables of `en_jrc_2024-06` (page 12) and `en_jrc_2024-09`
-  (page 10), which are pictures. OCR text is marked in the chunks (`ocr: true`).
+* **OCR** for the pages set in the `ocr` column of the registry: the scanned bulletin
+  `uk_hydromet_2023-09-d1` (pages 1 and 3-8; pages 2 and 9 are the imprint: the people responsible
+  for the issue, the address, the print run, so no agro information and personal data; there the model
+  also copied a printed rule of dashes without end, see `prompts/ocr/CHANGELOG.md`) and the forecast
+  tables of `en_jrc_2024-06` (page 12) and
+  `en_jrc_2024-09` (page 10), which are pictures. A vision model (Gemini 2.5 Flash through OpenRouter,
+  `agro/corpus/vision_ocr.py`, prompt `prompts/ocr/v1.txt`) reads the page image and returns Markdown
+  with headings and tables. The transcript of every page is kept in git, `data/ocr/<doc_id>/page-NNN.md`
+  (model, prompt version and resolution in its first line): the corpus is rebuilt from it without a key
+  and without calling the model again, and anyone can hold it against the page. OCR text is marked in
+  the chunks (`ocr: true`). EasyOCR, the first reader, stays as the local alternative
+  (`config.toml` `[corpus] ocr_engine = "easyocr"`) and as the baseline of the comparison below.
 * **HTML** (BeautifulSoup): the article; menus, footer and the "subscribe" tail dropped; `<li>` -> `- ...`.
 * **DOCX** (python-docx): paragraphs and tables in order, list paragraphs (list style or numbering) as `- ...`; **DOC** is converted to DOCX by LibreOffice.
 * **XLSX** (openpyxl): title rows -> heading, the table, notes; the farm category ("Підприємства") is
@@ -108,13 +117,17 @@ are not personal data and are kept: the questions need them.
   search that is another word, so a question about "Івано-Франківська область" would not find them.
   Inside words that mix both alphabets the Latin look-alikes are made Cyrillic; words fully in Latin
   ("Avg", "MARS") are not touched. Every changed word is in `letters_log.csv`.
-* **OCR text**: the Ukrainian scan is read with the Ukrainian + English model, the JRC tables with the
+* **OCR text**: the vision transcripts against EasyOCR on the same pages (`make rag-ocr-compare`,
+  [results/rag/ocr_compare.md](../../results/rag/ocr_compare.md)): share of words found in the documents
+  read without OCR, numbers read by both, numbers only the model has (a model can "complete" a value, so
+  each of these was checked on the page), signed numbers of the JRC tables. EasyOCR settings, for the
+  record: the Ukrainian scan is read with the Ukrainian + English model, the JRC tables with the
   English model only (with Cyrillic on, digits were read as letters: 6 -> Б); 200 dpi (300 dpi read the
   tables worse). Words read with confidence < 0.35 and lines that are map labels (place names and
   numbers) are dropped, and so are OCR paragraphs of only 3-6 capitalised words without digits or
   punctuation (city names of a map: "Чернав Пуцьк Сун" for Чернігів, Луцьк, Суми); inside mixed words the usual confusions of italic Cyrillic are fixed (u/и, m/т, n/п,
   w/ш) and "26%С" becomes "26 °С". Known limits: some words of the scan stay misread (e.g. headings),
   and in the OCR tables of JRC 2024 the +/- signs of the percentage columns are often lost and a
-  decimal point is sometimes missing; these tables are marked "read with OCR: approximate".
+  decimal point is sometimes missing.
 * **Duplicates**: sha256 of the text (exact), Jaccard of word 5-grams >= 0.85 (near), containment
   >= 0.2 (related).

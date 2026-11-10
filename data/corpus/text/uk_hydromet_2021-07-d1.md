@@ -11,7 +11,7 @@ url: https://agro.od.gov.ua/wp-content/uploads/2021/07/agrometeorologichnyj_byul
 related: 
 ocr_pages: 
 doc_hash: f549b66e91f41587
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # Агрометеорологічний бюлетень по території України, перша декада липня 2021 р.

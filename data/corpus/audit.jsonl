@@ -1,49 +1,49 @@
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2021-07-d1", "action": "cached", "detail": {"pages": 13, "dropped_lines": 17}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2021-08-d1", "action": "cached", "detail": {"pages": 15, "dropped_lines": 18}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2021-08-d3", "action": "cached", "detail": {"pages": 11, "dropped_lines": 14}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2022-02-d1", "action": "cached", "detail": {"pages": 8, "dropped_lines": 11}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2022-08-d3", "action": "cached", "detail": {"pages": 11, "dropped_lines": 14}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2022-09-d1", "action": "cached", "detail": {"pages": 10, "dropped_lines": 13}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2022-10-d2", "action": "cached", "detail": {"pages": 9, "dropped_lines": 13}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2023-01-d1", "action": "cached", "detail": {"pages": 7, "dropped_lines": 11}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2023-02-d2", "action": "cached", "detail": {"pages": 6, "dropped_lines": 9}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2023-02-d3", "action": "cached", "detail": {"pages": 7, "dropped_lines": 11}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2023-03-d3", "action": "cached", "detail": {"pages": 12, "dropped_lines": 15}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2023-04-d3", "action": "cached", "detail": {"pages": 12, "dropped_lines": 16}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2023-07-d1", "action": "cached", "detail": {"pages": 12, "dropped_lines": 15}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2023-07-d2", "action": "cached", "detail": {"pages": 12, "dropped_lines": 15}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2023-07-d3", "action": "cached", "detail": {"pages": 13, "dropped_lines": 17}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2023-09-d1", "action": "cached", "detail": {"pages": 9, "ocr_pages": [1, 2, 3, 4, 5, 6, 7, 8, 9], "dropped_lines": 0}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2023-10-d1", "action": "cached", "detail": {"pages": 10, "dropped_lines": 13}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2023-10-d2", "action": "cached", "detail": {"pages": 9, "dropped_lines": 12}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrc_2022-06", "action": "cached", "detail": {"pages": 20, "dropped_lines": 39}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrc_2023-04", "action": "cached", "detail": {"pages": 14, "dropped_lines": 29}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrc_2023-06", "action": "cached", "detail": {"pages": 23, "dropped_lines": 47}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrc_2023-09", "action": "cached", "detail": {"pages": 18, "dropped_lines": 35}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrc_2024-06", "action": "cached", "detail": {"pages": 24, "ocr_pages": [12], "dropped_lines": 41}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrc_2024-09", "action": "cached", "detail": {"pages": 20, "ocr_pages": [10], "dropped_lines": 36}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrc_2025-06", "action": "cached", "detail": {"pages": 25, "dropped_lines": 49}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrc_2025-09", "action": "cached", "detail": {"pages": 27, "dropped_lines": 53}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrc_2026-06", "action": "cached", "detail": {"pages": 27, "dropped_lines": 57}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrc_2026-09", "action": "cached", "detail": {"pages": 30, "dropped_lines": 63}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrcnews_2022-06", "action": "cached", "detail": {}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrcnews_2022-09", "action": "cached", "detail": {}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrcnews_2023-04", "action": "cached", "detail": {}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrcnews_2024-06", "action": "cached", "detail": {}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrcnews_2025-06", "action": "cached", "detail": {}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrcnews_2025-09", "action": "cached", "detail": {}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrcnews_2026-06", "action": "cached", "detail": {}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_jrcnews_2026-09", "action": "cached", "detail": {}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_2024-03-d1", "action": "cached", "detail": {"pages": 8, "dropped_lines": 11}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_year_2019", "action": "cached", "detail": {}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_year_2020", "action": "cached", "detail": {}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_year_2021", "action": "cached", "detail": {"pages": 33, "dropped_lines": 26}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_year_2022", "action": "cached", "detail": {"pages": 33, "dropped_lines": 27}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_year_2023", "action": "cached", "detail": {"pages": 69, "dropped_lines": 73}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_year_2023_copy", "action": "cached", "detail": {"pages": 69, "dropped_lines": 73}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_year_2024", "action": "cached", "detail": {"pages": 49, "dropped_lines": 49}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_year_2024_annex", "action": "cached", "detail": {"converted_with": "libreoffice"}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_odstat_crops_2024-10", "action": "cached", "detail": {"sheets": 1}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_odstat_crops_2024", "action": "cached", "detail": {"sheets": 1}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "en_derzhstat_crops_annual", "action": "cached", "detail": {"rows_in_export": 65694, "rows_taken": 525}}
-{"at": "2026-11-09T14:34:59+00:00", "doc_id": "uk_hydromet_year_2023_copy", "action": "exact_duplicate", "detail": "of uk_hydromet_year_2023"}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2021-07-d1", "action": "cached", "detail": {"pages": 13, "dropped_lines": 17}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2021-08-d1", "action": "cached", "detail": {"pages": 15, "dropped_lines": 18}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2021-08-d3", "action": "cached", "detail": {"pages": 11, "dropped_lines": 14}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2022-02-d1", "action": "cached", "detail": {"pages": 8, "dropped_lines": 11}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2022-08-d3", "action": "cached", "detail": {"pages": 11, "dropped_lines": 14}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2022-09-d1", "action": "cached", "detail": {"pages": 10, "dropped_lines": 13}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2022-10-d2", "action": "cached", "detail": {"pages": 9, "dropped_lines": 13}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2023-01-d1", "action": "cached", "detail": {"pages": 7, "dropped_lines": 11}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2023-02-d2", "action": "cached", "detail": {"pages": 6, "dropped_lines": 9}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2023-02-d3", "action": "cached", "detail": {"pages": 7, "dropped_lines": 11}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2023-03-d3", "action": "cached", "detail": {"pages": 12, "dropped_lines": 15}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2023-04-d3", "action": "cached", "detail": {"pages": 12, "dropped_lines": 16}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2023-07-d1", "action": "cached", "detail": {"pages": 12, "dropped_lines": 15}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2023-07-d2", "action": "cached", "detail": {"pages": 12, "dropped_lines": 15}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2023-07-d3", "action": "cached", "detail": {"pages": 13, "dropped_lines": 17}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2023-09-d1", "action": "extracted", "detail": {"pages": 9, "ocr_pages": [1, 3, 4, 5, 6, 7, 8], "dropped_lines": 0}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2023-10-d1", "action": "cached", "detail": {"pages": 10, "dropped_lines": 13}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2023-10-d2", "action": "cached", "detail": {"pages": 9, "dropped_lines": 12}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrc_2022-06", "action": "cached", "detail": {"pages": 20, "dropped_lines": 39}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrc_2023-04", "action": "cached", "detail": {"pages": 14, "dropped_lines": 29}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrc_2023-06", "action": "cached", "detail": {"pages": 23, "dropped_lines": 47}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrc_2023-09", "action": "cached", "detail": {"pages": 18, "dropped_lines": 35}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrc_2024-06", "action": "cached", "detail": {"pages": 24, "ocr_pages": [12], "dropped_lines": 41}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrc_2024-09", "action": "cached", "detail": {"pages": 20, "ocr_pages": [10], "dropped_lines": 36}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrc_2025-06", "action": "cached", "detail": {"pages": 25, "dropped_lines": 49}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrc_2025-09", "action": "cached", "detail": {"pages": 27, "dropped_lines": 53}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrc_2026-06", "action": "cached", "detail": {"pages": 27, "dropped_lines": 57}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrc_2026-09", "action": "cached", "detail": {"pages": 30, "dropped_lines": 63}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrcnews_2022-06", "action": "cached", "detail": {}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrcnews_2022-09", "action": "cached", "detail": {}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrcnews_2023-04", "action": "cached", "detail": {}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrcnews_2024-06", "action": "cached", "detail": {}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrcnews_2025-06", "action": "cached", "detail": {}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrcnews_2025-09", "action": "cached", "detail": {}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrcnews_2026-06", "action": "cached", "detail": {}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_jrcnews_2026-09", "action": "cached", "detail": {}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_2024-03-d1", "action": "cached", "detail": {"pages": 8, "dropped_lines": 11}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_year_2019", "action": "cached", "detail": {}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_year_2020", "action": "cached", "detail": {}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_year_2021", "action": "cached", "detail": {"pages": 33, "dropped_lines": 26}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_year_2022", "action": "cached", "detail": {"pages": 33, "dropped_lines": 27}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_year_2023", "action": "cached", "detail": {"pages": 69, "dropped_lines": 73}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_year_2023_copy", "action": "cached", "detail": {"pages": 69, "dropped_lines": 73}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_year_2024", "action": "cached", "detail": {"pages": 49, "dropped_lines": 49}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_year_2024_annex", "action": "cached", "detail": {"converted_with": "libreoffice"}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_odstat_crops_2024-10", "action": "cached", "detail": {"sheets": 1}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_odstat_crops_2024", "action": "cached", "detail": {"sheets": 1}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "en_derzhstat_crops_annual", "action": "cached", "detail": {"rows_in_export": 65694, "rows_taken": 525}}
+{"at": "2026-11-09T20:09:38+00:00", "doc_id": "uk_hydromet_year_2023_copy", "action": "exact_duplicate", "detail": "of uk_hydromet_year_2023"}

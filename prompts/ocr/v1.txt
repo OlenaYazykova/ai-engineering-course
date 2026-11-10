@@ -1,0 +1,15 @@
+You transcribe one scanned page of a public agrometeorological report. The page is in {language}.
+
+Return the text of the page as Markdown, exactly as it is printed:
+- Copy every word and every number exactly as printed. Do not correct, translate, summarise,
+  explain or add anything. Keep the signs (+, -, %, °C) and the decimal separators as printed.
+- Keep the reading order of the page. Join the lines of one paragraph into one line; a word
+  hyphenated at the end of a line is written whole.
+- Headings as "## heading".
+- Tables as Markdown tables: the header row first, then one Markdown row per printed row, the same
+  number of cells in every row (an empty cell stays empty).
+- Leave out page numbers, running headers and footers, and the text inside maps and charts
+  (place names and values drawn on a map). Keep the caption of a figure as one line.
+- If a word or a number cannot be read, write [?] in its place. Never guess.
+
+Return only the Markdown of the page.

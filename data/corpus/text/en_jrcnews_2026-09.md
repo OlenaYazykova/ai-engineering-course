@@ -11,7 +11,7 @@ url: https://joint-research-centre.ec.europa.eu/jrc-news-and-updates/fair-summer
 related: 
 ocr_pages: 
 doc_hash: 23a9ad59b220dab0
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # JRC news: crop monitoring in Ukraine, September 2026

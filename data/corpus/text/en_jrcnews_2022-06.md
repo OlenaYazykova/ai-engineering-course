@@ -11,7 +11,7 @@ url: https://joint-research-centre.ec.europa.eu/jrc-news-and-updates/mediocre-yi
 related: en_jrc_2022-06
 ocr_pages: 
 doc_hash: 22c67f8862cf5361
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # JRC news: crop monitoring in Ukraine, June 2022

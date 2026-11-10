@@ -8,10 +8,10 @@ topic: agromet
 period: 2022-09-d1
 effective: 2022-09-10
 url: https://agro.od.gov.ua/wp-content/uploads/2022/09/agrometeorologichnyj_byuleten_09_01_2022.pdf
-related: 
+related: uk_hydromet_2023-09-d1
 ocr_pages: 
 doc_hash: 96347fac3d815ceb
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # Агрометеорологічний бюлетень по території України, перша декада вересня 2022 р.

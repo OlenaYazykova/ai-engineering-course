@@ -11,7 +11,7 @@ url: https://joint-research-centre.ec.europa.eu/jrc-news-and-updates/fair-yield-
 related: 
 ocr_pages: 
 doc_hash: b89708e9eeed3dd4
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # JRC news: crop monitoring in Ukraine, September 2022

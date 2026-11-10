@@ -326,8 +326,8 @@ def read_pdf(meta: DocMeta, ocr_reader=None) -> tuple[list[Block], dict]:
         for i, page in enumerate(pdf, 1):
             if i in ocr_pages and ocr_reader is not None:
                 try:
-                    per_page.append(ocr_reader.read_page(page, i, as_table=meta.ocr != "all",
-                                                         language=meta.language))
+                    per_page.append(ocr_reader.read_page(page, i, as_table=not meta.ocr_whole_scan,
+                                                         language=meta.language, doc_id=meta.doc_id))
                     info["ocr_pages"].append(i)
                 except Exception as e:      # no OCR installed: the rest of the document is still read
                     info.setdefault("ocr_failed", []).append(i)

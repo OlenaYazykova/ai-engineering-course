@@ -11,7 +11,7 @@ url: https://agro.od.gov.ua/wp-content/uploads/2023/08/agrometeorologichnyj_byul
 related: 
 ocr_pages: 
 doc_hash: 56c85c84e8cccf87
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # Агрометеорологічний бюлетень по території України, друга декада липня 2023 р.

@@ -21,16 +21,18 @@ filters, retrieval metrics. Steps 3-4 (answers with citations, evals in CI) foll
 ### Run
 
 ```bash
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu   # OCR needs torch; CPU build
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu   # EasyOCR (comparison) needs torch
 make install
 make fetch          # originals into data/raw/ (one CSV is exported by hand: the command says how)
 make run            # = make rag-ingest rag-chunk rag-lint-testset rag-index rag-retrieval-eval
 python main.py rag search "Запаси вологи під кукурудзою на 31 липня 2023" --auto-filters
 ```
 
-Models (OCR, tokenizer, later embeddings) are downloaded on first use into `.models/` in the project
-folder (or `AGRO_MODELS_DIR` from `.env`), never into the home folder. LibreOffice (`soffice`) is needed
-for the one `.doc` file.
+Models (tokenizer, embeddings, rerankers, EasyOCR) are downloaded on first use into `.models/` in the
+project folder (or `AGRO_MODELS_DIR` from `.env`), never into the home folder. Scanned pages are read by a
+vision model through OpenRouter; its transcripts are in git (`data/ocr/`), so the corpus is rebuilt without
+a key. LibreOffice (`soffice`) is needed for the one `.doc` file. `make rag-ocr-compare` compares the
+transcripts with EasyOCR ([results/rag/ocr_compare.md](results/rag/ocr_compare.md)).
 
 ### Corpus
 
@@ -55,38 +57,42 @@ Why structural: the bulletins are written section by section ("Зволожен�
 question is about one section of one decade; a fixed window glues the end of one section to the start of
 the next and cuts tables away from their header row, so a cut table part no longer says which column
 is which. Measured on the same corpus of 47 documents
-([chunking.md](results/rag/chunking.md), [retrieval_dev.md](results/rag/retrieval_dev.md), 17 dev questions):
+([chunking.md](results/rag/chunking.md), [retrieval_dev.md](results/rag/retrieval_dev.md), 19 dev questions):
 
 | | structural 300 | **structural 450 (used)** | fixed 450 / overlap 50 |
 |---|---|---|---|
-| chunks (avg tokens) | 2153 (277) | 1537 (373) | 1369 (443) |
-| chunks starting mid-sentence | 2.4% | 3.2% | 52.6% |
+| chunks (avg tokens) | 2150 (277) | 1537 (372) | 1367 (443) |
+| chunks starting mid-sentence | 2.4% | 3.3% | 52.6% |
 | table parts without their header row | 0 | 0 | 537 |
-| chunks longer than the e5 window (512 e5 tokens) | 0.3% | 32.5% | - |
-| MRR, vector (e5) | 0.480 | **0.517** | 0.458 |
-| MRR, hybrid + reranker (bge) | 0.561 | **0.565** | 0.503 |
+| chunks longer than the e5 window (512 e5 tokens) | 0.3% | 32.4% | - |
+| MRR, vector (e5) | 0.570 | **0.603** | 0.523 |
+| MRR, hybrid + reranker (bge) | 0.615 | **0.632** | 0.604 |
 
 Why 450: the window of e5 is 512 of its own tokens; a third of the 450-chunks is longer (tables up to
 600 tokens, dense Ukrainian text) and is cut before embedding, while 300-chunks fit. Even so, 450 gives the
-better vector search (0.517 vs 0.480) and the same quality after the reranker, which reads the whole chunk:
-a longer chunk keeps a paragraph with its context (oblast, crop, period). Within 17 questions 0.561 vs
-0.565 is no difference, so the smaller index (1537 chunks, not 2153) decides. Tables are allowed up to 600
-tokens so that a row is never cut.
+better vector search (0.603 vs 0.570) and the better result after the reranker, which reads the whole
+chunk (0.632 vs 0.615): a longer chunk keeps a paragraph with its context (oblast, crop, period), and the
+index is smaller (1537 chunks, not 2150). Tables are allowed up to 600 tokens so that a row is never cut.
+
+Honest note: after a reranker the chunking matters less. With jina the fixed chunks even come out a little
+ahead (0.636 vs 0.565), with bge structural is ahead (0.632 vs 0.604); one question moves MRR by ~0.05.
+Structural chunks are chosen for what holds in every measure: vector search (0.603 vs 0.523), no cut
+tables, sentences and sections kept whole, which also matters for the answers of step 3.
 
 One chunk as it is in `data/rag/chunks.jsonl` (one line there; the text keeps the defects of the PDF:
-"сумиефективних" without a space, "+5 С" without the degree sign):
+"+5 С" without the degree sign, no space in "показникам(табл.1)"):
 
 ```json
 {"chunk_id": "uk_hydromet_2023-07-d3#010", "doc_id": "uk_hydromet_2023-07-d3", "chunk_index": 10,
  "kind": "text", "section": "Теплозабезпечення", "page": 8,
  "header": "Агрометеорологічний бюлетень по території України, третя декада липня 2023 р. | period: третя декада, липень 2023 | section: Теплозабезпечення",
- "text": "Станом на 31 липня сумиефективних температур повітря вище +5 С у більшості областей були на 25-30 °С вищими за середні багаторічні показники, в Івано-Франківській області – на 20 °С нижчими від них; суми температур повітря вище +10 С були близькими або на 25-45 °С нижчими від багаторічних показників і у розрізі агрокліматичних зон України відповідали таким показникам (табл.1):\n\nТаблиця 1",
+ "text": "Станом на 31 липня суми ефективних температур повітря вище +5 С у більшості областей були на 25-30 °С вищими за середні багаторічні показники, в Івано-Франківській області – на 20 °С нижчими від них; суми температур повітря вище +10 С були близькими або на 25-45 °С нижчими від багаторічних показників і у розрізі агрокліматичних зон України відповідали таким показникам(табл.1):\n\nТаблиця 1",
  "n_tokens": 133, "title": "Агрометеорологічний бюлетень по території України, третя декада липня 2023 р.",
  "source": "Ukrhydrometcenter bulletin", "format": "pdf", "language": "uk", "topic": "agromet",
  "period": "2023-07-d3", "year": 2023, "month": 7, "decade": 3, "effective": "2023-07-31",
  "url": "https://agro.od.gov.ua/wp-content/uploads/2023/08/agrometeorologichnyj_byuleten_07_03_2023.pdf",
- "doc_hash": "490d83168bf36218", "ocr": false, "chunker": "struct-1-450", "pipeline_version": "corpus-6",
- "dataset_version": "8bf29b4d937e", "ingested_at": "2026-11-09T14:36:29+00:00"}
+ "doc_hash": "490d83168bf36218", "ocr": false, "chunker": "struct-1-450", "pipeline_version": "corpus-7",
+ "dataset_version": "7b87b35ca6a9", "ingested_at": "2026-11-09T20:23:23+00:00"}
 ```
 
 `chunk_id` = document + number (stable while the document does not change); `title`, `section` and `page`
@@ -96,30 +102,17 @@ answer) came from.
 
 ### Search
 
-`agro/rag/search.py`: dense vectors (multilingual embeddings, fastembed on CPU) in Qdrant + BM25 over
-crudely stemmed words (first 6 letters: Ukrainian endings), fused by reciprocal rank fusion (k = 60, top 30
-of each list), then a multilingual cross-encoder reorders the top `rerank_top` (config.toml) candidates
-(the reranker is the slow part on CPU: its time grows with the number of candidates).
+`agro/rag/search.py`: dense vectors (multilingual embeddings, fastembed on CPU) in Qdrant + BM25 over the
+dictionary forms of Ukrainian words (pymorphy3; English words cut to 6 letters), the two lists joined by
+reciprocal rank fusion (k = 60, top 30 of each list, BM25 with weight 0.3), then a multilingual
+cross-encoder reorders the top 20 candidates. The settings are in `config.toml` `[rag]`.
 
-* **Why hybrid + reranker**: questions name exact things that embeddings blur (oblast names, "0-100 см",
-  numbers, "MARS"); BM25 finds those, embeddings find paraphrases and the other language (a Ukrainian
-  question about an English JRC bulletin). The reranker reads question and chunk together and decides the
-  order. Measured: fusing the two lists alone is *worse* than vectors alone (MRR 0.376 vs 0.517: BM25 is weak
-  on this corpus, 0.232, and pulls good vector hits down); with the reranker on top it is the best (0.565),
-  but BM25 adds little to the reranker's candidates (vector + reranker without BM25: 0.559). Hybrid is kept
-  for exact names and numbers; a weighted fusion is a next step.
 * **Why Qdrant** (the store of the lecture): filters on the payload are applied inside the vector search
   (not after it, so the top k is not emptied by a filter), including "month = 7 or no month" for
   documents that cover a whole year; local mode (a folder, `.cache/qdrant`) needs no server, and the same
   code works with a Qdrant server later. FAISS stores vectors only (metadata filtering has to be built
   around it); with Chroma "or no month" needs a placeholder value; pgvector would need a PostgreSQL server
   for 1,500 chunks.
-* **Embedding model**: `intfloat/multilingual-e5-large` (MRR 0.517) over the MiniLM of the lecture (0.197)
-  and mpnet (0.137). MiniLM reads 128 tokens: 91% of the chunks are cut, and the context header
-  (document, period, section) takes a large part of those 128.
-* **Reranker**: `BAAI/bge-reranker-v2-m3` (MRR 0.565) over `jina-reranker-v2-base-multilingual` (0.525),
-  20 candidates (10 candidates: 0.500). The price is time on a CPU: ~40 s per question (jina ~14 s).
-  The chosen values are in `config.toml` `[rag]`.
 * **Filters**: year (a document covering 2019-2025 matches 2023), month, decade, source, language, topic,
   chunk kind, date range; given explicitly or read from the question, applied in the vector search and in
   BM25 alike:
@@ -130,27 +123,55 @@ python main.py rag search "Запаси вологи під кукурудзою
 python main.py rag search "maize yield forecast" --year 2025 --source JRC --kind table
 ```
 
-Retrieval quality on the 17 dev questions that have an answer (a chunk is relevant if it is from the
-expected document and contains its evidence phrase; all 26 configurations, recall@1/3/5/10 and per question:
+Retrieval quality on the 19 dev questions that have an answer (a chunk is relevant if it is from the
+expected document and contains its evidence phrase; every configuration with recall@1/3/5/10, hit@5,
+MRR, recall before the reranker and time, and every question:
 [results/rag/retrieval_dev.md](results/rag/retrieval_dev.md)):
 
-| configuration (structural chunks, e5) | recall@1 | recall@5 | recall@10 | MRR | s/question |
-|---|---|---|---|---|---|
-| vector | 0.47 | 0.59 | 0.65 | 0.517 | 0.2 |
-| BM25 | 0.12 | 0.41 | 0.41 | 0.232 | 0.01 |
-| hybrid (RRF) | 0.35 | 0.35 | 0.53 | 0.376 | 0.2 |
-| hybrid + reranker bge | 0.47 | 0.65 | 0.68 | 0.565 | 41 |
-| **hybrid + reranker bge + filters from the question** | **0.59** | **0.82** | **0.85** | **0.687** | 40 |
+| configuration (structural chunks, e5) | recall@1 | recall@5 | hit@5 | MRR | recall before rerank | s/question |
+|---|---|---|---|---|---|---|
+| vector | 0.58 | 0.63 | 0.63 | 0.603 | - | 0.2 |
+| BM25 (dictionary forms) | 0.26 | 0.32 | 0.32 | 0.312 | - | 0.01 |
+| hybrid (RRF, BM25 weight 0.3) | 0.42 | 0.53 | 0.53 | 0.479 | - | 0.2 |
+| hybrid + filters from the question | 0.58 | 0.71 | 0.74 | 0.625 | - | 0.2 |
+| hybrid + reranker bge | 0.58 | 0.66 | 0.68 | 0.632 | 0.71 | 38 |
+| **hybrid + reranker bge + filters (the system)** | **0.74** | **0.87** | **0.89** | **0.808** | **0.92** | 37 |
+| the same at the checkpoint `hw2-v1` (BM25 on 6-letter stems, weight 1.0) | 0.68 | 0.84 | 0.84 | 0.746 | 0.89 | 36 |
 
-With filters 14 of 17 questions have a relevant chunk in the top 5. Not found: d06 (cross-lingual: an
-English question about frozen soil in Kyiv oblast in March 2024; the reranker prefers the annual Derzhstat
-table with "Kyivska | 2024") and the two multi-document questions d13 and d14 (two sources each: the
-reranker fills the top with chunks of one of them). The set is small: one question moves MRR by about 0.06,
-so only large differences (e5 vs the other models, reranker vs none, filters) are conclusions.
+With the system 17 of 19 questions have a relevant chunk in the top 5. Not found: d12 (similar documents:
+the sums of temperatures on 20 October 2022, the reranker keeps the neighbouring chunks of the same
+bulletin) and d14 (two JRC bulletins, June and September 2025, with nearly the same tables; the first
+relevant chunk is 10th); d13 (two documents) has one of its two sources in the top 5. The set is small: one
+question moves MRR by about 0.05, so only large differences are conclusions.
+
+### Experiments and decisions (step 2)
+
+| experiment | compared | result (MRR on dev) | decision |
+|---|---|---|---|
+| embedding model | MiniLM of the lecture / mpnet / multilingual e5-large | 0.176 / 0.158 / **0.603** | e5. MiniLM reads 128 tokens: 91% of the chunks are cut, and the context header takes a large part of those 128 |
+| chunking | structural 450 / structural 300 / fixed 450 + 50 | see Chunking above | structural 450 |
+| reranker | jina v2 / bge v2 m3 (hybrid, 20 candidates) | 0.565 / **0.632** | bge; the price is time on a CPU: ~38 s per question (jina ~13 s), scores cached in `.cache/rerank/` |
+| candidates for the reranker | 20 / 10 | 0.632 / 0.605 (recall before rerank 0.71 / 0.63) | 20: the reranker cannot find what is not among the candidates |
+| reranker on vector only (no BM25) | vector + bge / hybrid + bge, no filters | 0.632 / 0.632 (recall before rerank 0.71 / 0.71) | hybrid: equal without filters; with filters the hybrid gives more candidates than the order of the vector list (below) |
+| words of BM25 | as they are / first 6 letters / dictionary forms (pymorphy3) | 0.226 / 0.245 / **0.312** | dictionary forms ("вологою", "вологи" -> "волога") |
+| fusion of the lists | RRF with BM25 weight 1.0 ... 0.1; relative score fusion alpha 0.9 / 0.8 / 0.7 (18 variants of the hybrid, part F) | hybrid alone: 0.446 ... 0.545 (RRF), 0.572 ... 0.603 (relative); whole chain with filters: RRF 1.0 0.746, **RRF 0.3 0.808**, relative 0.9 0.756 | RRF, BM25 weight 0.3, chosen by the whole chain: the reranker only reorders the candidates it gets, so the order of the hybrid alone decides little |
+| metadata filters read from the question | without / with | 0.632 / **0.808** | with: year, month, decade, source |
+
+**Hybrid alone is not better than vector search alone here** (lecture 7 expects it to be: there BM25 alone
+reaches 0.88, because the questions contain exact codes such as `BV-2013-02`). On this corpus BM25 alone
+reaches 0.31: 6 of the 19 dev questions ask in one language about a document in the other (d05, d06, d07,
+d13, d16, d19), where words cannot match, and several are traps with a bulletin of the same month of another
+year (d04: March 2024 vs March 2023), where the words are the same. In RRF a chunk ranked 10th in both
+lists (2/70) outvotes the first hit of the vector list (1/61), so BM25 pushes the right vector hits down.
+A lower weight of BM25 and the relative fusion reduce this, but the hybrid alone at
+best equals the vector list (0.603). BM25 pays off in the whole chain with filters: there RRF with weight
+0.3 gives the reranker 92% of the expected sources among its 20 candidates, against 87% for the relative
+fusion with alpha 0.9 (in effect the order of the vector list), and the whole chain reaches MRR 0.808
+against 0.756.
 
 ### Test set
 
-`evals/testset_dev.jsonl` (tuning) and `evals/testset_test.jsonl` (measured once, at the end): 38
+`evals/testset_dev.jsonl` (tuning) and `evals/testset_test.jsonl` (measured once, at the end): 45
 questions, Ukrainian and English, 9 kinds: exact, paraphrase, cross-lingual, table, outdated version,
 similar documents, several documents, yes/no, no answer in the corpus. Each has the expected answer,
 key facts and the source (document + evidence phrase). The questions were compiled by the author 

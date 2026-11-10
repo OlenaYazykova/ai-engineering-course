@@ -35,7 +35,7 @@ from .extract import Block, read_document
 from .pii import PiiMasker, lowercase_words
 from .registry import DocMeta, load_registry
 
-PIPELINE_VERSION = "corpus-6"
+PIPELINE_VERSION = "corpus-7"
 TEXT_DIR = CORPUS / "text"
 MANIFEST = CORPUS / "manifest.csv"
 AUDIT = CORPUS / "audit.jsonl"
@@ -87,7 +87,7 @@ def to_markdown(meta: DocMeta, blocks: list[Block]) -> str:
             out.append("#" * max(2, min(b.level, 4)) + " " + b.text)
         elif b.kind == "table":
             if b.ocr:
-                out.append("<!-- table read with OCR: cell borders are approximate -->")
+                out.append("<!-- table read with OCR (transcript: data/ocr/) -->")
             out.append(table_to_markdown(b.rows))
         else:
             out.append(b.text)
@@ -118,14 +118,29 @@ def read_markdown(path) -> tuple[dict, str]:
 
 # ---------------------------------------------------------------- pipeline
 
-class _LazyOcr:
-    """Create an OCR reader (loads torch and the models) only if a page really needs it, one per language."""
+def ocr_engine() -> str:
+    import tomllib
 
-    def __init__(self):
+    with (ROOT / "config.toml").open("rb") as f:
+        return tomllib.load(f).get("corpus", {}).get("ocr_engine", "vision")
+
+
+class _LazyOcr:
+    """Create an OCR reader only if a page really needs it: the vision model (config.toml [corpus]
+    ocr_engine = "vision", transcripts in data/ocr/) or EasyOCR (loads torch and the models, one per language)."""
+
+    def __init__(self, engine: str | None = None):
+        self.engine = engine or ocr_engine()
         self._readers = {}
         self._error = None
+        self.vision = None
 
-    def read_page(self, page, page_no, as_table=False, language="uk"):
+    def read_page(self, page, page_no, as_table=False, language="uk", doc_id=""):
+        if self.engine == "vision":
+            if self.vision is None:
+                from .vision_ocr import VisionOcr
+                self.vision = VisionOcr()
+            return self.vision.read_page(page, page_no, as_table=as_table, language=language, doc_id=doc_id)
         if self._error:
             raise RuntimeError(self._error)
         if language not in self._readers:
@@ -188,7 +203,7 @@ def run(force: bool = False, only: list[str] | None = None) -> None:
                       "detail": {k: v for k, v in info.items() if v not in (None, [], "")}})
         print(f"  {meta.doc_id:<30} {'cached' if cached else 'read'}: {len(blocks)} blocks"
               + (f", OCR pages {row['ocr_pages']}" if row["ocr_pages"] else "")
-              + (f", OCR FAILED on pages {info['ocr_failed']}" if info.get("ocr_failed") else ""))
+              + (f", OCR FAILED on pages {info['ocr_failed']}: {info.get('ocr_error', '')}" if info.get("ocr_failed") else ""))
         if not blocks:
             row["status"] = "error"
             audit.append({"doc_id": meta.doc_id, "action": "error", "detail": "no text"})
@@ -205,6 +220,8 @@ def run(force: bool = False, only: list[str] | None = None) -> None:
     # Personal data: masked by Presidio (spaCy NER + our rules) before anything is written.
     lower = lowercase_words(c for blocks in extracted.values() for b in blocks
                             for c in ([b.text] if b.kind != "table" else [x for r in b.rows for x in r]))
+    if ocr.vision is not None and ocr.vision.calls:
+        print(f"vision OCR: {ocr.vision.calls} pages read now, ${ocr.vision.cost_usd:.4f}; transcripts in data/ocr/")
     print("masking personal data (Presidio + spaCy)...")
     masker = PiiMasker(lower)
     for doc_id, blocks in extracted.items():

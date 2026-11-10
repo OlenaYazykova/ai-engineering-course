@@ -11,7 +11,7 @@ url: https://agro.od.gov.ua/wp-content/uploads/2023/01/agrometeorologichnyj_byul
 related: 
 ocr_pages: 
 doc_hash: 3f7b225d5eb10c9e
-pipeline_version: corpus-6
+pipeline_version: corpus-7
 ---
 
 # Агрометеорологічний бюлетень по території України, перша декада січня 2023 р.
