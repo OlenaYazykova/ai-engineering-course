@@ -10,8 +10,8 @@ from agro.rag import answer as answer_mod
 from agro.rag.answer import NO_ANSWER_MARKER, Answerer, language
 from agro.rag.answer_eval import score, summary, threshold_rows
 from agro.rag.search import Hit
-from agro.rag.verify import (extract_numbers, has_fact, sentences, uncited_sentences, verify_numbers,
-                             verify_numbers_by_sentence)
+from agro.rag.verify import (extract_numbers, has_fact, sentences, table_mismatches, uncited_sentences,
+                             verify_numbers, verify_numbers_by_sentence)
 
 
 # ---------------------------------------------------------------- numbers
@@ -45,6 +45,64 @@ def test_numbers_checked_in_the_chunk_of_their_sentence():
     assert verify_numbers_by_sentence(ok, {1: june, 2: september}).ok
     # a sentence without [n] is checked against every cited chunk (it is reported as uncited anyway)
     assert verify_numbers_by_sentence("It was 24 769 in June. Then 27,863 [2].", {1: june, 2: september}).ok
+
+
+YIELD = """Areas, gross harvests and crop yield by region, annual (State Statistics Service of Ukraine) | period: 2019-2025 | section: Maize: yield, centners per ha
+| Region | 2023 | 2024 | 2025 |
+|---|---|---|---|
+| Mykolaivska (Миколаївська) | 46.2 | 23.2 | 11.7 |
+| Odeska (Одеська) | 41.5 | 37.6 | 34.3 |"""
+OBLSTAT = """Виробництво сільськогосподарських культур в Одеській області у 2024 році | period: 2024 | section: Виробництво
+| Показник | Площа зібрана, га | Урожайність, ц з 1 га площі зібраної |
+|---|---|---|
+| Господарства усіх категорій: пшениця | 721908 | 38,7 |
+| Господарства усіх категорій: кукурудза | 158437 | 37,6 |"""
+JRC = """JRC MARS Bulletin, September 2025 | period: 2025-09 | section: Ukraine yield forecasts for total wheat
+|  | Production (x 1000 t) |  |  |
+|---|---|---|---|
+| Oblast | Avg 5yrs | 2024 | 2025 |
+| Ukraine | 26 573 | 23 546 | 27 863 |"""
+SUMS = """Агрометеорологічний бюлетень, липень 2021 р. | period: липень 2021 | section: Теплозабезпечення
+| Агрокліматичні зони | Сума ефективних температур вище +5 °С |  |
+|---|---|---|
+|  | Середня багаторічна за період 1986-2015 рр. | 2021 р. |
+| Степ | 1060-1170 | 1035-1160 |
+| Лісостеп | 910-1065 | 915-1085 |"""
+
+
+def test_table_numbers_belong_to_the_cell_the_sentence_names():
+    # the error of CI run #3: the yield of maize given as the yield of wheat (another row of the same table)
+    assert table_mismatches("Урожайність пшениці в Одеській області у 2024 році — 37.6 ц/га [1].", [YIELD])
+    assert table_mismatches("Урожайність пшениці в Одеській області — 37,6 ц/га [1].", [OBLSTAT])
+    assert not table_mismatches("Урожайність кукурудзи в Одеській області у 2024 році — 37.6 ц/га [1].", [YIELD])
+    assert not table_mismatches("Урожайність пшениці в Одеській області — 38,7 ц/га [1].", [OBLSTAT])
+    # another oblast, another year column
+    assert table_mismatches("Урожайність кукурудзи в Миколаївській області — 37.6 ц/га [1].", [YIELD])
+    assert table_mismatches("Урожайність кукурудзи в Одеській області у 2025 році — 37.6 ц/га [1].", [YIELD])
+    assert table_mismatches("In June 2025 the forecast of wheat production was 23,546 thousand t [1].", [JRC])
+    assert not table_mismatches("In September 2025 the forecast of wheat production was 27,863 thousand t [1].", [JRC])
+    # a zone of the bulletin: the value of the Forest-steppe given to the Steppe
+    assert table_mismatches("У Степу сума температур у 2021 р. становила 915-1085 °С [1].", [SUMS])
+    assert not table_mismatches("У Степу сума температур у 2021 р. становила 1035-1160 °С [1].", [SUMS])
+
+
+def test_table_check_does_not_flag_what_the_sentence_does_not_say():
+    assert not table_mismatches("Урожайність в Одеській області — 37.6 ц/га [1].", [YIELD])           # no crop named
+    assert not table_mismatches("Урожайність становила 37.6 ц/га [1].", [YIELD])                       # nothing named
+    # a comparison of years: the year is not checked
+    assert not table_mismatches("У 2024 році урожайність кукурудзи в Одеській області 37.6 ц/га проти 41.5 [1].", [YIELD])
+    # a column of the norm (not one year) is not checked by the year
+    assert not table_mismatches("У Степу у 2021 р. сума 1035-1160 °С, норма 1060-1170 °С [1].", [SUMS])
+    # both crops named: the cell of one of them is enough
+    assert not table_mismatches("Пшениця — 38,7 ц/га, кукурудза — 37,6 ц/га в Одеській області [1].", [OBLSTAT])
+    # a number also in the text of the chunk outside the cells is not placed
+    assert not table_mismatches("Урожайність пшениці 37.6 ц/га [1].", [YIELD + "\nСередня по області 37.6 ц/га."])
+
+
+def test_table_mismatch_fails_the_check_of_the_sentence():
+    a = "Урожайність пшениці в Одеській області у 2024 році — 37.6 ц/га [1]. Площа пшениці — 721908 га [2]."
+    c = verify_numbers_by_sentence(a, {1: YIELD, 2: OBLSTAT})
+    assert not c.ok and len(c.unsupported) == 1 and "Maize: yield" in c.unsupported[0]
 
 
 def test_key_facts_forms_and_numbers():

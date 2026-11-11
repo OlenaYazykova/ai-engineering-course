@@ -43,9 +43,9 @@
     "judge_prompt": "v1"
    },
    "metrics": {
-    "pass": 0.8696,
-    "judge_correct": 0.8421,
-    "correct": 0.8421,
+    "pass": 0.913,
+    "judge_correct": 0.8947,
+    "correct": 0.8947,
     "judge_grounded": 1.0,
     "abstained_no_answer": 1.0,
     "unsupported_numbers": 0,

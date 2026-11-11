@@ -308,8 +308,8 @@ make report-charts                   # the charts of REPORT.md -> reports/hw2/
   page of the run (Summary), the result files are its artifact. More runs: Actions → evals → Run workflow.
   After its one measurement for the report, the test split is part of this regression set; it is never used
   for tuning.
-* **Cost per 1000 questions**: answers (gpt-4o-mini, retries included) $0.54-0.59, LLM judge (Gemini 2.5
-  Flash-Lite) $0.27; embeddings and reranker run locally. One CI run (45 questions) is about $0.04.
+* **Cost per 1000 questions**: answers (gpt-4o-mini, retries included) $0.54-0.61, LLM judge (Gemini 2.5
+  Flash-Lite) $0.26-0.27; embeddings and reranker run locally. One CI run (45 questions) is about $0.04.
 * **Stretch items done**: contextual chunk headers (document | period | section embedded with every chunk),
   caching of embeddings, reranker scores and model answers (`.cache/`), incremental ingestion (unchanged
   documents come from the cache of `make rag-ingest`).

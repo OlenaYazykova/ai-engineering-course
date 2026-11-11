@@ -132,7 +132,152 @@ def verify_numbers_by_sentence(answer: str, cited_sources: dict[int, str], quest
         checked += c.checked
         marks = ", ".join(f"[{n}]" for n in cited_numbers(s) if n in cited_sources)
         unsupported += [f"{u} (не у фрагменті {marks})" if own else u for u in c.unsupported]
+        if own:
+            bad = {u.split(" ")[0] for u in c.unsupported}
+            unsupported += [f"{u} (у фрагменті {marks})" for u in table_mismatches(s, own, question)
+                            if u.split(" ")[0] not in bad]
     return NumberCheck(not unsupported, unsupported, checked)
+
+
+# ---------------------------------------------------------------- numbers in table cells
+
+# A number of a table is a value of one cell: of its row (an oblast, a crop), its column (a year) and its
+# table (the section of the chunk: "Maize: yield, centners per ha"). The check above only asks whether the
+# number is in the chunk, so "the yield of wheat was 37.6" passes when 37.6 is the yield of maize in the
+# next row. Here: a number of a sentence that stands in the cited chunks only in table cells must have at
+# least one cell that does not contradict the sentence. A contradiction: the sentence names crops (oblasts,
+# zones) and the cell is of another one, or it names one year and the cell is in the column of another year.
+# What the sentence does not name is not checked, so a sentence without a crop passes. Numbers also found in
+# the text of the chunk outside the cells are not checked (they cannot be placed).
+
+CROPS = {
+    "wheat": r"пшениц|(?<!buck)wheat", "maize": r"кукурудз|maize|\bcorn\b", "barley": r"ячмін|ячмен|barley",
+    "sunflower": r"соняшник|sunflower", "soy": r"\bсо(?:я|ї|ю|єю)\b|\bsoy", "rapeseed": r"ріпак|rapeseed|\brape\b",
+    "rye": r"\bжит(?:о|а|у|ом|і)\b|\brye\b", "oats": r"\bовес|\bвівс|\boats?\b", "buckwheat": r"гречк|гречан|buckwheat",
+    "peas": r"\bгорох|\bpeas?\b", "sugar beet": r"буряк|beet", "potato": r"картопл|potato", "millet": r"\bпрос(?:о|а|у)\b|millet",
+}
+# "the country", "on average" name Ukraine: "нижче середнього по країні (46)" is the row Ukraine
+REGIONS = {
+    "Україна": r"україн|ukrain|країн|country|national|середн|average",
+    "Вінницька": r"вінниц|vinnyts", "Волинська": r"волин|volyn", "Дніпропетровська": r"дніпропетр|dnipropetr",
+    "Донецька": r"донец|донеч|donets", "Житомирська": r"житомир|zhytomyr", "Закарпатська": r"закарпат|zakarpat",
+    "Запорізька": r"запоріз|zaporiz", "Івано-Франківська": r"івано-франк|прикарпат|ivano-frank",
+    "Київська": r"київ|києв|kyiv|kiev", "Кіровоградська": r"кіровоград|кропивниц|kirovohrad",
+    "Луганська": r"луган|luhans", "Львівська": r"львів|lviv", "Миколаївська": r"миколаїв|mykolai",
+    "Одеська": r"одес|одещ|odes", "Полтавська": r"полтав|poltav", "Рівненська": r"рівненськ|рівненщ|rivne",
+    "Сумська": r"сумськ|сумщ|sumsk|sumy", "Тернопільська": r"тернопіл|ternopil", "Харківська": r"харків|kharkiv",
+    "Херсонська": r"херсон|kherson", "Хмельницька": r"хмельниц|khmelnyt", "Черкаська": r"черкас|cherkas",
+    "Чернівецька": r"чернівец|чернівц|chernivet|chernivts", "Чернігівська": r"чернігів|chernihiv",
+    "Крим": r"крим|crimea", "Степ": r"\bстеп|(?<!forest-)steppe", "Лісостеп": r"лісостеп|forest-steppe",
+    "Полісся": r"полісс|polissia|polesie",
+}
+_CROP_RE = {k: re.compile(v, re.IGNORECASE) for k, v in CROPS.items()}
+_REGION_RE = {k: re.compile(v, re.IGNORECASE) for k, v in REGIONS.items()}
+_YEAR = re.compile(r"\b(19[5-9]\d|20\d\d)\b")
+_YEAR_COLUMN = re.compile(r"^\s*(19[5-9]\d|20\d\d)\s*(?:р\.?|рік|year)?\s*$", re.IGNORECASE)
+# a sentence that compares years ("37.6 проти 41.5 у попередньому році") is not checked by the year
+_COMPARES = re.compile(r"попередн|минул|торік|торішн|проти|порівнян|ніж|вищ|нижч|більш|менш|зріс|зрост|знизи|"
+                       r"зменш|збільш|previous|last year|year before|compared|than|\bvs\b|higher|lower|more|less|"
+                       r"increase|decrease|growth|change", re.IGNORECASE)
+_LETTERS = re.compile(r"[A-Za-zА-Яа-яІіЇїЄєҐґ]{3,}")
+
+
+def _names(text: str, table: dict) -> set[str]:
+    return {k for k, r in table.items() if r.search(text)}
+
+
+@dataclass
+class Cell:
+    values: set[str]
+    crops: set[str]
+    regions: set[str]
+    year: str | None
+    where: str              # for the retry note: row, column, table
+
+
+def _header_row(row: list[str]) -> bool:
+    """A row of column names: "| | 2021 | 2022 |", "| Oblast | Avg 5yrs | 2024 | %25/24 |" (words and years)."""
+    rest = [c for c in row[1:] if c]
+    return bool(rest) and (not row[0] or _LETTERS.search(row[0]) is not None) and \
+        all(_LETTERS.search(c) or _YEAR_COLUMN.match(c) or re.fullmatch(r"%\s?\d{2}\s?/\s?\d{2}", c) for c in rest)
+
+
+def _cells(chunk: str) -> tuple[list[Cell], str]:
+    """The value cells of the Markdown tables of a chunk (its first line is the header of the chunk), and the
+    text outside the value cells (the header, the lines of text, the header rows of the tables)."""
+    lines = chunk.split("\n")
+    header, rest = (lines[0], lines[1:]) if lines else ("", [])
+    general_crops, general_regions = _names(header, _CROP_RE), _names(header, _REGION_RE)
+    table_name = header.split("section:")[-1].strip()
+    cells, outside, i = [], [header], 0
+    while i < len(rest):
+        if not rest[i].lstrip().startswith("|"):
+            outside.append(rest[i])
+            i += 1
+            continue
+        block = []
+        while i < len(rest) and rest[i].lstrip().startswith("|"):
+            block.append([c.strip() for c in rest[i].strip().strip("|").split("|")])
+            i += 1
+        sep = next((j for j, r in enumerate(block) if r and all(re.fullmatch(r":?-{2,}:?", c) for c in r if c)), None)
+        if sep is None:
+            outside += [" | ".join(r) for r in block]
+            continue
+        head = [r for r in block[:sep]]
+        body = block[sep + 1:]
+        while body and _header_row(body[0]):                # header rows under the line: "| | 2021 | 2022 |"
+            head.append(body.pop(0))
+        outside += [" | ".join(r) for r in head]
+        width = max(len(r) for r in block)
+        filled = []                                           # a header over several columns: "Area | | |"
+        for r in head:
+            row, last = [], ""
+            for j in range(width):
+                c = r[j] if j < len(r) else ""
+                last = c or last
+                row.append(last)
+            filled.append(row)
+        for r in body:
+            labels = " ".join(c for c in r if _LETTERS.search(c))
+            for j, c in enumerate(r):
+                if not c or _LETTERS.search(c) or not re.search(r"\d", c):
+                    continue
+                column = " ".join(dict.fromkeys(f[j] for f in filled if f[j]))
+                exact = next((h[j] for h in reversed(head) if j < len(h) and h[j]), "")
+                year = m.group(1) if (m := _YEAR_COLUMN.match(exact)) else None
+                specific = f"{labels} {column}"
+                cells.append(Cell({v for n in extract_numbers(c) for v in n.values}, _names(specific, _CROP_RE) or general_crops,
+                                  _names(specific, _REGION_RE) or general_regions, year,
+                                  f"рядок «{labels}», стовпець «{column}», таблиця «{table_name}»"))
+    return cells, "\n".join(outside)
+
+
+def table_mismatches(sentence: str, chunks: list[str], question: str = "") -> list[str]:
+    """Numbers of the sentence whose every cell in the chunks contradicts the sentence, with where they are."""
+    crops, regions = _names(sentence, _CROP_RE), _names(sentence, _REGION_RE)
+    years = set(_YEAR.findall(sentence))
+    year = next(iter(years)) if len(years) == 1 and not _COMPARES.search(sentence) else None
+    if not (crops or regions or year):
+        return []
+    parsed = [_cells(c) for c in chunks]
+    outside = set()
+    for _, text in parsed:
+        outside |= number_values(text)
+    asked, out = number_values(question), []
+    for n in extract_numbers(sentence):
+        vals = n.values | {v for p in n.parts for v in p}
+        if vals & asked or vals & outside or (not n.unit and _YEAR.fullmatch(n.raw)):
+            continue
+        hits = [c for cells, _ in parsed for c in cells if n.values & c.values]   # whole numbers only
+        if not hits:
+            continue
+        if not any((not crops or not c.crops or crops & c.crops) and (not regions or not c.regions or regions & c.regions)
+                   and (not year or not c.year or c.year == year) for c in hits):
+            msg = (f"{n.raw}{f' {n.unit}' if n.unit else ''}: це значення клітинки ({hits[0].where}), "
+                   f"а не того, про що речення")
+            if msg not in out:
+                out.append(msg)
+    return out
 
 
 # ---------------------------------------------------------------- citations

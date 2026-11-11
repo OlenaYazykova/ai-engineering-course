@@ -4,30 +4,30 @@ System: openai/gpt-4o-mini, prompt rag/v3, k 5, threshold 0.3, context 3000 toke
 
 | metric | value | min ... max |
 |---|---|---|
-| pass | **0.87** | 0.87 ... 0.87 |
-| judge_correct | **0.84** | 0.84 ... 0.84 |
+| pass | **0.91** | 0.91 ... 0.91 |
+| judge_correct | **0.89** | 0.89 ... 0.89 |
 | judge_grounded | **1.00** | 1.00 ... 1.00 |
-| correct | **0.84** | 0.84 ... 0.84 |
+| correct | **0.89** | 0.89 ... 0.89 |
 | cited_source | **0.89** | 0.89 ... 0.89 |
 | abstained_no_answer | **1.00** | 1.00 ... 1.00 |
-| false_abstain | **0.09** | 0.05 ... 0.11 |
+| false_abstain | **0.11** | 0.11 ... 0.11 |
 | unsupported_numbers | **0** | 0 ... 0 |
-| uncited | **0.07** | 0.05 ... 0.11 |
-| retried | **0.17** | 0.17 ... 0.17 |
+| uncited | **0.09** | 0.05 ... 0.11 |
+| retried | **0.20** | 0.17 ... 0.22 |
 | retracted | **0.00** | 0.00 ... 0.00 |
 | recall@5 | **0.87** | 0.87 ... 0.87 |
 | hit@5 | **0.89** | 0.89 ... 0.89 |
 | MRR | **0.808** | 0.808 ... 0.808 |
-| cost_per_1000 | **0.588** | 0.586 ... 0.590 |
-| judge_cost_per_1000 | **0.270** | 0.264 ... 0.281 |
+| cost_per_1000 | **0.607** | 0.588 ... 0.616 |
+| judge_cost_per_1000 | **0.267** | 0.266 ... 0.268 |
 
-pass@1 (the share of questions that pass in one run, mean over the runs): **0.87**. Unstable questions (pass in some runs only): none.
+pass@1 (the share of questions that pass in one run, mean over the runs): **0.91**. Unstable questions (pass in some runs only): none.
 
 ## Per kind (pass@1)
 
 | kind | pass@1 |
 |---|---|
-| cross_lingual | 0.67 |
+| cross_lingual | 1.00 |
 | exact | 1.00 |
 | multi_chunk | 0.50 |
 | no_answer | 1.00 |
@@ -53,13 +53,13 @@ pass@1 (the share of questions that pass in one run, mean over the runs): **0.87
 | d10 | stale | 3 / 3 | answer |
 | d11 | similar | 3 / 3 | answer |
 | d12 | similar | 0 / 3 | refused_model |
-| d13 | multi_chunk | 0 / 3 | answer, refused_model |
+| d13 | multi_chunk | 0 / 3 | refused_model |
 | d14 | multi_chunk | 3 / 3 | answer |
 | d15 | paraphrase | 3 / 3 | answer |
 | d16 | yes_no | 3 / 3 | answer |
 | d17 | no_answer | 3 / 3 | refused_model |
 | d18 | no_answer | 3 / 3 | refused_model |
-| d19 | cross_lingual | 0 / 3 | answer |
+| d19 | cross_lingual | 3 / 3 | answer |
 | d20 | no_answer | 3 / 3 | refused_threshold |
 | d21 | yes_no | 3 / 3 | answer |
 | d22 | exact | 3 / 3 | answer |
@@ -69,6 +69,5 @@ pass@1 (the share of questions that pass in one run, mean over the runs): **0.87
 
 * **d12** (similar): refused_model (the source was not in the context)
 * **d13** (multi_chunk): refused_model (the source was in the context)
-* **d19** (cross_lingual): not correct: The expected answer states that 4% of grain maize production was in conflict zones, while the system's answer states 22%. The expected answer is correct according to chunk 1.
 
 Every answer of every run: evals/results/dev.jsonl

@@ -13,13 +13,13 @@ System: openai/gpt-4o-mini, prompt rag/v3, k 5, threshold 0.3, context 3000 toke
 | false_abstain | **0.17** | 0.17 ... 0.17 |
 | unsupported_numbers | **0** | 0 ... 0 |
 | uncited | **0.02** | 0.00 ... 0.06 |
-| retried | **0.18** | 0.18 ... 0.18 |
+| retried | **0.17** | 0.14 ... 0.18 |
 | retracted | **0.00** | 0.00 ... 0.00 |
 | recall@5 | **0.67** | 0.67 ... 0.67 |
 | hit@5 | **0.67** | 0.67 ... 0.67 |
 | MRR | **0.547** | 0.547 ... 0.547 |
-| cost_per_1000 | **0.542** | 0.542 ... 0.542 |
-| judge_cost_per_1000 | **0.265** | 0.263 ... 0.267 |
+| cost_per_1000 | **0.535** | 0.519 ... 0.543 |
+| judge_cost_per_1000 | **0.262** | 0.261 ... 0.263 |
 
 pass@1 (the share of questions that pass in one run, mean over the runs): **0.73**. Unstable questions (pass in some runs only): none.
 
@@ -68,7 +68,7 @@ pass@1 (the share of questions that pass in one run, mean over the runs): **0.73
 
 * **t03** (paraphrase): not correct: The expected answer states that the sum of effective temperatures was 75-140 °C higher than the long-term average, while the system's answer states it was 20-25 °C higher. The provided chunks do not contain the information about the difference being 75-140 °C higher than the long-term average, but they do mention that the sum of effective temperatures was generally close to or 20-25 °C higher than the norm for the period up to October 20th.
 * **t05** (cross_lingual): refused_threshold (the source was not in the context)
-* **t08** (table): not correct: The answer correctly identifies the forecasted soybean area for Ukraine in 2025 as 3,003 thousand ha, which is directly stated in the provided document. It also correctly notes that this is a +7% increase compared to 2024, as indicated in the same row of the table. However, it omits the comparison to the 5-year average, which was part of the expected answer.
+* **t08** (table): not correct: The answer correctly identifies the forecasted soybean area for Ukraine in 2025 as 3,003 thousand ha, which matches the expected answer and is supported by chunk [1]. However, the answer omits the comparative data (+67% vs the 5-year average, +7% vs 2024) present in the expected answer.
 * **t11** (similar): refused_model (the source was in the context)
 * **t14** (multi_chunk): refused_model (the source was not in the context)
 * **t16** (yes_no): not correct: The answer correctly states that the yield in Kharkiv region (36.9 c/ha) was lower than the average for Ukraine (46 c/ha) in 2024. However, it incorrectly starts with "Так" (Yes) instead of "Ні" (No), contradicting the expected answer and the data presented.

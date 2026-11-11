@@ -12,7 +12,7 @@ flowchart LR
     D --> E{"best chunk<br/>≥ threshold?"}
     E -- no --> R["У документах<br/>цього немає"]
     E -- yes --> F["answer with [n]<br/>gpt-4o-mini, prompt v3"]
-    F --> G{"checks: numbers<br/>and citations"}
+    F --> G{"checks: numbers,<br/>table cells, citations"}
     G -- fail twice --> R
     G -- ok --> H["answer + sources"]
     H --> I["evals: code + LLM judge<br/>gate · GitHub Actions"]
@@ -20,24 +20,26 @@ flowchart LR
 
 ## Summary
 
-The final system (prompt v3, k = 5, threshold 0.3), 3 runs of every question, judge Gemini 2.5 Flash-Lite
-calibrated against manual labels. Dev was used for every choice; test was held out and measured once.
+The final system (prompt v3, k = 5, threshold 0.3, check of table cells), 3 runs of every question, judge
+Gemini 2.5 Flash-Lite calibrated against manual labels. Dev was used for every choice; test was held out,
+measured once, and measured again after the check of table cells (section 4, all runs in one table).
 
 | | dev (23 questions) | **test (22, held out)** |
 |---|---|---|
-| **pass** (right + grounded + cited, or a refusal where there is no answer) | 0.87 (20 / 23) | **0.73 (16 / 22)** |
-| correct, by the judge | 0.84 (16 / 19) | **0.67 (12 / 18)** |
-| correct, by the key facts (code) | 0.84 | **0.72** |
+| **pass** (right + grounded + cited, or a refusal where there is no answer) | 0.91 (21 / 23) | **0.73 (16 / 22)** |
+| correct, by the judge | 0.89 (17 / 19) | **0.67 (12 / 18)** |
+| correct, by the key facts (code) | 0.89 | **0.72** |
 | grounded (faithfulness), by the judge | 1.00 | **1.00** |
 | expected source cited | 0.89 | **0.83** |
 | "not in the documents" for the questions without an answer | 4 / 4 | **4 / 4** |
 | final answers with an unsupported number | 0 | **0** |
 | search: recall@5 / hit@5 / MRR | 0.87 / 0.89 / 0.808 | **0.67 / 0.67 / 0.547** |
-| cost per 1000 questions: answers + judge | $0.59 + $0.27 | **$0.54 + $0.27** |
+| cost per 1000 questions: answers + judge | $0.61 + $0.27 | **$0.54 + $0.26** |
 
 ![dev and test](reports/hw2/dev_test.png)
 
-What holds on new questions: every answer the system gives is supported by its chunks, it says "not in the
+What holds on new questions: every answer the system gives is supported by its chunks (in one CI run one
+was not, t14, which the check of table cells now catches; section 4), it says "not in the
 documents" for every question without an answer, and no unsupported number reaches an answer. What does
 not hold as well: the search. Its settings were chosen on dev, and on test it finds the right chunk among
 the first five for two questions of three instead of nine of ten; three of the six failures on test
@@ -221,7 +223,20 @@ which the expected answer gives but the question does not ask: a false fail on a
 
 **Stability**: in 3 runs of the final system every question passed in all runs or in none. Between two
 sessions at temperature 0 one dev answer changed (d19: 4% for maize, then 22%, the share of wheat): the
-generator is not fully deterministic, which the thresholds of the gate allow for.
+generator is not fully deterministic, which the thresholds of the gate allow for. Every measurement so far
+(CI runs: 1 run of every question; local: 3):
+
+| measurement | system | dev pass | test pass | test grounded | what it shows |
+|---|---|---|---|---|---|
+| local, 3 runs | before the check of table cells | 0.87 | 0.73 | 1.00 | d19 wrong in this session |
+| CI #1 (push of step 4) | the same | 0.91 | 0.73 | 1.00 | d19 right again |
+| CI #2 (push of the ingestion fix) | the same | 0.91 | 0.73 | 1.00 | |
+| CI #3 (tag) | the same | 0.91 | 0.73 | 0.94 | t14 answered once (below) |
+| local, 3 runs ([evals/results/](evals/results/)) | with the check of table cells | 0.91 | 0.73 | 1.00 | the numbers of the summary |
+
+The dev pass of 0.87 / 0.91 is the spread of the model (d19, the only question that changed), not an effect
+of the check: it withdrew no answer on dev, and the CI runs before it gave 0.91 as well. On test every
+measurement gives 0.73.
 
 **The check of numbers by sentence** (step 4): in the labelling the author found an answer that gave 23 546,
 the production of 2024 in the September bulletin, as the June 2025 forecast with a citation of the June
@@ -229,6 +244,22 @@ chunk; the check then looked for a number in all cited chunks together and passe
 chunk of the sentence. On dev this changed one answer (d14 at k = 3: "23,008 [3]", not in chunk [3],
 became a refusal) and none at k = 5; a phrase like "Документи не надають…" is now read as a statement of
 what is missing.
+
+**The check of table cells** (step 4, v2). In CI run #3 (on the tag) t14 answered once instead of refusing:
+it gave the maize yield of Odesa oblast (37.6, the next row of the table) as the yield of wheat. The judge
+marked it not grounded (test grounded 0.94, still above the gate), the check of numbers passed it: 37.6 is
+in the cited chunk. The same kind of error was already in the manual labels of dev (23 546 moved from the
+2024 column to a 2025 forecast). Added a deterministic check (`table_mismatches` in `agro/rag/verify.py`):
+a number that stands in the cited chunks only in table cells must have a cell that does not contradict its
+sentence: the crop and the oblast (or zone) of its row or table, the year of its column. What the sentence
+does not name is not checked, nor a sentence that compares years. A contradiction is an unsupported number:
+one retry, then the answer is withdrawn. Checked: unit tests on tables of the corpus (Derzhstat, oblstat,
+JRC, bulletin); the saved dev answers (247 answers of every version and k, 125 numbers from table cells): no
+new flags; dev and test again, 3 runs each: the metrics did not change, no answer withdrawn; the t14 answer
+of CI run #3: flagged ("37.6 ц/га: це значення клітинки (рядок «Odeska (Одеська)», стовпець «2024»,
+таблиця «Maize: yield, centners per ha»)"). Test was measured a second time; the rules were written on dev
+and on the tables of the corpus, not on the answers of test. The judge runs only in the evals; for a user
+only the checks of the code run, so such an answer no longer reaches the user.
 
 **CI** ([.github/workflows/evals.yml](.github/workflows/evals.yml)) on every push and every pull
 request: job `checks` (unit tests, lint of the test set; no key) and job `evals`
@@ -257,7 +288,7 @@ about $0.04 (45 questions); the report is on the page of the run.
 | paraphrase | 1.00 | 0.50 |
 | table | 1.00 | 0.50 |
 | yes / no | 1.00 | 0.50 |
-| cross-lingual | 0.67 | 0.50 |
+| cross-lingual | 1.00 | 0.50 |
 | similar documents | 0.50 | 0.50 |
 | several documents | 0.50 | 0.50 |
 
@@ -320,8 +351,10 @@ sections above and in the files named there.
 | 4 | manual labelling of 23 answers | 5 of 17 answers of v2 end with an unneeded "Інших даних… немає"; one answer moved 23 546 from the 2024 column to a June 2025 forecast and passed the check of numbers | prompt v3 (0 of 17 such sentences, correct still 17 / 19); the numbers checked in the chunk of their own sentence |
 | 4 | the judge against the labels | correct 23 / 23, grounded 22 / 23 (one value moved from the country to an oblast passed) | the judge kept as it is, its weakness written down |
 | 4 | 3 runs of the final system; two sessions | the runs agree; one dev answer changed between sessions (d19) | the tolerance of the gate: 0.10, about two questions |
-| 4 | the one measurement of test | pass 0.73 against 0.87 on dev; the search is the main gap (recall@5 0.67 vs 0.87) | reported as it is; nothing changed after it |
+| 4 | the one measurement of test | pass 0.73 against 0.87 on dev; the search is the main gap (recall@5 0.67 vs 0.87) | reported as it is; the only change after it: the check of table cells (below) |
 | 4 | the first run of CI | green: 45 questions, the gate passed, 1 h 39 min with the downloads of the models | later runs take the models and the reranker scores from the cache of Actions |
+| 4 | CI run #3 (on the tag) | t14 answered once: the maize yield of the next row given as wheat; the judge caught it (grounded 0.94), the check of numbers did not | a deterministic check of table cells: crop, oblast, year of the cell against the sentence |
+| 4 | the check of table cells | 247 saved dev answers: no new flags; dev and test again, 3 runs: no change, no answer withdrawn; the t14 answer of run #3: flagged | kept (step 4, v2); test measured a second time |
 
 ## 8. Conclusions
 
@@ -332,7 +365,8 @@ sections above and in the files named there.
    refusals (1-2 of 19 on dev, 3 of 18 on test).
 2. **Citations and checks keep the answers honest.** Every answer of the final system, on dev and on
    test, is grounded in its chunks by the judge, and no number without support reached an answer: the
-   checks of the code withdrew or corrected them first. When the system is wrong, it is wrong with a real
+   checks of the code withdrew or corrected them first. In one CI run one answer (t14) took a number from
+   the next row of a table; the judge caught it, and since then a check of the code does too. When the system is wrong, it is wrong with a real
    quote from a neighbouring chunk, not with an invented fact.
 3. **The search decides most of the quality, and it is the weakest part on new questions.** Embeddings
    that read Ukrainian and English (e5) and a reranker with filters gave the big gains (MRR 0.176 →
@@ -343,9 +377,9 @@ sections above and in the files named there.
    moved to another oblast). The manual labels showed that the judge can be trusted (45 of 46 verdicts
    agree) and found two problems no metric showed: the unneeded sentences of v2 and the moved number.
 5. **Measured versions, not guesses.** Every choice above was made on dev with numbers, test was opened
-   once at the end, and CI now keeps the system from getting worse: a drop of more than about two
+   at the end (and once more after the check of table cells), and CI now keeps the system from getting worse: a drop of more than about two
    questions, a new answer to a question without one, or an unsupported number fails the run.
-6. **The cost is small**: under $0.90 per 1000 questions with the judge (answers $0.54-0.59, judge $0.27),
+6. **The cost is small**: under $0.90 per 1000 questions with the judge (answers $0.54-0.61, judge $0.26-0.27),
    embeddings and reranker local.
 
 ## 9. What I would improve next
@@ -377,5 +411,5 @@ make evals-calibrate              # the judge against the manual labels
 make report-charts                # the charts of this report
 ```
 
-Cost per 1000 questions: answers (gpt-4o-mini, retries included) $0.54-0.59, judge $0.27; embeddings and
+Cost per 1000 questions: answers (gpt-4o-mini, retries included) $0.54-0.61, judge $0.26-0.27; embeddings and
 reranker are local and cost nothing but CPU time.
