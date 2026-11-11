@@ -20,6 +20,9 @@ Outputs (all in git, so that the next steps and CI work without the originals):
 
 Incremental: reading a document (the slow part, OCR above all) is cached in .cache/extract/ by the
 hash of the original file and PIPELINE_VERSION; unchanged files are not read again.
+
+Without the originals (a fresh clone, before `make fetch`) the corpus in git is kept as it is and the next
+steps work from it; with only some of them the run stops and changes nothing.
 """
 
 import csv
@@ -170,6 +173,17 @@ def _extract(meta: DocMeta, raw_hash: str, ocr, force: bool) -> tuple[list[Block
 
 def run(force: bool = False, only: list[str] | None = None) -> None:
     docs = load_registry()
+    # The corpus is rebuilt from the originals (data/raw/, not in git). Without them the cleaned corpus in git
+    # is kept: none of the originals (a fresh clone) -> nothing to do; some of them -> stop, never write a
+    # corpus with documents missing.
+    missing = [d.doc_id for d in docs if not d.raw_path.exists()]
+    if len(missing) == len(docs):
+        print(f"The originals are not downloaded (data/raw/; `make fetch`): the corpus in git is kept as it is "
+              f"({len(list(TEXT_DIR.glob('*.md')))} documents in data/corpus/text/).")
+        return
+    if missing:
+        raise SystemExit(f"{len(missing)} of {len(docs)} originals are missing ({', '.join(missing)}): run `make fetch`. "
+                         f"Nothing was changed in data/corpus/.")
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     TEXT_DIR.mkdir(parents=True, exist_ok=True)
     ocr = _LazyOcr()

@@ -230,8 +230,8 @@ chunk of the sentence. On dev this changed one answer (d14 at k = 3: "23,008 [3]
 became a refusal) and none at k = 5; a phrase like "Документи не надають…" is now read as a statement of
 what is missing.
 
-**CI** ([.github/workflows/evals.yml](.github/workflows/evals.yml)) on every push to main and every pull
-request that touches the system: job `checks` (unit tests, lint of the test set; no key) and job `evals`
+**CI** ([.github/workflows/evals.yml](.github/workflows/evals.yml)) on every push and every pull
+request: job `checks` (unit tests, lint of the test set; no key) and job `evals`
 (every question of dev and test, `make evals`, key `OPENROUTER_API_KEY` in the Secrets of the repository),
 then the gate (`evals/gate.py`) against [evals/baseline.json](evals/baseline.json), the means of the final
 local run:
@@ -297,7 +297,58 @@ table with a column per year (2019 ... 2025), and the second document (the annua
 chunks found; the model neither read the 2020 column nor answered the part it had, though the prompt asks
 for a partial answer. On test, t14 (two statistics documents) fails the same way for the second document.
 
-## 7. What I would improve next
+## 7. The path of the work: every experiment and what it decided
+
+In order. Each line is a measurement or a finding, and what changed because of it; the details are in the
+sections above and in the files named there.
+
+| step | tried or found | result | decision |
+|---|---|---|---|
+| 1 | EasyOCR on the scanned bulletin and two JRC tables | 61-98% of its words are known from the other documents; in the JRC tables it kept the sign of 2 numbers, where the pages have 49 and 97 signed numbers | a vision model (Gemini 2.5 Flash) reads the scans: 94-100% known words, the signs kept ([ocr_compare.md](results/rag/ocr_compare.md)) |
+| 1 | OCR prompt v2 for the two pages where the model looped on a printed rule of dashes | did not help: the dashes are printed, not a table | the two pages (the imprint: no agro facts, personal data) are left out of OCR; prompt v1 kept ([CHANGELOG](prompts/ocr/CHANGELOG.md)) |
+| 1 | masking personal data by rules only | missed names in lists of initials ("Cerrani, I.") and Ukrainian names with one initial | Presidio with spaCy NER for Ukrainian and English plus the rules as a Presidio recognizer, and a second check after masking: 232 names, 12 e-mails, 6 phones |
+| 1 | structural chunks of 300 / 450 tokens against fixed 450 / overlap 50 | fixed: 52.6% of chunks start mid-sentence, 537 table parts lose their header | structural 450 (best MRR, vector and with the reranker) |
+| 2 | three embedding models | MiniLM 0.176, mpnet 0.158, e5 0.603 | e5 (multilingual, reads 512 tokens) |
+| 2 | hybrid against vector search | the hybrid alone is worse (0.479 vs 0.603): cross-lingual questions, traps with the same words | BM25 kept for the chain (more right candidates for the reranker), not alone |
+| 2 | words of BM25; 18 ways to fuse the two lists | dictionary forms best (0.312); by the hybrid alone the relative fusion would win (0.603), by the whole chain RRF with weight 0.3 wins (0.808 vs 0.756) | chosen by the whole chain, not by an intermediate metric |
+| 2 | two rerankers, 10 or 20 candidates, filters from the question | bge 0.632 vs jina 0.565; 20 > 10; filters 0.632 → 0.808 | bge on 20 candidates + filters; the scores cached (38 s per question on a CPU) |
+| 2 | the checkpoint `hw2-v1` against the final search | MRR 0.746 → 0.808, recall@5 0.84 → 0.87 | the final configuration of `config.toml [rag]` |
+| 3 | threshold of the reranker on dev | answerable 0.89 ... 1.00, near misses 0.58 and 0.70, far misses 0.04 and 0.00 | 0.3: far misses refused without a model call, near misses left to the model |
+| 3 | k = 3 / 5 / 10 | 3 loses answers, 10 adds none | k = 5 |
+| 3 | prompt v1 | 14 / 19 correct; English questions answered in Ukrainian; a partial answer refused; the 4th chunk of a table dropped by the limit per document | prompt v2 + the limit in two passes + no sentence end after "тис.": 17 / 19 |
+| 3 | the check of numbers | caught a difference the model computed itself (d14, "3 094 тис. т") | kept: one retry, then the answer is withdrawn |
+| 4 | manual labelling of 23 answers | 5 of 17 answers of v2 end with an unneeded "Інших даних… немає"; one answer moved 23 546 from the 2024 column to a June 2025 forecast and passed the check of numbers | prompt v3 (0 of 17 such sentences, correct still 17 / 19); the numbers checked in the chunk of their own sentence |
+| 4 | the judge against the labels | correct 23 / 23, grounded 22 / 23 (one value moved from the country to an oblast passed) | the judge kept as it is, its weakness written down |
+| 4 | 3 runs of the final system; two sessions | the runs agree; one dev answer changed between sessions (d19) | the tolerance of the gate: 0.10, about two questions |
+| 4 | the one measurement of test | pass 0.73 against 0.87 on dev; the search is the main gap (recall@5 0.67 vs 0.87) | reported as it is; nothing changed after it |
+| 4 | the first run of CI | green: 45 questions, the gate passed, 1 h 39 min with the downloads of the models | later runs take the models and the reranker scores from the cache of Actions |
+
+## 8. Conclusions
+
+1. **"Not in the documents" works when it has two levels.** The threshold of the reranker refuses
+   questions about what is not in the corpus at all without a model call; the marker of the prompt
+   refuses the near misses, where the documents are about the same thing but not the asked period or
+   crop. Together: 8 of 8 questions without an answer refused, on dev and on test. The price is false
+   refusals (1-2 of 19 on dev, 3 of 18 on test).
+2. **Citations and checks keep the answers honest.** Every answer of the final system, on dev and on
+   test, is grounded in its chunks by the judge, and no number without support reached an answer: the
+   checks of the code withdrew or corrected them first. When the system is wrong, it is wrong with a real
+   quote from a neighbouring chunk, not with an invented fact.
+3. **The search decides most of the quality, and it is the weakest part on new questions.** Embeddings
+   that read Ukrainian and English (e5) and a reranker with filters gave the big gains (MRR 0.176 →
+   0.808); a hybrid with BM25 is not better by itself on this corpus. Chosen on 19 questions, the search
+   loses on test (recall@5 0.87 → 0.67), and three of the six failures on test start there.
+4. **Code and judge are needed together, and the judge needs people.** The key facts catch wrong values
+   and do not drift; the judge catches what they cannot (a "Так" that contradicts its own numbers, a value
+   moved to another oblast). The manual labels showed that the judge can be trusted (45 of 46 verdicts
+   agree) and found two problems no metric showed: the unneeded sentences of v2 and the moved number.
+5. **Measured versions, not guesses.** Every choice above was made on dev with numbers, test was opened
+   once at the end, and CI now keeps the system from getting worse: a drop of more than about two
+   questions, a new answer to a question without one, or an unsupported number fails the run.
+6. **The cost is small**: under $0.90 per 1000 questions with the judge (answers $0.54-0.59, judge $0.27),
+   embeddings and reranker local.
+
+## 9. What I would improve next
 
 * **Search on new questions** (errors 1, 2, 5): translate the question into the language of the documents
   before BM25 (t05); split the sums and other paired indicators of the bulletins into separate chunks
@@ -315,7 +366,7 @@ for a partial answer. On test, t14 (two statistics documents) fails the same way
 * **Speed**: the bge reranker takes ~38 s per question on a CPU (cached in `.cache/rerank/`); a GPU or a
   smaller reranker for the first pass.
 
-## 8. Reproduce
+## 10. Reproduce
 
 ```bash
 make install                      # torch from the CPU index first, see README

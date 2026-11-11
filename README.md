@@ -15,6 +15,8 @@ download, reading every format, OCR, cleaning, duplicates). `make test` runs the
 
 ## Stage 2: RAG over the bulletins + evals
 
+[![evals](https://github.com/OlenaYazykova/ai-engineering-course/actions/workflows/evals.yml/badge.svg)](https://github.com/OlenaYazykova/ai-engineering-course/actions/workflows/evals.yml)
+
 Step 1 (done): corpus, ingestion, personal data masking, chunking. Step 2 (done): index, hybrid search, reranking,
 filters, retrieval metrics. Step 3 (done): answers with sources, "not in the documents", checks of numbers
 and citations; prompts v1 and v2 measured on dev. Step 4 (done): test set, scoring by the code and by a
@@ -26,8 +28,9 @@ errors: **[REPORT.md](REPORT.md)**.
 ```bash
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu   # EasyOCR (comparison) needs torch
 make install
-make fetch          # originals into data/raw/ (one CSV is exported by hand: the command says how)
+make fetch          # optional: originals into data/raw/ to rebuild the corpus (one CSV is exported by hand: the command says how)
 make run            # = make rag-ingest rag-chunk rag-lint-testset rag-index rag-retrieval-eval rag-threshold rag-answer-eval evals
+                    # without the originals (a fresh clone) it runs from the cleaned corpus in git
 make evals          # what CI runs, from the chunks in git (no `make fetch` needed): index, evals of dev and test, gate
 make rag-ask Q="Яку максимальну температуру повітря зафіксували в Миколаєві в першій декаді липня 2023 року?"
 python main.py rag search "Запаси вологи під кукурудзою на 31 липня 2023" --auto-filters
@@ -299,8 +302,8 @@ make report-charts                   # the charts of REPORT.md -> reports/hw2/
 * **Keys**: `OPENROUTER_API_KEY` in `.env` (copy `.env.example`; `.env` is not in git). For CI the same key
   goes to the repository: Settings → Secrets and variables → Actions → New repository secret,
   name `OPENROUTER_API_KEY`.
-* **CI** ([.github/workflows/evals.yml](.github/workflows/evals.yml)): on every push to main and every
-  pull request that touches the system, job `checks` (unit tests, lint of the test set; no key) and job
+* **CI** ([.github/workflows/evals.yml](.github/workflows/evals.yml)): on every push and every pull
+  request, job `checks` (unit tests, lint of the test set; no key) and job
   `evals` (every question of dev and test with fresh model calls, the judge, the gate). The report is on the
   page of the run (Summary), the result files are its artifact. More runs: Actions → evals → Run workflow.
   After its one measurement for the report, the test split is part of this regression set; it is never used

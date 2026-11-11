@@ -1,5 +1,4 @@
-# Evals of the RAG (homework 2, step 4) on every push to main and every pull request that touches the
-# system: code, prompts, chunks, test set, configuration. Two jobs:
+# Evals of the RAG (homework 2, step 4) on every push and every pull request. Two jobs:
 #   1. checks: unit tests and the lint of the test set. No key, no cost.
 #   2. evals:  every question of dev and test through the system (search, answer, checks), scored by the
 #              code and by the LLM judge, then the gate against evals/baseline.json: a metric below its
@@ -13,31 +12,8 @@
 name: evals
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "agro/**"
-      - "evals/**"
-      - "prompts/**"
-      - "data/rag/**"
-      - "data/corpus/**"
-      - "config.toml"
-      - "main.py"
-      - "Makefile"
-      - "requirements.txt"
-      - ".github/workflows/evals.yml"
-  pull_request:
-    paths:
-      - "agro/**"
-      - "evals/**"
-      - "prompts/**"
-      - "data/rag/**"
-      - "data/corpus/**"
-      - "config.toml"
-      - "main.py"
-      - "Makefile"
-      - "requirements.txt"
-      - ".github/workflows/evals.yml"
+  push:              # every push, to any branch
+  pull_request:      # every pull request
   workflow_dispatch:
     inputs:
       repeats:
